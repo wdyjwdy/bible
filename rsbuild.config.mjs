@@ -12,4 +12,11 @@ export default defineConfig({
   output: {
     assetPrefix: "/bible/",
   },
+  html: {
+    appIcon: {
+      icons: [{ src: "./src/icon.png", size: 512 }],
+    },
+    favicon: "./src/icon.png",
+    title: "Bible",
+  },
 });

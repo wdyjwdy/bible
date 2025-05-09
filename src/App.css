@@ -1,5 +1,22 @@
+:root {
+    color-scheme: light dark;
+
+    --light-bg: #fafafa;
+    --light-color-0: white;
+    --light-color-1: whitesmoke;
+    --light-color-2: lightgray;
+    --light-color-3: #aaaaaa;
+
+    --dark-bg: #1d1d1d;
+    --dark-color-0: black;
+    --dark-color-1: #242424;
+    --dark-color-2: #3c3c3c;
+    --dark-color-3: #595959;
+}
+
 body {
     margin: 0;
+    background-color: light-dark(var(--light-bg), var(--dark-bg));
 }
 
 .toolbar {
@@ -9,7 +26,12 @@ body {
     padding: 10px;
     position: sticky;
     top: 0px;
-    background-color: #fafafa;
+    background-color: light-dark(var(--light-bg), var(--dark-bg));
+}
+
+.chapter {
+    color: light-dark(var(--dark-color-1), var(--light-color-3));
+    background-color: light-dark(var(--light-bg), var(--dark-bg));
 }
 
 .chapter p {
@@ -28,11 +50,6 @@ body {
     flex: 1;
 }
 
-.theme-light {
-    background-color: #fafafa;
-    color: #314158;
-}
-
 /* ui library styles */
 
 .button {
@@ -43,22 +60,22 @@ body {
     height: 40px;
     width: auto;
     outline: none;
-    border: 1px solid lightgray;
+    border: 1px solid light-dark(var(--light-color-2), var(--dark-color-2));
     border-radius: 6px;
     padding: 0 16px;
-    background-color: whitesmoke;
-    color: black;
+    background-color: light-dark(var(--light-color-1), var(--dark-color-1));
+    color: light-dark(var(--dark-color-0), var(--light-color-3));
     font-size: 16px;
     line-height: 0;
     transition: 250ms background-color;
 }
 
 .button:hover {
-    background-color: white;
+    background-color: light-dark(var(--light-color-0), var(--dark-color-0));
 }
 
 .button:active {
-    color: darkgray;
+    color: light-dark(var(--light-color-2), var(--dark-color-2));
 }
 
 .select__trigger {
@@ -72,15 +89,15 @@ body {
     line-height: 1;
     height: 40px;
     outline: none;
-    background-color: white;
-    border: 1px solid hsl(240 6% 90%);
-    color: hsl(240 4% 16%);
+    background-color: light-dark(var(--light-color-1), var(--dark-color-1));
+    border: 1px solid light-dark(var(--light-color-2), var(--dark-color-2));
+    color: light-dark(var(--dark-color-0), var(--light-color-2));
     transition:
         border-color 250ms,
         color 250ms;
 }
 .select__trigger:hover {
-    border-color: hsl(240 5% 65%);
+    border-color: light-dark(var(--light-color-3), var(--dark-color-3));
 }
 
 .select__trigger[data-invalid] {
@@ -113,9 +130,9 @@ body {
     user-select: none;
 }
 .select__content {
-    background-color: white;
+    background-color: light-dark(var(--light-color-1), var(--dark-color-1));
     border-radius: 6px;
-    border: 1px solid hsl(240 6% 90%);
+    border: 1px solid light-dark(var(--light-color-2), var(--dark-color-2));
     box-shadow:
         0 4px 6px -1px rgb(0 0 0 / 0.1),
         0 2px 4px -2px rgb(0 0 0 / 0.1);
@@ -133,7 +150,7 @@ body {
 .select__item {
     font-size: 16px;
     line-height: 1;
-    color: hsl(240 4% 16%);
+    color: light-dark(var(--dark-color-0), var(--light-color-2));
     border-radius: 4px;
     display: flex;
     align-items: center;
@@ -151,8 +168,8 @@ body {
 }
 .select__item[data-highlighted] {
     outline: none;
-    background-color: lightgray;
-    color: black;
+    background-color: light-dark(var(--light-color-3), var(--dark-color-3));
+    color: light-dark(var(--dark-color-1), var(--light-color-1));
 }
 .select__section {
     padding: 8px 0 0 8px;
