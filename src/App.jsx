@@ -1,5 +1,39 @@
 import { createSignal, onMount, createEffect } from "solid-js";
+import { ArrowLeft, ArrowRight, ChevronsUpDown, CheckIcon } from "lucide-solid";
+import { Button } from "@kobalte/core/button";
+import { Select } from "@kobalte/core/select";
 import "./App.css";
+
+const SelectComponent = (props) => {
+  console.log(props);
+  return (
+    <Select
+      {...props}
+      itemComponent={(props) => (
+        <Select.Item item={props.item} class="select__item">
+          <Select.ItemLabel>{props.item.rawValue}</Select.ItemLabel>
+          <Select.ItemIndicator class="select__item-indicator">
+            <CheckIcon />
+          </Select.ItemIndicator>
+        </Select.Item>
+      )}
+    >
+      <Select.Trigger class="select__trigger" aria-label="Fruit">
+        <Select.Value class="select__value">
+          {(state) => state.selectedOption()}
+        </Select.Value>
+        <Select.Icon class="select__icon">
+          <ChevronsUpDown />
+        </Select.Icon>
+      </Select.Trigger>
+      <Select.Portal>
+        <Select.Content class="select__content">
+          <Select.Listbox class="select__listbox" />
+        </Select.Content>
+      </Select.Portal>
+    </Select>
+  );
+};
 
 const Toolbar = ({ controller }) => {
   const [volumeList, setVolumeList] = createSignal([]);
@@ -25,27 +59,23 @@ const Toolbar = ({ controller }) => {
   });
 
   return (
-    <div>
-      <select
-        value={selectedVolume}
-        onChange={(e) => setSelectedVolume(e.target.value)}
-      >
-        {volumeList().map((x) => (
-          <option key={x.id} value={x.id}>
-            {x.name}
-          </option>
-        ))}
-      </select>
-      <select
-        value={selectedChapter}
-        onChange={(e) => setSelectedChapter(e.target.value)}
-      >
-        {chapterList().map((x) => (
-          <option key={x.chapter} value={x.chapter}>
-            {x.chapter}
-          </option>
-        ))}
-      </select>
+    <div class="toolbar">
+      <SelectComponent
+        options={volumeList().map((x) => x.id)}
+        value={selectedVolume()}
+        onChange={setSelectedVolume}
+      />
+      <SelectComponent
+        options={chapterList().map((x) => x.chapter)}
+        value={selectedChapter()}
+        onChange={setSelectedChapter}
+      />
+      <Button class="button" onClick={() => setSelectedChapter((x) => x - 1)}>
+        <ArrowLeft />
+      </Button>
+      <Button class="button" onClick={() => setSelectedChapter((x) => x + 1)}>
+        <ArrowRight />
+      </Button>
     </div>
   );
 };
@@ -80,9 +110,12 @@ const Chapter = ({ selectedVolume, selectedChapter }) => {
   });
 
   return (
-    <section>
-      {verseList().map((x) => (
-        <p key={x}>{x}</p>
+    <section class="chapter">
+      {verseList().map((x, i) => (
+        <p key={x}>
+          <span>{i}</span>
+          <span>{x}</span>
+        </p>
       ))}
     </section>
   );
@@ -99,7 +132,7 @@ const App = () => {
   };
 
   return (
-    <div class="content">
+    <div class="app theme-light">
       <Toolbar controller={controller} />
       <Chapter
         selectedVolume={selectedVolume}
