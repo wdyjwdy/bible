@@ -1,28 +1,37 @@
-async function getVolumes() {
+async function getBible(key, version, volume, chapter) {
   try {
-    const res = await fetch("https://bible-api.com/data/cuv");
+    let url = "https://bible-api.com/data";
+    if (version) url += `/${version}`;
+    if (volume) url += `/${volume}`;
+    if (chapter) url += `/${chapter}`;
+    const cached = localStorage.getItem(url);
+    if (cached) {
+      return JSON.parse(cached);
+    }
+    const res = await fetch(url);
     const json = await res.json();
-    const volumes = json.books;
-    return volumes;
+    const val = json[key];
+    localStorage.setItem(url, JSON.stringify(val));
+    return val;
   } catch (error) {
-    console.error("Failed to getVolumes()", error);
+    console.error("api.js", error);
   }
 }
 
-async function getChapters(volume = "GEN") {
-  const res = await fetch(`https://bible-api.com/data/cuv/${volume}`);
-  const json = await res.json();
-  const chapters = json.chapters;
-  return chapters;
+async function getVersions() {
+  return getBible("translations");
 }
 
-async function getVerses(volume = "GEN", chapter = 1) {
-  const res = await fetch(
-    `https://bible-api.com/data/cuv/${volume}/${chapter}`,
-  );
-  const json = await res.json();
-  const verses = json.verses;
-  return verses;
+async function getVolumes(version = "cuv") {
+  return getBible("books", version);
 }
 
-export { getVolumes, getChapters, getVerses };
+async function getChapters(version = "cuv", volume = "GEN") {
+  return getBible("chapters", version, volume);
+}
+
+async function getVerses(version = "cuv", volume = "GEN", chapter = 1) {
+  return getBible("verses", version, volume, chapter);
+}
+
+export { getVersions, getVolumes, getChapters, getVerses };

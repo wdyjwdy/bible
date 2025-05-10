@@ -1,12 +1,15 @@
 import { createSignal, onMount, createEffect } from "solid-js";
-import { getVolumes, getChapters, getVerses } from "./api";
+import { getVersions, getVolumes, getChapters, getVerses } from "./api";
 import { Select, Button } from "./ui";
 import "./App.css";
 
 const Toolbar = (props) => {
+  const [versions, setVersions] = createSignal([]);
   const [volumes, setVolumes] = createSignal([]);
   const [chapters, setChapters] = createSignal([]);
   const {
+    selectedVersion,
+    setSelectedVersion,
     selectedVolume,
     setSelectedVolume,
     selectedChapter,
@@ -21,6 +24,9 @@ const Toolbar = (props) => {
   }
 
   onMount(async () => {
+    const versions = await getVersions();
+    setVersions(versions);
+    setSelectedVersion(versions[1]);
     const volumes = await getVolumes();
     setVolumes(volumes);
     setSelectedVolume(volumes[0]);
@@ -30,13 +36,30 @@ const Toolbar = (props) => {
   });
 
   createEffect(async () => {
-    const chapters = await getChapters(selectedVolume()?.id);
+    const volumes = await getVolumes(selectedVersion()?.identifier);
+    setVolumes(volumes);
+    // setSelectedVolume(volumes[0]);
+  });
+
+  createEffect(async () => {
+    const chapters = await getChapters(
+      selectedVersion?.identifier,
+      selectedVolume()?.id,
+    );
     setChapters(chapters);
     setSelectedChapter(chapters[0]);
   });
 
   return (
     <div class="toolbar">
+      <Select
+        class="version-select"
+        value={selectedVersion()}
+        onChange={setSelectedVersion}
+        options={versions()}
+        optionValue="identifier"
+        optionTextValue="identifier"
+      />
       <Select
         value={selectedVolume()}
         onChange={setSelectedVolume}
@@ -60,8 +83,7 @@ const Toolbar = (props) => {
 
 const Chapter = (props) => {
   const [verses, setVerses] = createSignal([]);
-  const { selectedVolume, selectedChapter } = props;
-  console.log(selectedVolume(), selectedChapter());
+  const { selectedVersion, selectedVolume, selectedChapter } = props;
 
   onMount(async () => {
     const verses = await getVerses();
@@ -70,6 +92,7 @@ const Chapter = (props) => {
 
   createEffect(async () => {
     const verses = await getVerses(
+      selectedVersion()?.identifier,
       selectedVolume()?.id,
       selectedChapter()?.chapter,
     );
@@ -89,15 +112,18 @@ const Chapter = (props) => {
 };
 
 const App = () => {
+  const [selectedVersion, setSelectedVersion] = createSignal();
   const [selectedVolume, setSelectedVolume] = createSignal();
   const [selectedChapter, setSelectedChapter] = createSignal();
   const toolbarProps = {
+    selectedVersion,
+    setSelectedVersion,
     selectedVolume,
     setSelectedVolume,
     selectedChapter,
     setSelectedChapter,
   };
-  const chapterProps = { selectedVolume, selectedChapter };
+  const chapterProps = { selectedVersion, selectedVolume, selectedChapter };
 
   return (
     <div class="app">

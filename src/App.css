@@ -55,6 +55,10 @@ body {
     width: 80px;
 }
 
+.version-select button {
+    width: 130px;
+}
+
 /* ui library styles */
 
 .button {
