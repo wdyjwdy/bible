@@ -1,12 +1,12 @@
 import { createSignal, onMount, createEffect, Show, For } from "solid-js";
-import { getVersions, getVolumes, getChapters, getVerses } from "./api";
+import { getVerses, chineseLabels, chapterNumbers, getNumArray } from "./api";
 import { Select, Button, ViewToggleButton, VisibleToggleButton } from "./ui";
 import "./App.css";
 
 const Toolbar = (props) => {
-  const [versions, setVersions] = createSignal([]);
-  const [volumes, setVolumes] = createSignal([]);
-  const [chapters, setChapters] = createSignal([]);
+  const [versions, setVersions] = createSignal(["CUS"]);
+  const [volumes, setVolumes] = createSignal(chineseLabels);
+  const [chapters, setChapters] = createSignal(getNumArray(chapterNumbers[0]));
   const {
     selectedVersion,
     setSelectedVersion,
@@ -21,36 +21,16 @@ const Toolbar = (props) => {
   } = props;
 
   function handleChapterChange(offset) {
-    const index = selectedChapter()?.chapter + offset;
+    const index = selectedChapter() + offset;
     if (1 <= index && index <= chapters()?.length) {
-      setSelectedChapter((c) => ({ ...c, chapter: index }));
+      setSelectedChapter(index);
     }
   }
 
-  onMount(async () => {
-    const versions = await getVersions();
-    setVersions(versions);
-    setSelectedVersion(versions[1]);
-    const volumes = await getVolumes();
-    setVolumes(volumes);
-    setSelectedVolume(volumes[0]);
-    const chapters = await getChapters();
-    setChapters(chapters);
-    setSelectedChapter(chapters[0]);
-  });
-
-  createEffect(async () => {
-    const volumes = await getVolumes(selectedVersion()?.identifier);
-    setVolumes(volumes);
-  });
-
-  createEffect(async () => {
-    const chapters = await getChapters(
-      selectedVersion?.identifier,
-      selectedVolume()?.id,
-    );
-    setChapters(chapters);
-    setSelectedChapter(chapters[0]);
+  createEffect(() => {
+    const index = chineseLabels.indexOf(selectedVolume());
+    setChapters(getNumArray(chapterNumbers[index]));
+    setSelectedChapter(1);
   });
 
   return (
@@ -61,23 +41,17 @@ const Toolbar = (props) => {
           value={selectedVersion()}
           onChange={setSelectedVersion}
           options={versions()}
-          optionValue="identifier"
-          optionTextValue="identifier"
         />
         <Select
           value={selectedVolume()}
           onChange={setSelectedVolume}
           options={volumes()}
-          optionValue="id"
-          optionTextValue="name"
         />
         <Select
           class="chapter-select"
           value={selectedChapter()}
           onChange={setSelectedChapter}
           options={chapters()}
-          optionValue="chapter"
-          optionTextValue="chapter"
         />
       </Show>
       <Button left onClick={() => handleChapterChange(-1)} />
@@ -94,17 +68,9 @@ const Chapter = (props) => {
   const [verses, setVerses] = createSignal([]);
   const { selectedVersion, selectedVolume, selectedChapter, view } = props;
 
-  onMount(async () => {
-    const verses = await getVerses();
-    setVerses(verses);
-  });
-
   createEffect(async () => {
-    const verses = await getVerses(
-      selectedVersion()?.identifier,
-      selectedVolume()?.id,
-      selectedChapter()?.chapter,
-    );
+    const volume = chineseLabels.indexOf(selectedVolume()) + 1;
+    const verses = await getVerses(undefined, volume, selectedChapter());
     setVerses(verses);
     document.documentElement.scrollTop = 0;
   });
@@ -112,10 +78,10 @@ const Chapter = (props) => {
   const TextView = () => (
     <div class="chapter text-view">
       <For each={verses()}>
-        {({ verse, text }) => (
+        {({ vn, vt }) => (
           <>
-            <span class="verse-number">{verse}</span>
-            <span>{text}</span>
+            <span class="verse-number">{vn}</span>
+            <span>{vt}</span>
           </>
         )}
       </For>
@@ -125,10 +91,10 @@ const Chapter = (props) => {
   const ListView = () => (
     <div class="chapter list-view">
       <For each={verses()}>
-        {({ verse, text }) => (
-          <p key={verse}>
-            <span class="verse-number">{verse}</span>
-            <span class="verse-text">{text}</span>
+        {({ vn, vt }) => (
+          <p key={vn}>
+            <span class="verse-number">{vn}</span>
+            <span class="verse-text">{vt}</span>
           </p>
         )}
       </For>
@@ -146,9 +112,9 @@ const Chapter = (props) => {
 };
 
 const App = () => {
-  const [selectedVersion, setSelectedVersion] = createSignal();
-  const [selectedVolume, setSelectedVolume] = createSignal();
-  const [selectedChapter, setSelectedChapter] = createSignal();
+  const [selectedVersion, setSelectedVersion] = createSignal("CUS");
+  const [selectedVolume, setSelectedVolume] = createSignal(chineseLabels[0]);
+  const [selectedChapter, setSelectedChapter] = createSignal(1);
   const [view, setView] = createSignal(true);
   const [visible, setVisible] = createSignal(true);
   const toolbarProps = {

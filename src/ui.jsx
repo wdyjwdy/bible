@@ -47,15 +47,12 @@ const ButtonComponent = (props) => {
 };
 
 const SelectComponent = (props) => {
-  const { optionTextValue } = props;
   return (
     <Select
       {...props}
       itemComponent={(props) => (
         <Select.Item item={props.item} class="select__item">
-          <Select.ItemLabel>
-            {props.item.rawValue?.[optionTextValue]}
-          </Select.ItemLabel>
+          <Select.ItemLabel>{props.item.rawValue}</Select.ItemLabel>
           <Select.ItemIndicator class="select__item-indicator">
             <CheckIcon />
           </Select.ItemIndicator>
@@ -64,7 +61,7 @@ const SelectComponent = (props) => {
     >
       <Select.Trigger class="select__trigger">
         <Select.Value class="select__value">
-          {(state) => state.selectedOption()?.[optionTextValue]}
+          {(state) => state.selectedOption()}
         </Select.Value>
         <Select.Icon class="select__icon">
           <ChevronsUpDown />
