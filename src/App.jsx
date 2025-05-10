@@ -1,143 +1,108 @@
 import { createSignal, onMount, createEffect } from "solid-js";
-import { ArrowLeft, ArrowRight, ChevronsUpDown, CheckIcon } from "lucide-solid";
-import { Button } from "@kobalte/core/button";
-import { Select } from "@kobalte/core/select";
+import { getVolumes, getChapters, getVerses } from "./api";
+import { Select, Button } from "./ui";
 import "./App.css";
 
-const SelectComponent = (props) => {
-  console.log(props);
-  return (
-    <Select
-      {...props}
-      itemComponent={(props) => (
-        <Select.Item item={props.item} class="select__item">
-          <Select.ItemLabel>{props.item.rawValue}</Select.ItemLabel>
-          <Select.ItemIndicator class="select__item-indicator">
-            <CheckIcon />
-          </Select.ItemIndicator>
-        </Select.Item>
-      )}
-    >
-      <Select.Trigger class="select__trigger" aria-label="Fruit">
-        <Select.Value class="select__value">
-          {(state) => state.selectedOption()}
-        </Select.Value>
-        <Select.Icon class="select__icon">
-          <ChevronsUpDown />
-        </Select.Icon>
-      </Select.Trigger>
-      <Select.Portal>
-        <Select.Content class="select__content">
-          <Select.Listbox class="select__listbox" />
-        </Select.Content>
-      </Select.Portal>
-    </Select>
-  );
-};
-
-const Toolbar = ({ controller }) => {
-  const [volumeList, setVolumeList] = createSignal([]);
-  const [chapterList, setChapterList] = createSignal([]);
+const Toolbar = (props) => {
+  const [volumes, setVolumes] = createSignal([]);
+  const [chapters, setChapters] = createSignal([]);
   const {
     selectedVolume,
     setSelectedVolume,
     selectedChapter,
     setSelectedChapter,
-  } = controller;
+  } = props;
+
+  function handleChapterChange(offset) {
+    const index = selectedChapter()?.chapter + offset;
+    if (1 <= index && index <= chapters()?.length) {
+      setSelectedChapter((c) => ({ ...c, chapter: index }));
+    }
+  }
 
   onMount(async () => {
-    try {
-      const response = await fetch("https://bible-api.com/data/cuv"); // 替换成你的 API 地址
-      const data = await response.json();
-      setVolumeList(data.books); // 假设返回的是一个字符串数组
-      const res2 = await fetch("https://bible-api.com/data/cuv/GEN"); // 替换成你的 API 地址
-      const data2 = await res2.json();
-      setChapterList(data2.chapters); // 假设返回的是一个字符串数组
-    } catch (error) {
-      console.error("Failed to fetch verses:", error);
-    }
+    const volumes = await getVolumes();
+    setVolumes(volumes);
+    setSelectedVolume(volumes[0]);
+    const chapters = await getChapters();
+    setChapters(chapters);
+    setSelectedChapter(chapters[0]);
+  });
+
+  createEffect(async () => {
+    const chapters = await getChapters(selectedVolume()?.id);
+    setChapters(chapters);
+    setSelectedChapter(chapters[0]);
   });
 
   return (
     <div class="toolbar">
-      <SelectComponent
-        options={volumeList().map((x) => x.id)}
+      <Select
         value={selectedVolume()}
         onChange={setSelectedVolume}
+        options={volumes()}
+        optionValue="id"
+        optionTextValue="name"
       />
-      <SelectComponent
-        options={chapterList().map((x) => x.chapter)}
+      <Select
+        class="chapter-select"
         value={selectedChapter()}
         onChange={setSelectedChapter}
+        options={chapters()}
+        optionValue="chapter"
+        optionTextValue="chapter"
       />
-      <Button class="button" onClick={() => setSelectedChapter((x) => x - 1)}>
-        <ArrowLeft />
-      </Button>
-      <Button class="button" onClick={() => setSelectedChapter((x) => x + 1)}>
-        <ArrowRight />
-      </Button>
+      <Button left onClick={() => handleChapterChange(-1)} />
+      <Button right onClick={() => handleChapterChange(1)} />
     </div>
   );
 };
 
-const Chapter = ({ selectedVolume, selectedChapter }) => {
-  const [verseList, setVerseList] = createSignal([]);
+const Chapter = (props) => {
+  const [verses, setVerses] = createSignal([]);
+  const { selectedVolume, selectedChapter } = props;
+  console.log(selectedVolume(), selectedChapter());
 
-  // API 请求逻辑，组件挂载时触发
   onMount(async () => {
-    try {
-      const response = await fetch("https://bible-api.com/data/cuv/JHN/1"); // 替换成你的 API 地址
-      const data = await response.json();
-      setVerseList(data.verses.map((x) => x.text)); // 假设返回的是一个字符串数组
-    } catch (error) {
-      console.error("Failed to fetch verses:", error);
-    }
+    const verses = await getVerses();
+    setVerses(verses);
   });
 
   createEffect(async () => {
-    const volume = selectedVolume();
-    const chapter = selectedChapter();
-
-    try {
-      const response = await fetch(
-        `https://bible-api.com/data/cuv/${volume}/${chapter}`,
-      );
-      const data = await response.json();
-      setVerseList(data.verses.map((x) => x.text));
-    } catch (error) {
-      console.error("Failed to fetch verses:", error);
-    }
+    const verses = await getVerses(
+      selectedVolume()?.id,
+      selectedChapter()?.chapter,
+    );
+    setVerses(verses);
   });
 
   return (
-    <section class="chapter">
-      {verseList().map((x, i) => (
-        <p key={x}>
-          <span>{i}</span>
-          <span>{x}</span>
+    <div class="chapter">
+      {verses().map((x) => (
+        <p key={x.verse}>
+          <span>{x.verse}</span>
+          <span>{x.text}</span>
         </p>
       ))}
-    </section>
+    </div>
   );
 };
 
 const App = () => {
-  const [selectedVolume, setSelectedVolume] = createSignal("GEN");
-  const [selectedChapter, setSelectedChapter] = createSignal(1);
-  const controller = {
+  const [selectedVolume, setSelectedVolume] = createSignal();
+  const [selectedChapter, setSelectedChapter] = createSignal();
+  const toolbarProps = {
     selectedVolume,
     setSelectedVolume,
     selectedChapter,
     setSelectedChapter,
   };
+  const chapterProps = { selectedVolume, selectedChapter };
 
   return (
-    <div class="app theme-light">
-      <Toolbar controller={controller} />
-      <Chapter
-        selectedVolume={selectedVolume}
-        selectedChapter={selectedChapter}
-      />
+    <div class="app">
+      <Toolbar {...toolbarProps} />
+      <Chapter {...chapterProps} />
     </div>
   );
 };

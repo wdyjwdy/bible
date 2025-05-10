@@ -1,0 +1,47 @@
+import { ArrowLeft, ArrowRight, ChevronsUpDown, CheckIcon } from "lucide-solid";
+import { Button } from "@kobalte/core/button";
+import { Select } from "@kobalte/core/select";
+
+const ButtonComponent = (props) => {
+  return (
+    <Button class="button" {...props}>
+      {props.left && <ArrowLeft />}
+      {props.right && <ArrowRight />}
+    </Button>
+  );
+};
+
+const SelectComponent = (props) => {
+  const { optionTextValue } = props;
+  return (
+    <Select
+      {...props}
+      itemComponent={(props) => (
+        <Select.Item item={props.item} class="select__item">
+          <Select.ItemLabel>
+            {props.item.rawValue?.[optionTextValue]}
+          </Select.ItemLabel>
+          <Select.ItemIndicator class="select__item-indicator">
+            <CheckIcon />
+          </Select.ItemIndicator>
+        </Select.Item>
+      )}
+    >
+      <Select.Trigger class="select__trigger">
+        <Select.Value class="select__value">
+          {(state) => state.selectedOption()?.[optionTextValue]}
+        </Select.Value>
+        <Select.Icon class="select__icon">
+          <ChevronsUpDown />
+        </Select.Icon>
+      </Select.Trigger>
+      <Select.Portal>
+        <Select.Content class="select__content">
+          <Select.Listbox class="select__listbox" />
+        </Select.Content>
+      </Select.Portal>
+    </Select>
+  );
+};
+
+export { SelectComponent as Select, ButtonComponent as Button };

@@ -44,10 +44,15 @@ body {
     color: darkred;
     flex-basis: 2em;
     text-align: center;
+    user-select: none;
 }
 
 .chapter p span:last-child {
     flex: 1;
+}
+
+.chapter-select button {
+    width: 80px;
 }
 
 /* ui library styles */
@@ -96,8 +101,9 @@ body {
         border-color 250ms,
         color 250ms;
 }
+
 .select__trigger:hover {
-    border-color: light-dark(var(--light-color-3), var(--dark-color-3));
+    background-color: light-dark(var(--light-color-0), var(--dark-color-0));
 }
 
 .select__trigger[data-invalid] {
