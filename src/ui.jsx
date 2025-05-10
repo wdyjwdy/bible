@@ -1,6 +1,27 @@
-import { ArrowLeft, ArrowRight, ChevronsUpDown, CheckIcon } from "lucide-solid";
+import {
+  ArrowLeft,
+  ArrowRight,
+  ChevronsUpDown,
+  CheckIcon,
+  ListOrdered,
+  WrapText,
+} from "lucide-solid";
 import { Button } from "@kobalte/core/button";
 import { Select } from "@kobalte/core/select";
+import { ToggleButton } from "@kobalte/core/toggle-button";
+import { Show } from "solid-js";
+
+const ViewToggleButton = (props) => {
+  return (
+    <ToggleButton class="toogle-view toggle-button" {...props}>
+      {(state) => (
+        <Show when={state.pressed()} fallback={<WrapText />}>
+          <ListOrdered />
+        </Show>
+      )}
+    </ToggleButton>
+  );
+};
 
 const ButtonComponent = (props) => {
   return (
@@ -44,4 +65,8 @@ const SelectComponent = (props) => {
   );
 };
 
-export { SelectComponent as Select, ButtonComponent as Button };
+export {
+  SelectComponent as Select,
+  ButtonComponent as Button,
+  ViewToggleButton,
+};

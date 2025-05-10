@@ -1,6 +1,6 @@
-import { createSignal, onMount, createEffect } from "solid-js";
+import { createSignal, onMount, createEffect, Show, For } from "solid-js";
 import { getVersions, getVolumes, getChapters, getVerses } from "./api";
-import { Select, Button } from "./ui";
+import { Select, Button, ViewToggleButton } from "./ui";
 import "./App.css";
 
 const Toolbar = (props) => {
@@ -14,6 +14,8 @@ const Toolbar = (props) => {
     setSelectedVolume,
     selectedChapter,
     setSelectedChapter,
+    view,
+    setView,
   } = props;
 
   function handleChapterChange(offset) {
@@ -76,13 +78,14 @@ const Toolbar = (props) => {
       />
       <Button left onClick={() => handleChapterChange(-1)} />
       <Button right onClick={() => handleChapterChange(1)} />
+      <ViewToggleButton pressed={view()} onChange={setView} />
     </div>
   );
 };
 
 const Chapter = (props) => {
   const [verses, setVerses] = createSignal([]);
-  const { selectedVersion, selectedVolume, selectedChapter } = props;
+  const { selectedVersion, selectedVolume, selectedChapter, view } = props;
 
   onMount(async () => {
     const verses = await getVerses();
@@ -98,15 +101,36 @@ const Chapter = (props) => {
     setVerses(verses);
   });
 
-  return (
-    <div class="chapter">
-      {verses().map((x) => (
-        <p key={x.verse}>
-          <span>{x.verse}</span>
-          <span>{x.text}</span>
-        </p>
-      ))}
+  const TextView = () => (
+    <div class="chapter text-view">
+      <For each={verses()}>
+        {({ verse, text }) => (
+          <>
+            <span class="verse-number">{verse}</span>
+            <span>{text}</span>
+          </>
+        )}
+      </For>
     </div>
+  );
+
+  const ListView = () => (
+    <div class="chapter list-view">
+      <For each={verses()}>
+        {({ verse, text }) => (
+          <p key={verse}>
+            <span class="verse-number">{verse}</span>
+            <span class="verse-text">{text}</span>
+          </p>
+        )}
+      </For>
+    </div>
+  );
+
+  return (
+    <Show when={view()} fallback={<TextView />}>
+      <ListView />
+    </Show>
   );
 };
 
@@ -114,6 +138,7 @@ const App = () => {
   const [selectedVersion, setSelectedVersion] = createSignal();
   const [selectedVolume, setSelectedVolume] = createSignal();
   const [selectedChapter, setSelectedChapter] = createSignal();
+  const [view, setView] = createSignal(true);
   const toolbarProps = {
     selectedVersion,
     setSelectedVersion,
@@ -121,8 +146,15 @@ const App = () => {
     setSelectedVolume,
     selectedChapter,
     setSelectedChapter,
+    view,
+    setView,
   };
-  const chapterProps = { selectedVersion, selectedVolume, selectedChapter };
+  const chapterProps = {
+    selectedVersion,
+    selectedVolume,
+    selectedChapter,
+    view,
+  };
 
   return (
     <div class="app">
