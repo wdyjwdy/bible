@@ -1,15 +1,49 @@
+async function openDB() {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open("MyAppDB", 1);
+
+    request.onupgradeneeded = () => {
+      const db = request.result;
+      if (!db.objectStoreNames.contains("cache")) {
+        db.createObjectStore("cache", { keyPath: "key" });
+      }
+    };
+
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error);
+  });
+}
+
+async function saveToCache(key, value) {
+  const db = await openDB();
+  const tx = db.transaction("cache", "readwrite");
+  const store = tx.objectStore("cache");
+  store.put({ key, value });
+  return tx.complete;
+}
+
+async function readFromCache(key) {
+  const db = await openDB();
+  const tx = db.transaction("cache", "readonly");
+  const store = tx.objectStore("cache");
+  return new Promise((resolve, reject) => {
+    const request = store.get(key);
+    request.onsuccess = () => resolve(request.result?.value);
+    request.onerror = () => reject(request.error);
+  });
+}
+
 async function getBible() {
   try {
     const url =
       "https://raw.githubusercontent.com/wdyjwdy/bible/main/data/CUSVerses.json";
-    const cache = localStorage.getItem(url);
-
+    const cache = await readFromCache(url);
     if (cache) {
-      return JSON.parse(cache);
+      return cache;
     }
     const res = await fetch(url);
     const json = await res.json();
-    localStorage.setItem(url, JSON.stringify(json));
+    saveToCache(url, json);
     return json;
   } catch (error) {
     console.error("api.js", error);
