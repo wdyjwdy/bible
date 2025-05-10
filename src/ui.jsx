@@ -5,6 +5,8 @@ import {
   CheckIcon,
   ListOrdered,
   WrapText,
+  Eye,
+  EyeOff,
 } from "lucide-solid";
 import { Button } from "@kobalte/core/button";
 import { Select } from "@kobalte/core/select";
@@ -23,9 +25,21 @@ const ViewToggleButton = (props) => {
   );
 };
 
+const VisibleToggleButton = (props) => {
+  return (
+    <ToggleButton class="toogle-visible toggle-button" {...props}>
+      {(state) => (
+        <Show when={state.pressed()} fallback={<EyeOff />}>
+          <Eye />
+        </Show>
+      )}
+    </ToggleButton>
+  );
+};
+
 const ButtonComponent = (props) => {
   return (
-    <Button class="button" {...props}>
+    <Button class="button arrow-button" {...props}>
       {props.left && <ArrowLeft />}
       {props.right && <ArrowRight />}
     </Button>
@@ -69,4 +83,5 @@ export {
   SelectComponent as Select,
   ButtonComponent as Button,
   ViewToggleButton,
+  VisibleToggleButton,
 };

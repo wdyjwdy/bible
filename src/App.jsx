@@ -1,6 +1,6 @@
 import { createSignal, onMount, createEffect, Show, For } from "solid-js";
 import { getVersions, getVolumes, getChapters, getVerses } from "./api";
-import { Select, Button, ViewToggleButton } from "./ui";
+import { Select, Button, ViewToggleButton, VisibleToggleButton } from "./ui";
 import "./App.css";
 
 const Toolbar = (props) => {
@@ -16,6 +16,8 @@ const Toolbar = (props) => {
     setSelectedChapter,
     view,
     setView,
+    visible,
+    setVisible,
   } = props;
 
   function handleChapterChange(offset) {
@@ -52,33 +54,38 @@ const Toolbar = (props) => {
   });
 
   return (
-    <div class="toolbar">
-      <Select
-        class="version-select"
-        value={selectedVersion()}
-        onChange={setSelectedVersion}
-        options={versions()}
-        optionValue="identifier"
-        optionTextValue="identifier"
-      />
-      <Select
-        value={selectedVolume()}
-        onChange={setSelectedVolume}
-        options={volumes()}
-        optionValue="id"
-        optionTextValue="name"
-      />
-      <Select
-        class="chapter-select"
-        value={selectedChapter()}
-        onChange={setSelectedChapter}
-        options={chapters()}
-        optionValue="chapter"
-        optionTextValue="chapter"
-      />
+    <div class={`toolbar${visible() ? "" : " toolbar-hidden"}`}>
+      <Show when={visible()}>
+        <Select
+          class="version-select"
+          value={selectedVersion()}
+          onChange={setSelectedVersion}
+          options={versions()}
+          optionValue="identifier"
+          optionTextValue="identifier"
+        />
+        <Select
+          value={selectedVolume()}
+          onChange={setSelectedVolume}
+          options={volumes()}
+          optionValue="id"
+          optionTextValue="name"
+        />
+        <Select
+          class="chapter-select"
+          value={selectedChapter()}
+          onChange={setSelectedChapter}
+          options={chapters()}
+          optionValue="chapter"
+          optionTextValue="chapter"
+        />
+      </Show>
       <Button left onClick={() => handleChapterChange(-1)} />
       <Button right onClick={() => handleChapterChange(1)} />
-      <ViewToggleButton pressed={view()} onChange={setView} />
+      <Show when={visible()}>
+        <ViewToggleButton pressed={view()} onChange={setView} />
+      </Show>
+      <VisibleToggleButton pressed={visible()} onChange={setVisible} />
     </div>
   );
 };
@@ -128,9 +135,12 @@ const Chapter = (props) => {
   );
 
   return (
-    <Show when={view()} fallback={<TextView />}>
-      <ListView />
-    </Show>
+    <>
+      <Show when={view()} fallback={<TextView />}>
+        <ListView />
+      </Show>
+      <div class="bottom-placeholder" />
+    </>
   );
 };
 
@@ -139,6 +149,7 @@ const App = () => {
   const [selectedVolume, setSelectedVolume] = createSignal();
   const [selectedChapter, setSelectedChapter] = createSignal();
   const [view, setView] = createSignal(true);
+  const [visible, setVisible] = createSignal(true);
   const toolbarProps = {
     selectedVersion,
     setSelectedVersion,
@@ -148,12 +159,15 @@ const App = () => {
     setSelectedChapter,
     view,
     setView,
+    visible,
+    setVisible,
   };
   const chapterProps = {
     selectedVersion,
     selectedVolume,
     selectedChapter,
     view,
+    visible,
   };
 
   return (

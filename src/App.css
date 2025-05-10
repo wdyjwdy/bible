@@ -29,6 +29,18 @@ body {
     background-color: light-dark(var(--light-bg), var(--dark-bg));
 }
 
+@media screen and (max-width: 768px) {
+    .toolbar {
+        top: unset;
+        bottom: 0px;
+        position: fixed;
+        width: -webkit-fill-available;
+    }
+    .bottom-placeholder {
+        height: 60px;
+    }
+}
+
 .chapter {
     color: light-dark(var(--dark-color-1), var(--light-color-3));
     background-color: light-dark(var(--light-bg), var(--dark-bg));
@@ -76,6 +88,14 @@ body {
 
 .toogle-view {
     margin-left: auto;
+}
+
+.toolbar-hidden .toogle-visible {
+    margin-left: auto;
+}
+
+.toolbar-hidden .arrow-button {
+    flex: 1;
 }
 
 /* ui library styles */
