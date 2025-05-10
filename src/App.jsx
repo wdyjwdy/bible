@@ -38,7 +38,6 @@ const Toolbar = (props) => {
   createEffect(async () => {
     const volumes = await getVolumes(selectedVersion()?.identifier);
     setVolumes(volumes);
-    // setSelectedVolume(volumes[0]);
   });
 
   createEffect(async () => {
