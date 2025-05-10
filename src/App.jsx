@@ -106,6 +106,7 @@ const Chapter = (props) => {
       selectedChapter()?.chapter,
     );
     setVerses(verses);
+    document.documentElement.scrollTop = 0;
   });
 
   const TextView = () => (
