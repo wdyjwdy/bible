@@ -1,6 +1,6 @@
 async function openDB() {
   return new Promise((resolve, reject) => {
-    const request = indexedDB.open("MyAppDB", 1);
+    const request = indexedDB.open("BibleApp");
 
     request.onupgradeneeded = () => {
       const db = request.result;
@@ -33,110 +33,111 @@ async function readFromCache(key) {
   });
 }
 
-async function getBible() {
+async function getBibleData(version = "CUS") {
   try {
-    const url =
-      "https://raw.githubusercontent.com/wdyjwdy/bible/main/data/CUSVerses.json";
-    const cache = await readFromCache(url);
+    const cache = await readFromCache(version);
     if (cache) {
       return cache;
     }
+    const url = `https://raw.githubusercontent.com/wdyjwdy/bible/main/data/${version}Verses.json`;
     const res = await fetch(url);
     const json = await res.json();
-    saveToCache(url, json);
+    saveToCache(version, json);
     return json;
   } catch (error) {
     console.error("api.js", error);
   }
 }
 
-async function getVerses(version, volumn, chapter) {
-  const data = await getBible();
+async function getVerses(version = "CUS", volumn = 1, chapter = 1) {
+  const data = await getBibleData(version);
   return data.filter((x) => x.bid === volumn && x.cn === chapter);
 }
 
-const chineseLabels = [
-  "创世纪",
-  "出埃及记",
-  "利未记",
-  "民数记",
-  "申命记",
-  "约书亚记",
-  "士师记",
-  "路得记",
-  "撒母耳记上",
-  "撒母耳记下",
-  "列王纪上",
-  "列王纪下",
-  "历代志上",
-  "历代志下",
-  "以斯拉记",
-  "尼希米记",
-  "以斯帖记",
-  "约伯记",
-  "诗篇",
-  "箴言",
-  "传道书",
-  "雅歌",
-  "以赛亚书",
-  "耶利米书",
-  "耶利米哀歌",
-  "以西结书",
-  "但以理书",
-  "何西阿书",
-  "约珥书",
-  "阿摩司书",
-  "俄巴底亚书",
-  "约拿书",
-  "弥迦书",
-  "那鸿书",
-  "哈巴谷书",
-  "西番雅书",
-  "哈该书",
-  "撒迦利亚书",
-  "玛拉基书",
-  "马太福音",
-  "马可福音",
-  "路加福音",
-  "约翰福音",
-  "使徒行传",
-  "罗马书",
-  "哥林多前书",
-  "哥林多后书",
-  "加拉太书",
-  "以弗所书",
-  "腓立比书",
-  "歌罗西书",
-  "帖撒罗尼迦前书",
-  "帖撒罗尼迦后书",
-  "提摩太前书",
-  "提摩太后书",
-  "提多书",
-  "腓利门书",
-  "希伯来书",
-  "雅各书",
-  "彼得前书",
-  "彼得后书",
-  "约翰一书",
-  "约翰二书",
-  "约翰三书",
-  "犹大书",
-  "启示录",
+const bibleOptions = [
+  { id: 1, cn: "创世纪", en: "Genesis", num: 50 },
+  { id: 2, cn: "出埃及记", en: "Exodus", num: 40 },
+  { id: 3, cn: "利未记", en: "Leviticus", num: 27 },
+  { id: 4, cn: "民数记", en: "Numbers", num: 36 },
+  { id: 5, cn: "申命记", en: "Deuteronomy", num: 34 },
+  { id: 6, cn: "约书亚记", en: "Joshua", num: 24 },
+  { id: 7, cn: "士师记", en: "Judges", num: 21 },
+  { id: 8, cn: "路得记", en: "Ruth", num: 4 },
+  { id: 9, cn: "撒母耳记上", en: "1 Samuel", num: 31 },
+  { id: 10, cn: "撒母耳记下", en: "2 Samuel", num: 24 },
+  { id: 11, cn: "列王纪上", en: "1 Kings", num: 22 },
+  { id: 12, cn: "列王纪下", en: "2 Kings", num: 25 },
+  { id: 13, cn: "历代志上", en: "1 Chronicles", num: 29 },
+  { id: 14, cn: "历代志下", en: "2 Chronicles", num: 36 },
+  { id: 15, cn: "以斯拉记", en: "Ezra", num: 10 },
+  { id: 16, cn: "尼希米记", en: "Nehemiah", num: 13 },
+  { id: 17, cn: "以斯帖记", en: "Esther", num: 10 },
+  { id: 18, cn: "约伯记", en: "Job", num: 42 },
+  { id: 19, cn: "诗篇", en: "Psalms", num: 150 },
+  { id: 20, cn: "箴言", en: "Proverbs", num: 31 },
+  { id: 21, cn: "传道书", en: "Ecclesiastes", num: 12 },
+  { id: 22, cn: "雅歌", en: "Song of Songs", num: 8 },
+  { id: 23, cn: "以赛亚书", en: "Isaiah", num: 66 },
+  { id: 24, cn: "耶利米书", en: "Jeremiah", num: 52 },
+  { id: 25, cn: "耶利米哀歌", en: "Lamentations", num: 5 },
+  { id: 26, cn: "以西结书", en: "Ezekiel", num: 48 },
+  { id: 27, cn: "但以理书", en: "Daniel", num: 12 },
+  { id: 28, cn: "何西阿书", en: "Hosea", num: 14 },
+  { id: 29, cn: "约珥书", en: "Joel", num: 3 },
+  { id: 30, cn: "阿摩司书", en: "Amos", num: 9 },
+  { id: 31, cn: "俄巴底亚书", en: "Obadiah", num: 1 },
+  { id: 32, cn: "约拿书", en: "Jonah", num: 4 },
+  { id: 33, cn: "弥迦书", en: "Micah", num: 7 },
+  { id: 34, cn: "那鸿书", en: "Nahum", num: 3 },
+  { id: 35, cn: "哈巴谷书", en: "Habakkuk", num: 3 },
+  { id: 36, cn: "西番雅书", en: "Zephaniah", num: 3 },
+  { id: 37, cn: "哈该书", en: "Haggai", num: 2 },
+  { id: 38, cn: "撒迦利亚书", en: "Zechariah", num: 14 },
+  { id: 39, cn: "玛拉基书", en: "Malachi", num: 4 },
+  { id: 40, cn: "马太福音", en: "Matthew", num: 28 },
+  { id: 41, cn: "马可福音", en: "Mark", num: 16 },
+  { id: 42, cn: "路加福音", en: "Luke", num: 24 },
+  { id: 43, cn: "约翰福音", en: "John", num: 21 },
+  { id: 44, cn: "使徒行传", en: "Acts", num: 28 },
+  { id: 45, cn: "罗马书", en: "Romans", num: 16 },
+  { id: 46, cn: "哥林多前书", en: "1 Corinthians", num: 16 },
+  { id: 47, cn: "哥林多后书", en: "2 Corinthians", num: 13 },
+  { id: 48, cn: "加拉太书", en: "Galatians", num: 6 },
+  { id: 49, cn: "以弗所书", en: "Ephesians", num: 6 },
+  { id: 50, cn: "腓立比书", en: "Philippians", num: 4 },
+  { id: 51, cn: "歌罗西书", en: "Colossians", num: 4 },
+  { id: 52, cn: "帖撒罗尼迦前书", en: "1 Thessalonians", num: 5 },
+  { id: 53, cn: "帖撒罗尼迦后书", en: "2 Thessalonians", num: 3 },
+  { id: 54, cn: "提摩太前书", en: "1 Timothy", num: 6 },
+  { id: 55, cn: "提摩太后书", en: "2 Timothy", num: 4 },
+  { id: 56, cn: "提多书", en: "Titus", num: 3 },
+  { id: 57, cn: "腓利门书", en: "Philemon", num: 1 },
+  { id: 58, cn: "希伯来书", en: "Hebrews", num: 13 },
+  { id: 59, cn: "雅各书", en: "James", num: 5 },
+  { id: 60, cn: "彼得前书", en: "1 Peter", num: 5 },
+  { id: 61, cn: "彼得后书", en: "2 Peter", num: 3 },
+  { id: 62, cn: "约翰一书", en: "1 John", num: 5 },
+  { id: 63, cn: "约翰二书", en: "2 John", num: 1 },
+  { id: 64, cn: "约翰三书", en: "3 John", num: 1 },
+  { id: 65, cn: "犹大书", en: "Jude", num: 1 },
+  { id: 66, cn: "启示录", en: "Revelation", num: 22 },
 ];
 
-const chapterNumbers = [
-  50, 40, 27, 36, 34, 24, 21, 4, 31, 24, 22, 25, 29, 36, 10, 13, 10, 42, 150,
-  31, 12, 8, 66, 52, 5, 48, 12, 14, 3, 9, 1, 4, 7, 3, 3, 3, 2, 14, 4, 28, 16,
-  24, 21, 28, 16, 16, 13, 6, 6, 4, 4, 5, 3, 6, 4, 3, 1, 13, 5, 5, 3, 5, 1, 1, 1,
-  22,
-];
-
-function getNumArray(num) {
-  const result = [];
-  for (let i = 1; i <= num; i++) {
-    result.push(i);
-  }
-  return result;
+function getVersionOptions() {
+  return ["CUS", "KJV"];
 }
 
-export { getVerses, chineseLabels, chapterNumbers, getNumArray };
+function getVolumeOptions(version = "CUS") {
+  return bibleOptions.map((x) => (version === "CUS" ? x.cn : x.en));
+}
+
+function getChapterOptions(volumn = 1) {
+  const { num } = bibleOptions[volumn - 1];
+  const options = [];
+  for (let i = 1; i <= num; i++) {
+    options.push(i);
+  }
+  return options;
+}
+
+export { getVerses, getVersionOptions, getVolumeOptions, getChapterOptions };

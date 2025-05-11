@@ -1,12 +1,23 @@
-import { createSignal, onMount, createEffect, Show, For } from "solid-js";
-import { getVerses, chineseLabels, chapterNumbers, getNumArray } from "./api";
-import { Select, Button, ViewToggleButton, VisibleToggleButton } from "./ui";
+import { createSignal, createEffect, Show, For, untrack } from "solid-js";
+import {
+  getVerses,
+  getVersionOptions,
+  getVolumeOptions,
+  getChapterOptions,
+} from "./api";
+import {
+  Select,
+  PrevArrowButton,
+  NextArrowButton,
+  ViewToggleButton,
+  VisibleToggleButton,
+} from "./ui";
 import "./App.css";
 
 const Toolbar = (props) => {
-  const [versions, setVersions] = createSignal(["CUS"]);
-  const [volumes, setVolumes] = createSignal(chineseLabels);
-  const [chapters, setChapters] = createSignal(getNumArray(chapterNumbers[0]));
+  const [versions, setVersions] = createSignal(getVersionOptions());
+  const [volumes, setVolumes] = createSignal(getVolumeOptions());
+  const [chapters, setChapters] = createSignal(getChapterOptions());
   const {
     selectedVersion,
     setSelectedVersion,
@@ -20,21 +31,37 @@ const Toolbar = (props) => {
     setVisible,
   } = props;
 
-  function handleChapterChange(offset) {
-    const index = selectedChapter() + offset;
-    if (1 <= index && index <= chapters()?.length) {
-      setSelectedChapter(index);
+  function handleChapterIncrement() {
+    const index = selectedChapter();
+    if (index < chapters()?.length) {
+      setSelectedChapter(index + 1);
+    }
+  }
+
+  function handleChapterDecrement() {
+    const index = selectedChapter();
+    if (index > 1) {
+      setSelectedChapter(index - 1);
     }
   }
 
   createEffect(() => {
-    const index = chineseLabels.indexOf(selectedVolume());
-    setChapters(getNumArray(chapterNumbers[index]));
+    const options = getVolumeOptions(selectedVersion());
+    setVolumes(options);
+    setSelectedVolume(options[0]);
+  });
+
+  createEffect(() => {
+    const index =
+      getVolumeOptions(untrack(() => selectedVersion())).indexOf(
+        selectedVolume(),
+      ) + 1;
+    setChapters(getChapterOptions(index));
     setSelectedChapter(1);
   });
 
   return (
-    <div class={`toolbar${visible() ? "" : " toolbar-hidden"}`}>
+    <div class={visible() ? "toolbar" : "toolbar toolbar-hidden"}>
       <Show when={visible()}>
         <Select
           class="version-select"
@@ -43,6 +70,7 @@ const Toolbar = (props) => {
           options={versions()}
         />
         <Select
+          class="volume-select"
           value={selectedVolume()}
           onChange={setSelectedVolume}
           options={volumes()}
@@ -54,8 +82,8 @@ const Toolbar = (props) => {
           options={chapters()}
         />
       </Show>
-      <Button left onClick={() => handleChapterChange(-1)} />
-      <Button right onClick={() => handleChapterChange(1)} />
+      <PrevArrowButton onClick={handleChapterDecrement} />
+      <NextArrowButton onClick={handleChapterIncrement} />
       <Show when={visible()}>
         <ViewToggleButton pressed={view()} onChange={setView} />
       </Show>
@@ -69,8 +97,13 @@ const Chapter = (props) => {
   const { selectedVersion, selectedVolume, selectedChapter, view } = props;
 
   createEffect(async () => {
-    const volume = chineseLabels.indexOf(selectedVolume()) + 1;
-    const verses = await getVerses(undefined, volume, selectedChapter());
+    const volume =
+      getVolumeOptions(selectedVersion()).indexOf(selectedVolume()) + 1;
+    const verses = await getVerses(
+      selectedVersion(),
+      volume,
+      selectedChapter(),
+    );
     setVerses(verses);
     document.documentElement.scrollTop = 0;
   });
@@ -81,7 +114,7 @@ const Chapter = (props) => {
         {({ vn, vt }) => (
           <>
             <span class="verse-number">{vn}</span>
-            <span>{vt}</span>
+            <span class="verse-text">{vt}</span>
           </>
         )}
       </For>
@@ -112,9 +145,15 @@ const Chapter = (props) => {
 };
 
 const App = () => {
-  const [selectedVersion, setSelectedVersion] = createSignal("CUS");
-  const [selectedVolume, setSelectedVolume] = createSignal(chineseLabels[0]);
-  const [selectedChapter, setSelectedChapter] = createSignal(1);
+  const [selectedVersion, setSelectedVersion] = createSignal(
+    getVersionOptions()[0],
+  );
+  const [selectedVolume, setSelectedVolume] = createSignal(
+    getVolumeOptions()[0],
+  );
+  const [selectedChapter, setSelectedChapter] = createSignal(
+    getChapterOptions()[0],
+  );
   const [view, setView] = createSignal(true);
   const [visible, setVisible] = createSignal(true);
   const toolbarProps = {

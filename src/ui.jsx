@@ -37,11 +37,18 @@ const VisibleToggleButton = (props) => {
   );
 };
 
-const ButtonComponent = (props) => {
+const PrevArrowButton = (props) => {
   return (
     <Button class="button arrow-button" {...props}>
-      {props.left && <ArrowLeft />}
-      {props.right && <ArrowRight />}
+      <ArrowLeft />
+    </Button>
+  );
+};
+
+const NextArrowButton = (props) => {
+  return (
+    <Button class="button arrow-button" {...props}>
+      <ArrowRight />
     </Button>
   );
 };
@@ -50,6 +57,7 @@ const SelectComponent = (props) => {
   return (
     <Select
       {...props}
+      disallowEmptySelection={true}
       itemComponent={(props) => (
         <Select.Item item={props.item} class="select__item">
           <Select.ItemLabel>{props.item.rawValue}</Select.ItemLabel>
@@ -78,7 +86,8 @@ const SelectComponent = (props) => {
 
 export {
   SelectComponent as Select,
-  ButtonComponent as Button,
+  PrevArrowButton,
+  NextArrowButton,
   ViewToggleButton,
   VisibleToggleButton,
 };
