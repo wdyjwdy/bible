@@ -2,16 +2,13 @@ import {
   ArrowLeft,
   ArrowRight,
   CheckIcon,
-  ListOrdered,
-  WrapText,
-  Eye,
-  EyeOff,
   Settings,
   Undo2,
 } from "lucide-solid";
 import { Button } from "@kobalte/core/button";
 import { Select } from "@kobalte/core/select";
 import { ToggleButton } from "@kobalte/core/toggle-button";
+import { Switch } from "@kobalte/core/switch";
 import { Show } from "solid-js";
 
 function SelectObject(props) {
@@ -50,30 +47,6 @@ function SelectObject(props) {
   );
 }
 
-const ViewToggleButton = (props) => {
-  return (
-    <ToggleButton class="toogle-view toggle-button" {...props}>
-      {(state) => (
-        <Show when={state.pressed()} fallback={<WrapText />}>
-          <ListOrdered />
-        </Show>
-      )}
-    </ToggleButton>
-  );
-};
-
-const VisibleToggleButton = (props) => {
-  return (
-    <ToggleButton class="toogle-visible toggle-button" {...props}>
-      {(state) => (
-        <Show when={state.pressed()} fallback={<EyeOff />}>
-          <Eye />
-        </Show>
-      )}
-    </ToggleButton>
-  );
-};
-
 const SettingToggleButton = (props) => {
   return (
     <ToggleButton class="toogle-setting toggle-button" {...props}>
@@ -102,11 +75,21 @@ const NextArrowButton = (props) => {
   );
 };
 
+function SwitchComponent(props) {
+  return (
+    <Switch class="switch" {...props}>
+      <Switch.Input class="switch__input" />
+      <Switch.Control class="switch__control">
+        <Switch.Thumb class="switch__thumb" />
+      </Switch.Control>
+    </Switch>
+  );
+}
+
 export {
   PrevArrowButton,
   NextArrowButton,
-  ViewToggleButton,
-  VisibleToggleButton,
   SettingToggleButton,
   SelectObject,
+  SwitchComponent as Switch,
 };

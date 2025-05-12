@@ -6,17 +6,16 @@ import {
   SelectChapter,
   ButtonPrevArrow,
   ButtonNextArrow,
-  ButtonToggleView,
-  ButtonToggleVisible,
   ButtonToggleSetting,
+  SwitchVerseNumber,
+  SwitchChapterTitle,
+  SwitchChapterView,
 } from "./options";
 import { ControlContext } from "./context";
 
 function Toolbar() {
-  const { visible } = useContext(ControlContext);
-
   return (
-    <div class={visible() ? "toolbar" : "toolbar toolbar-hidden"}>
+    <div class="toolbar">
       <SelectVolume />
       <SelectChapter />
       <ButtonPrevArrow />
@@ -27,7 +26,8 @@ function Toolbar() {
 }
 
 function Content() {
-  const { version, volume, chapter, view } = useContext(ControlContext);
+  const { version, volume, chapter, view, verseNumber, chapterTitle } =
+    useContext(ControlContext);
   const [verses, setVerses] = createSignal([]);
 
   createEffect(async () => {
@@ -45,7 +45,9 @@ function Content() {
       <For each={verses()}>
         {({ vn, vt }) => (
           <>
-            <span class="verse-number">{vn}</span>
+            <Show when={verseNumber()}>
+              <span class="verse-number">{vn}</span>
+            </Show>
             <span class="verse-text">{vt}</span>
           </>
         )}
@@ -68,6 +70,9 @@ function Content() {
 
   return (
     <>
+      <Show when={chapterTitle()}>
+        <p class="chapter-title">{volume().volume}</p>
+      </Show>
       <Show when={view()} fallback={<TextView />}>
         <ListView />
       </Show>
@@ -80,16 +85,21 @@ function Setting() {
   return (
     <div class="setting">
       <div class="setting-items">
-        <span>Select Translation Version</span>
+        <span>Translation Version</span>
         <SelectVersion />
       </div>
       <div class="setting-items">
-        <span>Toggle Verses View</span>
-        <ButtonToggleView />
+        <span>List View</span>
+        <SwitchChapterView />
       </div>
       <div class="setting-items">
-        <span>Toggle Simple Mode</span>
-        <ButtonToggleVisible />
+        <span>Verse Number</span>
+        <SwitchVerseNumber />
+        <span>Only effective in Paragraph View</span>
+      </div>
+      <div class="setting-items">
+        <span>Chapter Title</span>
+        <SwitchChapterTitle />
       </div>
     </div>
   );

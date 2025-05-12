@@ -3,9 +3,8 @@ import {
   SelectObject,
   PrevArrowButton,
   NextArrowButton,
-  ViewToggleButton,
-  VisibleToggleButton,
   SettingToggleButton,
+  Switch,
 } from "./ui";
 import { ControlContext } from "./context";
 
@@ -202,22 +201,25 @@ function ButtonNextArrow() {
   return <NextArrowButton onClick={handleClick} />;
 }
 
-function ButtonToggleView() {
-  const { view, setView } = useContext(ControlContext);
-
-  return <ViewToggleButton pressed={view()} onChange={setView} />;
-}
-
-function ButtonToggleVisible() {
-  const { visible, setVisible } = useContext(ControlContext);
-
-  return <VisibleToggleButton pressed={visible()} onChange={setVisible} />;
-}
-
 function ButtonToggleSetting() {
   const { setting, setSetting } = useContext(ControlContext);
 
   return <SettingToggleButton pressed={setting()} onChange={setSetting} />;
+}
+
+function SwitchChapterView() {
+  const { view, setView } = useContext(ControlContext);
+  return <Switch checked={view()} onChange={setView} />;
+}
+
+function SwitchVerseNumber() {
+  const { verseNumber, setVerseNumber } = useContext(ControlContext);
+  return <Switch checked={verseNumber()} onChange={setVerseNumber} />;
+}
+
+function SwitchChapterTitle() {
+  const { chapterTitle, setChapterTitle } = useContext(ControlContext);
+  return <Switch checked={chapterTitle()} onChange={setChapterTitle} />;
 }
 
 export {
@@ -229,7 +231,8 @@ export {
   SelectChapter,
   ButtonPrevArrow,
   ButtonNextArrow,
-  ButtonToggleView,
-  ButtonToggleVisible,
   ButtonToggleSetting,
+  SwitchVerseNumber,
+  SwitchChapterTitle,
+  SwitchChapterView,
 };

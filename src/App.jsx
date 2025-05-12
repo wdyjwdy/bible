@@ -13,8 +13,10 @@ const App = () => {
   const [volume, setVolume] = createSignal(getOptionsVolumn()[0]);
   const [chapter, setChapter] = createSignal(getOptionsChapter()[0]);
   const [view, setView] = createSignal(true);
-  const [visible, setVisible] = createSignal(true);
   const [setting, setSetting] = createSignal(true);
+  const [verseNumber, setVerseNumber] = createSignal(true);
+  const [chapterTitle, setChapterTitle] = createSignal(false);
+
   const control = {
     version,
     setVersion,
@@ -24,10 +26,12 @@ const App = () => {
     setChapter,
     view,
     setView,
-    visible,
-    setVisible,
     setting,
     setSetting,
+    verseNumber,
+    setVerseNumber,
+    chapterTitle,
+    setChapterTitle,
   };
 
   return (
