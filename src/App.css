@@ -6,6 +6,7 @@
     --light-color-1: whitesmoke;
     --light-color-2: lightgray;
     --light-color-3: #aaaaaa;
+    --light-red: darkred;
 
     --dark-bg: #1d1d1d;
     --dark-color-0: black;
@@ -72,7 +73,7 @@ button {
 }
 
 .chapter .verse-number {
-    color: darkred;
+    color: var(--light-red);
     user-select: none;
 }
 
@@ -173,10 +174,7 @@ button {
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
-}
-
-.select__value[data-placeholder-shown] {
-    color: hsl(240 4% 46%);
+    color: light-dark(var(--dark-color-0), var(--light-color-3));
 }
 
 .select__content {
@@ -198,12 +196,14 @@ button {
     overflow-y: auto;
     max-height: 360px;
     padding: 8px;
+    scrollbar-width: none;
+    margin: 0;
 }
 
 .select__item {
     font-size: 16px;
     line-height: 1;
-    color: light-dark(var(--dark-color-0), var(--light-color-2));
+    color: light-dark(var(--dark-color-0), var(--light-color-3));
     border-radius: 4px;
     display: flex;
     align-items: center;
@@ -215,12 +215,6 @@ button {
     outline: none;
 }
 
-.select__item[data-disabled] {
-    color: hsl(240 5% 65%);
-    opacity: 0.5;
-    pointer-events: none;
-}
-
 .select__item[data-highlighted] {
     outline: none;
     background-color: light-dark(var(--light-color-3), var(--dark-color-3));
@@ -228,10 +222,10 @@ button {
 }
 
 .select__section {
-    padding: 8px 0 0 8px;
-    font-size: 14px;
-    line-height: 32px;
-    color: hsl(240 4% 46%);
+    margin: 4px 0;
+    font-size: 20px;
+    color: var(--light-red);
+    border-bottom: 1px solid;
 }
 
 .select__item-indicator {

@@ -20,6 +20,11 @@ function SelectObject(props) {
     <Select
       {...props}
       disallowEmptySelection={true}
+      sectionComponent={(props) => (
+        <Select.Section class="select__section">
+          {props.section.rawValue.label}
+        </Select.Section>
+      )}
       itemComponent={(props) => (
         <Select.Item item={props.item} class="select__item">
           <Select.ItemLabel>

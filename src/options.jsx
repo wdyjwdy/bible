@@ -121,6 +121,20 @@ function SelectVolume() {
   const { version, volume, setVolume } = useContext(ControlContext);
   const [options, setOptions] = createSignal(getOptionsVolumn());
 
+  function getOptionGroup() {
+    const { lang } = version();
+    return [
+      {
+        label: lang === "cn" ? "旧约" : "OLD",
+        options: options().slice(0, 39),
+      },
+      {
+        label: lang === "cn" ? "新约" : "NEW",
+        options: options().slice(39),
+      },
+    ];
+  }
+
   createEffect(() => {
     setOptions(getOptionsVolumn(version().lang));
   });
@@ -130,9 +144,10 @@ function SelectVolume() {
       class="select-volume"
       value={volume()}
       onChange={setVolume}
-      options={options()}
+      options={getOptionGroup()}
       optionValue="id"
       optionTextValue="volume"
+      optionGroupChildren="options"
     />
   );
 }
