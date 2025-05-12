@@ -21,7 +21,6 @@ body {
 
 .toolbar {
     display: flex;
-    flex-wrap: wrap;
     gap: 10px;
     padding: 10px;
     position: sticky;
@@ -35,10 +34,27 @@ body {
         bottom: 0px;
         position: fixed;
         width: -webkit-fill-available;
+        justify-content: space-between;
     }
+
     .bottom-placeholder {
         height: 60px;
     }
+
+    .arrow-button {
+        flex: 1;
+    }
+}
+
+.setting {
+    padding: 10px;
+}
+
+.setting .setting-items {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
 }
 
 .chapter {
@@ -78,20 +94,16 @@ body {
     flex: 1;
 }
 
-.chapter-select button {
-    width: 80px;
+.select-version button {
+    width: 70px;
 }
 
-.version-select button {
-    width: 130px;
+.select-volume button {
+    width: 120px;
 }
 
-.toogle-view {
-    margin-left: auto;
-}
-
-.toolbar-hidden .toogle-visible {
-    margin-left: auto;
+.select-chapter button {
+    width: 60px;
 }
 
 .toolbar-hidden .arrow-button {
@@ -129,12 +141,11 @@ body {
 .select__trigger {
     display: inline-flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     width: 160px;
     border-radius: 6px;
-    padding: 0 10px 0 16px;
+    padding: 0 10px;
     font-size: 16px;
-    line-height: 1;
     height: 40px;
     outline: none;
     background-color: light-dark(var(--light-color-1), var(--dark-color-1));
@@ -149,11 +160,6 @@ body {
     background-color: light-dark(var(--light-color-0), var(--dark-color-0));
 }
 
-.select__trigger[data-invalid] {
-    border-color: hsl(0 72% 51%);
-    color: hsl(0 72% 51%);
-}
-
 .select__value {
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -162,26 +168,6 @@ body {
 
 .select__value[data-placeholder-shown] {
     color: hsl(240 4% 46%);
-}
-
-.select__icon {
-    height: 20px;
-    width: 20px;
-    flex: 0 0 20px;
-}
-
-.select__description {
-    margin-top: 8px;
-    color: hsl(240 5% 26%);
-    font-size: 12px;
-    user-select: none;
-}
-
-.select__error-message {
-    margin-top: 8px;
-    color: hsl(0 72% 51%);
-    font-size: 12px;
-    user-select: none;
 }
 
 .select__content {

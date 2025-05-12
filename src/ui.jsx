@@ -1,17 +1,49 @@
 import {
   ArrowLeft,
   ArrowRight,
-  ChevronsUpDown,
   CheckIcon,
   ListOrdered,
   WrapText,
   Eye,
   EyeOff,
+  Settings,
+  Undo2,
 } from "lucide-solid";
 import { Button } from "@kobalte/core/button";
 import { Select } from "@kobalte/core/select";
 import { ToggleButton } from "@kobalte/core/toggle-button";
 import { Show } from "solid-js";
+
+function SelectObject(props) {
+  const { optionTextValue } = props;
+  return (
+    <Select
+      {...props}
+      disallowEmptySelection={true}
+      itemComponent={(props) => (
+        <Select.Item item={props.item} class="select__item">
+          <Select.ItemLabel>
+            {props.item.rawValue?.[optionTextValue]}
+          </Select.ItemLabel>
+          <Select.ItemIndicator class="select__item-indicator">
+            <CheckIcon />
+          </Select.ItemIndicator>
+        </Select.Item>
+      )}
+    >
+      <Select.Trigger class="select__trigger">
+        <Select.Value class="select__value">
+          {(state) => state.selectedOption()?.[optionTextValue]}
+        </Select.Value>
+      </Select.Trigger>
+      <Select.Portal>
+        <Select.Content class="select__content">
+          <Select.Listbox class="select__listbox" />
+        </Select.Content>
+      </Select.Portal>
+    </Select>
+  );
+}
 
 const ViewToggleButton = (props) => {
   return (
@@ -37,6 +69,18 @@ const VisibleToggleButton = (props) => {
   );
 };
 
+const SettingToggleButton = (props) => {
+  return (
+    <ToggleButton class="toogle-setting toggle-button" {...props}>
+      {(state) => (
+        <Show when={state.pressed()} fallback={<Undo2 />}>
+          <Settings />
+        </Show>
+      )}
+    </ToggleButton>
+  );
+};
+
 const PrevArrowButton = (props) => {
   return (
     <Button class="button arrow-button" {...props}>
@@ -53,41 +97,11 @@ const NextArrowButton = (props) => {
   );
 };
 
-const SelectComponent = (props) => {
-  return (
-    <Select
-      {...props}
-      disallowEmptySelection={true}
-      itemComponent={(props) => (
-        <Select.Item item={props.item} class="select__item">
-          <Select.ItemLabel>{props.item.rawValue}</Select.ItemLabel>
-          <Select.ItemIndicator class="select__item-indicator">
-            <CheckIcon />
-          </Select.ItemIndicator>
-        </Select.Item>
-      )}
-    >
-      <Select.Trigger class="select__trigger">
-        <Select.Value class="select__value">
-          {(state) => state.selectedOption()}
-        </Select.Value>
-        <Select.Icon class="select__icon">
-          <ChevronsUpDown />
-        </Select.Icon>
-      </Select.Trigger>
-      <Select.Portal>
-        <Select.Content class="select__content">
-          <Select.Listbox class="select__listbox" />
-        </Select.Content>
-      </Select.Portal>
-    </Select>
-  );
-};
-
 export {
-  SelectComponent as Select,
   PrevArrowButton,
   NextArrowButton,
   ViewToggleButton,
   VisibleToggleButton,
+  SettingToggleButton,
+  SelectObject,
 };
