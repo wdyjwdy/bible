@@ -19,6 +19,10 @@ body {
     background-color: light-dark(var(--light-bg), var(--dark-bg));
 }
 
+button {
+    touch-action: none;
+}
+
 .toolbar {
     display: flex;
     gap: 10px;
@@ -26,6 +30,7 @@ body {
     position: sticky;
     top: 0px;
     background-color: light-dark(var(--light-bg), var(--dark-bg));
+    touch-action: none;
 }
 
 @media screen and (max-width: 768px) {
@@ -130,12 +135,14 @@ body {
     transition: 250ms background-color;
 }
 
-.button:hover {
-    background-color: light-dark(var(--light-color-0), var(--dark-color-0));
-}
+@media (any-hover: hover) {
+    .button:hover {
+        background-color: light-dark(var(--light-color-0), var(--dark-color-0));
+    }
 
-.button:active {
-    color: light-dark(var(--light-color-2), var(--dark-color-2));
+    .button:active {
+        color: light-dark(var(--light-color-2), var(--dark-color-2));
+    }
 }
 
 .select__trigger {
@@ -156,8 +163,10 @@ body {
         color 250ms;
 }
 
-.select__trigger:hover {
-    background-color: light-dark(var(--light-color-0), var(--dark-color-0));
+@media (any-hover: hover) {
+    .select__trigger:hover {
+        background-color: light-dark(var(--light-color-0), var(--dark-color-0));
+    }
 }
 
 .select__value {
@@ -271,6 +280,8 @@ body {
     line-height: 0;
 }
 
-.toggle-button:hover {
-    background-color: light-dark(var(--light-color-0), var(--dark-color-0));
+@media (any-hover: hover) {
+    .toggle-button:hover {
+        background-color: light-dark(var(--light-color-0), var(--dark-color-0));
+    }
 }
