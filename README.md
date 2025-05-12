@@ -1,6 +1,6 @@
 # Bible
 
-A simple Bible web app.
+A simple Bible web app. [Visit the website](https://wdyjwdy.github.io/bible/).
 
 ## Features
 
