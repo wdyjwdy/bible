@@ -80,7 +80,9 @@ const bibleOptions = [
 function getOptionsVersion() {
   return [
     { id: 1, version: "cus", lang: "cn" },
-    { id: 2, version: "kjv", lang: "en" },
+    { id: 2, version: "cunpss", lang: "cn" },
+    { id: 3, version: "rcuvss", lang: "cn" },
+    { id: 4, version: "kjv", lang: "en" },
   ];
 }
 
