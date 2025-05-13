@@ -33,13 +33,13 @@ async function readFromCache(key) {
   });
 }
 
-async function getBibleData(version = "CUS") {
+async function getBibleData(version = "cus") {
   try {
     const cache = await readFromCache(version);
     if (cache) {
       return cache;
     }
-    const url = `https://raw.githubusercontent.com/wdyjwdy/bible/main/data/${version}Verses.json`;
+    const url = `https://raw.githubusercontent.com/wdyjwdy/bible/main/data/${version}.json`;
     const res = await fetch(url);
     const json = await res.json();
     saveToCache(version, json);
@@ -49,9 +49,9 @@ async function getBibleData(version = "CUS") {
   }
 }
 
-async function getVerses(version = "CUS", volumn = 1, chapter = 1) {
+async function getVerses(version = "cus", volumn = 1, chapter = 1) {
   const data = await getBibleData(version);
-  return data.filter((x) => x.bid === volumn && x.cn === chapter);
+  return data.filter((x) => x.b === volumn && x.c === chapter);
 }
 
 export { getVerses };

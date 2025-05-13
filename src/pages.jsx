@@ -43,12 +43,12 @@ function Content() {
   const TextView = () => (
     <div class="chapter text-view">
       <For each={verses()}>
-        {({ vn, vt }) => (
+        {({ v, t }) => (
           <>
             <Show when={verseNumber()}>
-              <span class="verse-number">{vn}</span>
+              <span class="verse-number">{v}</span>
             </Show>
-            <span class="verse-text">{vt}</span>
+            <span class="verse-text">{t}</span>
           </>
         )}
       </For>
@@ -58,10 +58,10 @@ function Content() {
   const ListView = () => (
     <div class="chapter list-view">
       <For each={verses()}>
-        {({ vn, vt }) => (
-          <p key={vn}>
-            <span class="verse-number">{vn}</span>
-            <span class="verse-text">{vt}</span>
+        {({ v, t }) => (
+          <p key={v}>
+            <span class="verse-number">{v}</span>
+            <span class="verse-text">{t}</span>
           </p>
         )}
       </For>
