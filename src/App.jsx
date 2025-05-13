@@ -1,6 +1,7 @@
-import { createSignal, Show } from "solid-js";
+import { createSignal, onMount, Show } from "solid-js";
 import { ControlContext } from "./context";
 import { Toolbar, Content, Setting } from "./pages";
+import { getOptionsConfig } from "./api";
 import {
   getOptionsVersion,
   getOptionsVolumn,
@@ -16,6 +17,17 @@ const App = () => {
   const [setting, setSetting] = createSignal(true);
   const [verseNumber, setVerseNumber] = createSignal(true);
   const [chapterTitle, setChapterTitle] = createSignal(false);
+
+  onMount(async () => {
+    const config = await getOptionsConfig();
+    setVersion(config.version);
+    setVolume(config.volume);
+    setChapter(config.chapter);
+    setView(config.view);
+    setSetting(config.setting);
+    setVerseNumber(config.verseNumber);
+    setChapterTitle(config.chapterTitle);
+  });
 
   const control = {
     version,

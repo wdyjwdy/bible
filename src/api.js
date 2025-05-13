@@ -1,3 +1,9 @@
+import {
+  getOptionsVersion,
+  getOptionsVolumn,
+  getOptionsChapter,
+} from "./options";
+
 async function openDB() {
   return new Promise((resolve, reject) => {
     const request = indexedDB.open("BibleApp");
@@ -45,7 +51,7 @@ async function getBibleData(version = "cus") {
     saveToCache(version, json);
     return json;
   } catch (error) {
-    console.error("api.js", error);
+    console.error("getBibleData", error);
   }
 }
 
@@ -54,4 +60,36 @@ async function getVerses(version = "cus", volumn = 1, chapter = 1) {
   return data.filter((x) => x.b === volumn && x.c === chapter);
 }
 
-export { getVerses };
+async function getOptionsConfig() {
+  try {
+    const cache = await readFromCache("config");
+    if (cache) {
+      return cache;
+    }
+    const defaultConfig = {
+      version: getOptionsVersion()[0],
+      volume: getOptionsVolumn()[0],
+      chapter: getOptionsChapter()[0],
+      view: true,
+      setting: true,
+      verseNumber: true,
+      chapterTitle: false,
+    };
+    saveToCache("config", defaultConfig);
+    return defaultConfig;
+  } catch (error) {
+    console.error("getOptionsConfig", error);
+  }
+}
+
+async function setOptionsConfig(key, value) {
+  try {
+    const config = await getOptionsConfig();
+    config[key] = value;
+    saveToCache("config", config);
+  } catch (error) {
+    console.error("setOptionsConfig", error);
+  }
+}
+
+export { getVerses, getOptionsConfig, setOptionsConfig };

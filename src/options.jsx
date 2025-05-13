@@ -1,4 +1,6 @@
 import { createSignal, createEffect, useContext, untrack } from "solid-js";
+import { setOptionsConfig } from "./api";
+import { ControlContext } from "./context";
 import {
   SelectObject,
   PrevArrowButton,
@@ -6,7 +8,6 @@ import {
   SettingToggleButton,
   Switch,
 } from "./ui";
-import { ControlContext } from "./context";
 
 const bibleOptions = [
   { id: 1, cn: "创世纪", en: "Genesis", num: 50 },
@@ -106,11 +107,16 @@ function SelectVersion() {
   const { version, setVersion } = useContext(ControlContext);
   const options = getOptionsVersion();
 
+  function handleChange(value) {
+    setVersion(value);
+    setOptionsConfig("version", value);
+  }
+
   return (
     <SelectObject
       class="select-version"
       value={version()}
-      onChange={setVersion}
+      onChange={handleChange}
       options={options}
       optionValue="id"
       optionTextValue="version"
@@ -121,6 +127,10 @@ function SelectVersion() {
 function SelectVolume() {
   const { version, volume, setVolume } = useContext(ControlContext);
   const [options, setOptions] = createSignal(getOptionsVolumn());
+
+  function handleChange(value) {
+    setVolume(value);
+  }
 
   function getOptionGroup() {
     const { lang } = version();
@@ -144,7 +154,7 @@ function SelectVolume() {
     <SelectObject
       class="select-volume"
       value={volume()}
-      onChange={setVolume}
+      onChange={handleChange}
       options={getOptionGroup()}
       optionValue="id"
       optionTextValue="volume"
@@ -157,6 +167,10 @@ function SelectChapter() {
   const { volume, chapter, setChapter } = useContext(ControlContext);
   const [options, setOptions] = createSignal(getOptionsChapter());
 
+  function handleChange(value) {
+    setChapter(value);
+  }
+
   createEffect(() => {
     const options = getOptionsChapter(volume().id);
     setOptions(options);
@@ -167,7 +181,7 @@ function SelectChapter() {
     <SelectObject
       class="select-chapter"
       value={chapter()}
-      onChange={setChapter}
+      onChange={handleChange}
       options={options()}
       optionValue="id"
       optionTextValue="id"
@@ -205,23 +219,40 @@ function ButtonNextArrow() {
 
 function ButtonToggleSetting() {
   const { setting, setSetting } = useContext(ControlContext);
-
   return <SettingToggleButton pressed={setting()} onChange={setSetting} />;
 }
 
 function SwitchChapterView() {
   const { view, setView } = useContext(ControlContext);
-  return <Switch checked={view()} onChange={setView} />;
+
+  function handleChange(value) {
+    setView(value);
+    setOptionsConfig("view", value);
+  }
+
+  return <Switch checked={view()} onChange={handleChange} />;
 }
 
 function SwitchVerseNumber() {
   const { verseNumber, setVerseNumber } = useContext(ControlContext);
-  return <Switch checked={verseNumber()} onChange={setVerseNumber} />;
+
+  function handleChange(value) {
+    setVerseNumber(value);
+    setOptionsConfig("verseNumber", value);
+  }
+
+  return <Switch checked={verseNumber()} onChange={handleChange} />;
 }
 
 function SwitchChapterTitle() {
   const { chapterTitle, setChapterTitle } = useContext(ControlContext);
-  return <Switch checked={chapterTitle()} onChange={setChapterTitle} />;
+
+  function handleChange(value) {
+    setChapterTitle(value);
+    setOptionsConfig("chapterTitle", value);
+  }
+
+  return <Switch checked={chapterTitle()} onChange={handleChange} />;
 }
 
 export {
