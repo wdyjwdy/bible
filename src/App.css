@@ -53,14 +53,40 @@ button {
 }
 
 .setting {
-    padding: 10px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
-.setting .setting-items {
+.setting-item {
     display: flex;
     align-items: center;
     gap: 10px;
-    margin-top: 10px;
+    margin-top: 20px;
+    width: 360px;
+    justify-content: space-between;
+}
+
+.setting-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.setting-label {
+    font-size: large;
+    color: light-dark(var(--dark-color-0), var(--light-color-2));
+}
+
+.setting-description {
+    font-size: small;
+    color: light-dark(var(--dark-color-3), var(--light-color-3));
+}
+
+@media screen and (max-width: 768px) {
+    .setting-item {
+        width: 100%;
+    }
 }
 
 .chapter {
@@ -106,7 +132,7 @@ button {
 }
 
 .select-version button {
-    width: 70px;
+    width: 80px;
 }
 
 .select-volume button {

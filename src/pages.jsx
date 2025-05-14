@@ -1,5 +1,7 @@
 import { createSignal, createEffect, Show, useContext } from "solid-js";
 import { getVerses } from "./api";
+import { SettingItem } from "./ui";
+import { ControlContext } from "./context";
 import {
   SelectVersion,
   SelectVolume,
@@ -11,7 +13,6 @@ import {
   SwitchChapterTitle,
   SwitchChapterView,
 } from "./options";
-import { ControlContext } from "./context";
 
 function Toolbar() {
   return (
@@ -84,23 +85,14 @@ function Content() {
 function Setting() {
   return (
     <div class="setting">
-      <div class="setting-items">
-        <span>Translation Version</span>
-        <SelectVersion />
-      </div>
-      <div class="setting-items">
-        <span>List View</span>
-        <SwitchChapterView />
-      </div>
-      <div class="setting-items">
-        <span>Verse Number</span>
-        <SwitchVerseNumber />
-        <span>Only effective in Paragraph View</span>
-      </div>
-      <div class="setting-items">
-        <span>Chapter Title</span>
-        <SwitchChapterTitle />
-      </div>
+      <SettingItem label="Translation Version" option={<SelectVersion />} />
+      <SettingItem label="List View" option={<SwitchChapterView />} />
+      <SettingItem
+        label="Verse Number"
+        description="Only effective in Paragraph View"
+        option={<SwitchVerseNumber />}
+      />
+      <SettingItem label="Chapter Title" option={<SwitchChapterTitle />} />
     </div>
   );
 }

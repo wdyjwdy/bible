@@ -86,10 +86,25 @@ function SwitchComponent(props) {
   );
 }
 
+function SettingItem({ label, description, option }) {
+  return (
+    <div class="setting-item">
+      <div class="setting-info">
+        <span class="setting-label">{label}</span>
+        <Show when={description}>
+          <span class="setting-description">{description}</span>
+        </Show>
+      </div>
+      {option}
+    </div>
+  );
+}
+
 export {
   PrevArrowButton,
   NextArrowButton,
   SettingToggleButton,
   SelectObject,
   SwitchComponent as Switch,
+  SettingItem,
 };
