@@ -12,6 +12,8 @@ import {
   SwitchVerseNumber,
   SwitchChapterTitle,
   SwitchChapterView,
+  ToggleGroupThemeLight,
+  ToggleGroupThemeDark,
 } from "./options";
 
 function Toolbar() {
@@ -93,6 +95,8 @@ function Setting() {
         option={<SwitchVerseNumber />}
       />
       <SettingItem label="Chapter Title" option={<SwitchChapterTitle />} />
+      <SettingItem label="Theme Light" option={<ToggleGroupThemeLight />} />
+      <SettingItem label="Theme Dark" option={<ToggleGroupThemeDark />} />
     </div>
   );
 }

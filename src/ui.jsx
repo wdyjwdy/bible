@@ -9,6 +9,7 @@ import { Button } from "@kobalte/core/button";
 import { Select } from "@kobalte/core/select";
 import { ToggleButton } from "@kobalte/core/toggle-button";
 import { Switch } from "@kobalte/core/switch";
+import { RadioGroup } from "@kobalte/core/radio-group";
 import { Show } from "solid-js";
 
 function SelectObject(props) {
@@ -100,6 +101,26 @@ function SettingItem({ label, description, option }) {
   );
 }
 
+function ToggleGroupTheme(props) {
+  return (
+    <RadioGroup class="radio-group" {...props}>
+      <For each={props.options}>
+        {(item) => (
+          <RadioGroup.Item value={item} class="radio">
+            <RadioGroup.ItemInput class="radio__input" />
+            <RadioGroup.ItemControl class="radio__control">
+              <RadioGroup.ItemIndicator class="radio__indicator" />
+            </RadioGroup.ItemControl>
+            <RadioGroup.ItemLabel class="radio__label">
+              {item}
+            </RadioGroup.ItemLabel>
+          </RadioGroup.Item>
+        )}
+      </For>
+    </RadioGroup>
+  );
+}
+
 export {
   PrevArrowButton,
   NextArrowButton,
@@ -107,4 +128,5 @@ export {
   SelectObject,
   SwitchComponent as Switch,
   SettingItem,
+  ToggleGroupTheme,
 };

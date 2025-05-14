@@ -17,9 +17,12 @@ const App = () => {
   const [setting, setSetting] = createSignal(true);
   const [verseNumber, setVerseNumber] = createSignal(true);
   const [chapterTitle, setChapterTitle] = createSignal(false);
+  const [lightTheme, setLightTheme] = createSignal("Hard");
+  const [darkTheme, setDarkTheme] = createSignal("Hard");
 
   onMount(async () => {
     const config = await getOptionsConfig();
+    console.log(config);
     setVersion(config.version);
     setVolume(config.volume);
     setChapter(config.chapter);
@@ -27,6 +30,8 @@ const App = () => {
     setSetting(config.setting);
     setVerseNumber(config.verseNumber);
     setChapterTitle(config.chapterTitle);
+    setLightTheme(config.themeLight);
+    setDarkTheme(config.themeDark);
   });
 
   const control = {
@@ -44,10 +49,22 @@ const App = () => {
     setVerseNumber,
     chapterTitle,
     setChapterTitle,
+    lightTheme,
+    setLightTheme,
+    darkTheme,
+    setDarkTheme,
   };
 
+  function getClassNames() {
+    return [
+      "app",
+      `theme-light${lightTheme()}`,
+      `theme-dark${darkTheme()}`,
+    ].join(" ");
+  }
+
   return (
-    <div class="app">
+    <div class={getClassNames()}>
       <ControlContext.Provider value={control}>
         <Toolbar />
         <Show when={setting()} fallback={<Setting />}>

@@ -7,6 +7,7 @@ import {
   NextArrowButton,
   SettingToggleButton,
   Switch,
+  ToggleGroupTheme,
 } from "./ui";
 
 const bibleOptions = [
@@ -255,6 +256,42 @@ function SwitchChapterTitle() {
   return <Switch checked={chapterTitle()} onChange={handleChange} />;
 }
 
+function ToggleGroupThemeLight() {
+  const options = ["Hard", "Soft"];
+  const { lightTheme, setLightTheme } = useContext(ControlContext);
+
+  function handleChange(value) {
+    setLightTheme(value);
+    setOptionsConfig("themeLight", value);
+  }
+
+  return (
+    <ToggleGroupTheme
+      options={options}
+      value={lightTheme()}
+      onChange={handleChange}
+    />
+  );
+}
+
+function ToggleGroupThemeDark() {
+  const options = ["Hard", "Soft"];
+  const { darkTheme, setDarkTheme } = useContext(ControlContext);
+
+  function handleChange(value) {
+    setDarkTheme(value);
+    setOptionsConfig("themeDark", value);
+  }
+
+  return (
+    <ToggleGroupTheme
+      options={options}
+      value={darkTheme()}
+      onChange={handleChange}
+    />
+  );
+}
+
 export {
   getOptionsVersion,
   getOptionsVolumn,
@@ -268,4 +305,6 @@ export {
   SwitchVerseNumber,
   SwitchChapterTitle,
   SwitchChapterView,
+  ToggleGroupThemeLight,
+  ToggleGroupThemeDark,
 };
