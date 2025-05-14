@@ -80,10 +80,10 @@ const bibleOptions = [
 
 function getOptionsVersion() {
   return [
-    { id: 1, version: "cus", lang: "cn" },
-    { id: 2, version: "cunpss", lang: "cn" },
-    { id: 3, version: "rcuvss", lang: "cn" },
-    { id: 4, version: "kjv", lang: "en" },
+    { id: 1, version: "cus", lang: "cn", description: "和合本" },
+    { id: 2, version: "cunpss", lang: "cn", description: "和合本（新标点）" },
+    { id: 3, version: "rcuvss", lang: "cn", description: "和合本（修订版）" },
+    { id: 4, version: "kjv", lang: "en", description: "King James Version" },
   ];
 }
 
@@ -119,7 +119,7 @@ function SelectVersion() {
       onChange={handleChange}
       options={options}
       optionValue="id"
-      optionTextValue="version"
+      optionTextValue="description"
     />
   );
 }

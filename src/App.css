@@ -132,7 +132,7 @@ button {
 }
 
 .select-version button {
-    width: 80px;
+    width: 180px;
 }
 
 .select-volume button {
@@ -244,6 +244,7 @@ button {
     position: relative;
     user-select: none;
     outline: none;
+    gap: 10px;
 }
 
 .select__item[data-highlighted] {
