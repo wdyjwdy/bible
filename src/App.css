@@ -37,27 +37,34 @@ button {
     display: flex;
     gap: 10px;
     padding: 10px;
-    position: sticky;
-    top: 0px;
+    bottom: 0px;
+    position: fixed;
     background-color: light-dark(var(--light-bg), var(--dark-bg));
     touch-action: none;
+    justify-content: space-between;
+    width: -webkit-fill-available;
 }
 
-@media screen and (max-width: 768px) {
+.bottom-placeholder {
+    height: 60px;
+}
+
+.arrow-button {
+    flex: 1;
+}
+
+@media screen and (min-width: 768px) {
     .toolbar {
-        top: unset;
-        bottom: 0px;
-        position: fixed;
-        width: -webkit-fill-available;
-        justify-content: space-between;
+        bottom: 20px;
+        left: 50%;
+        border-radius: 10px;
+        transform: translateX(-50%);
+        width: 420px;
+        box-shadow: 0 0 10px 1px #00000021;
     }
 
     .bottom-placeholder {
-        height: 60px;
-    }
-
-    .arrow-button {
-        flex: 1;
+        height: 80px;
     }
 }
 
