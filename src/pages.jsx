@@ -118,6 +118,10 @@ function Setting() {
         description="Follow system theme by default"
         option={<ToggleGroupThemeDark />}
       />
+      <SettingItem
+        label="Font Size"
+        description="Press Cmd/Ctrl +/- to adjust font size"
+      />
     </div>
   );
 }
