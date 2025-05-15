@@ -1,4 +1,10 @@
-import { createSignal, createEffect, useContext, untrack } from "solid-js";
+import {
+  createSignal,
+  createEffect,
+  useContext,
+  onCleanup,
+  onMount,
+} from "solid-js";
 import { setOptionsConfig } from "./api";
 import { ControlContext } from "./context";
 import {
@@ -201,6 +207,18 @@ function ButtonPrevArrow() {
     }
   }
 
+  onMount(() => {
+    const handler = ({ code }) => {
+      if (code === "ArrowLeft") {
+        handleClick();
+      }
+    };
+    document.addEventListener("keydown", handler);
+    onCleanup(() => {
+      document.removeEventListener("keydown", handler);
+    });
+  });
+
   return <PrevArrowButton onClick={handleClick} />;
 }
 
@@ -214,6 +232,18 @@ function ButtonNextArrow() {
       setChapter(options[id]);
     }
   }
+
+  onMount(() => {
+    const handler = ({ code }) => {
+      if (code === "ArrowRight") {
+        handleClick();
+      }
+    };
+    document.addEventListener("keydown", handler);
+    onCleanup(() => {
+      document.removeEventListener("keydown", handler);
+    });
+  });
 
   return <NextArrowButton onClick={handleClick} />;
 }
