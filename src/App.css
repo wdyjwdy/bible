@@ -74,7 +74,6 @@ button {
     align-items: center;
     gap: 10px;
     margin-top: 20px;
-    width: 360px;
     justify-content: space-between;
 }
 
@@ -93,10 +92,10 @@ button {
     color: light-dark(var(--dark-color-3), var(--light-color-3));
 }
 
-@media screen and (max-width: 768px) {
-    .setting-item {
-        width: 100%;
-    }
+.setting h2 {
+    padding-bottom: 4px;
+    border-bottom: 1px solid
+        light-dark(var(--light-color-2), var(--dark-color-2));
 }
 
 .chapter {

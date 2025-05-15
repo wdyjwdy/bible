@@ -87,16 +87,37 @@ function Content() {
 function Setting() {
   return (
     <div class="setting">
-      <SettingItem label="Translation Version" option={<SelectVersion />} />
-      <SettingItem label="List View" option={<SwitchChapterView />} />
+      <h2>Setting</h2>
+      <SettingItem
+        label="Version"
+        description="Select Bible translation"
+        option={<SelectVersion />}
+      />
+      <SettingItem
+        label="List View"
+        description="Show each verse in a separate paragraph"
+        option={<SwitchChapterView />}
+      />
       <SettingItem
         label="Verse Number"
         description="Only effective in Paragraph View"
         option={<SwitchVerseNumber />}
       />
-      <SettingItem label="Chapter Title" option={<SwitchChapterTitle />} />
-      <SettingItem label="Theme Light" option={<ToggleGroupThemeLight />} />
-      <SettingItem label="Theme Dark" option={<ToggleGroupThemeDark />} />
+      <SettingItem
+        label="Chapter Title"
+        description="Show chapter name above the verses"
+        option={<SwitchChapterTitle />}
+      />
+      <SettingItem
+        label="Theme Light"
+        description="Follow system theme by default"
+        option={<ToggleGroupThemeLight />}
+      />
+      <SettingItem
+        label="Theme Dark"
+        description="Follow system theme by default"
+        option={<ToggleGroupThemeDark />}
+      />
     </div>
   );
 }
