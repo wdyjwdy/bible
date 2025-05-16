@@ -74,7 +74,7 @@ function Content() {
   return (
     <>
       <Show when={chapterTitle()}>
-        <p class="chapter-title">{volume().volume}</p>
+        <p class="chapter-title">{`${volume().volume} ${chapter().id}`}</p>
       </Show>
       <Show when={view()} fallback={<TextView />}>
         <ListView />
@@ -87,7 +87,6 @@ function Content() {
 function Setting() {
   return (
     <div class="setting">
-      <h2>Setting</h2>
       <SettingItem
         label="Version"
         description="Select Bible translation"
