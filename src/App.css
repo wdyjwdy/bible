@@ -15,18 +15,13 @@
     --dark-color-3: #595959;
 }
 
-.theme-lightSoft {
-    --light-bg: rgb(248, 241, 227);
-    --light-color-0: rgb(79, 50, 28);
-}
-
 body {
     margin: 0;
     background-color: light-dark(var(--light-bg), var(--dark-bg));
-}
 
-body:has(.theme-lightSoft) {
-    --light-bg: rgb(248, 241, 227);
+    &:has(.theme-lightSoft) {
+        --light-bg: rgb(248, 241, 227);
+    }
 }
 
 button {
@@ -43,18 +38,8 @@ button {
     touch-action: none;
     justify-content: space-between;
     width: -webkit-fill-available;
-}
 
-.bottom-placeholder {
-    height: 60px;
-}
-
-.arrow-button {
-    flex: 1;
-}
-
-@media screen and (min-width: 768px) {
-    .toolbar {
+    @media screen and (min-width: 768px) {
         bottom: 20px;
         left: 50%;
         border-radius: 10px;
@@ -63,7 +48,27 @@ button {
         box-shadow: 0 0 10px 1px #00000021;
     }
 
-    .bottom-placeholder {
+    .arrow-button {
+        flex: 1;
+    }
+
+    .select-version button {
+        width: 180px;
+    }
+
+    .select-volume button {
+        width: 120px;
+    }
+
+    .select-chapter button {
+        width: 60px;
+    }
+}
+
+.bottom-placeholder {
+    height: 60px;
+
+    @media screen and (min-width: 768px) {
         height: 80px;
     }
 }
@@ -74,97 +79,75 @@ button {
     flex-direction: column;
     justify-content: center;
     background-color: light-dark(var(--light-bg), var(--dark-bg));
-}
 
-.setting-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-top: 20px;
-    justify-content: space-between;
-}
+    .setting-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 20px;
+        justify-content: space-between;
 
-.setting-info {
-    display: flex;
-    flex-direction: column;
-}
+        .setting-info {
+            display: flex;
+            flex-direction: column;
 
-.setting-label {
-    font-size: large;
-    color: light-dark(var(--dark-color-0), var(--light-color-2));
-}
+            .setting-label {
+                font-size: large;
+                color: light-dark(var(--dark-color-0), var(--light-color-2));
+            }
 
-.setting-description {
-    font-size: small;
-    color: light-dark(var(--dark-color-3), var(--light-color-3));
-}
-
-.setting h2 {
-    padding-bottom: 4px;
-    border-bottom: 1px solid
-        light-dark(var(--light-color-2), var(--dark-color-2));
+            .setting-description {
+                font-size: small;
+                color: light-dark(var(--dark-color-3), var(--light-color-3));
+            }
+        }
+    }
 }
 
 .chapter {
     color: light-dark(var(--dark-color-1), var(--light-color-3));
     background-color: light-dark(var(--light-bg), var(--dark-bg));
-}
 
-.chapter span {
-    font-size: x-large;
-}
+    span {
+        font-size: x-large;
+    }
 
-.chapter .verse-number {
-    color: var(--light-red);
-    user-select: none;
+    .verse-number {
+        color: var(--light-red);
+        user-select: none;
+    }
+
+    &.text-view {
+        padding: 0px 20px;
+        line-height: 3em;
+
+        .verse-number {
+            margin: 0px 4px;
+        }
+    }
+
+    &.list-view {
+        padding-right: 20px;
+
+        p {
+            display: flex;
+            align-items: baseline;
+        }
+
+        .verse-number {
+            flex-basis: 2em;
+            text-align: center;
+        }
+
+        .verse-text {
+            flex: 1;
+        }
+    }
 }
 
 .chapter-title {
     text-align: center;
     font-size: xx-large;
-}
-
-.text-view {
-    padding: 0px 20px;
-    line-height: 3em;
-}
-
-.text-view .verse-number {
-    margin: 0px 4px;
-}
-
-.list-view {
-    padding-right: 20px;
-}
-
-.list-view p {
-    display: flex;
-    align-items: baseline;
-}
-
-.list-view .verse-number {
-    flex-basis: 2em;
-    text-align: center;
-}
-
-.list-view .verse-text {
-    flex: 1;
-}
-
-.select-version button {
-    width: 180px;
-}
-
-.select-volume button {
-    width: 120px;
-}
-
-.select-chapter button {
-    width: 60px;
-}
-
-.toolbar-hidden .arrow-button {
-    flex: 1;
 }
 
 /* ui library styles */
