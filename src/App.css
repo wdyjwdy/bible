@@ -140,6 +140,11 @@ button {
     color: var(--body-text);
     background-color: var(--body-bg);
 
+    .chapter-title {
+        justify-content: center;
+        font-size: xx-large;
+    }
+
     span {
         font-size: x-large;
     }
@@ -176,13 +181,6 @@ button {
         }
     }
 }
-
-.chapter-title {
-    text-align: center;
-    font-size: xx-large;
-}
-
-/* ui library styles */
 
 .button {
     appearance: none;

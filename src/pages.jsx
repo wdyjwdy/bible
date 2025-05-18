@@ -43,8 +43,15 @@ function Content() {
     document.documentElement.scrollTop = 0;
   });
 
+  const ChapterTitle = () => (
+    <Show when={chapterTitle()}>
+      <p class="chapter-title">{`${volume().volume} ${chapter().id}`}</p>
+    </Show>
+  );
+
   const TextView = () => (
     <div class="chapter text-view">
+      <ChapterTitle />
       <For each={verses()}>
         {({ v, t }) => (
           <>
@@ -60,6 +67,7 @@ function Content() {
 
   const ListView = () => (
     <div class="chapter list-view">
+      <ChapterTitle />
       <For each={verses()}>
         {({ v, t }) => (
           <p key={v}>
@@ -73,9 +81,6 @@ function Content() {
 
   return (
     <>
-      <Show when={chapterTitle()}>
-        <p class="chapter-title">{`${volume().volume} ${chapter().id}`}</p>
-      </Show>
       <Show when={view()} fallback={<TextView />}>
         <ListView />
       </Show>
