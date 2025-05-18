@@ -205,7 +205,7 @@ button {
         }
 
         &:active {
-            color: #0005;
+            color: #b0b0b0;
         }
     }
 }
