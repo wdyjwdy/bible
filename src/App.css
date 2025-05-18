@@ -9,6 +9,7 @@
         --button-hover: white;
         --button-text: black;
         --button-selected: lightgray;
+        --button-checked: seagreen;
         --verse-number-text: darkred;
 
         &[data-theme-light="soft"] {
@@ -21,6 +22,7 @@
             --button-hover: #eadec0;
             --button-text: #34281b;
             --button-selected: #c1b391;
+            --button-checked: seagreen;
             --verse-number-text: darkred;
         }
     }
@@ -32,9 +34,10 @@
         --toolbar-bg: #1d1d1d;
         --button-bg: #242424;
         --button-border: #3c3c3c;
-        --button-hover: black;
+        --button-hover: #1c1c1c;
         --button-text: #aaa;
-        --button-selected: gray;
+        --button-selected: #343434;
+        --button-checked: seagreen;
         --verse-number-text: darkred;
 
         &[data-theme-dark="night"] {
@@ -47,6 +50,7 @@
             --button-hover: #161616;
             --button-text: #8c8c93;
             --button-selected: #222222;
+            --button-checked: seagreen;
             --verse-number-text: darkred;
         }
     }
@@ -371,7 +375,7 @@ button {
 }
 
 .switch__thumb[data-checked] {
-    background-color: seagreen;
+    background-color: var(--button-checked);
     transform: translateX(100%);
 }
 
@@ -401,7 +405,7 @@ button {
     height: 20px;
     width: 20px;
     border-radius: 50%;
-    background-color: seagreen;
+    background-color: var(--button-checked);
 }
 
 .radio__label {
