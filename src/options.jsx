@@ -5,7 +5,7 @@ import {
   onCleanup,
   onMount,
 } from "solid-js";
-import { setOptionsConfig } from "./api";
+import { setOptionsConfig, getOptionsConfig } from "./api";
 import { ControlContext } from "./context";
 import {
   SelectObject,
@@ -287,36 +287,48 @@ function SwitchChapterTitle() {
 }
 
 function ToggleGroupThemeLight() {
-  const options = ["Hard", "Soft"];
-  const { lightTheme, setLightTheme } = useContext(ControlContext);
+  const [theme, setTheme] = createSignal("light");
+  const options = ["light", "soft"];
 
   function handleChange(value) {
-    setLightTheme(value);
+    setTheme(value);
+    document.documentElement.dataset.themeLight = value;
     setOptionsConfig("themeLight", value);
   }
+
+  onMount(async () => {
+    const config = await getOptionsConfig();
+    setTheme(config.themeLight);
+  });
 
   return (
     <ToggleGroupTheme
       options={options}
-      value={lightTheme()}
+      value={theme()}
       onChange={handleChange}
     />
   );
 }
 
 function ToggleGroupThemeDark() {
-  const options = ["Hard", "Soft"];
-  const { darkTheme, setDarkTheme } = useContext(ControlContext);
+  const [theme, setTheme] = createSignal("dark");
+  const options = ["dark", "night"];
 
   function handleChange(value) {
-    setDarkTheme(value);
+    setTheme(value);
+    document.documentElement.dataset.themeDark = value;
     setOptionsConfig("themeDark", value);
   }
+
+  onMount(async () => {
+    const config = await getOptionsConfig();
+    setTheme(config.themeDark);
+  });
 
   return (
     <ToggleGroupTheme
       options={options}
-      value={darkTheme()}
+      value={theme()}
       onChange={handleChange}
     />
   );

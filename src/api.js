@@ -74,8 +74,8 @@ async function getOptionsConfig() {
       setting: true,
       verseNumber: true,
       chapterTitle: false,
-      themeLight: "Hard",
-      themeDark: "Hard",
+      themeLight: "light",
+      themeDark: "dark",
     };
     saveToCache("config", defaultConfig);
     return defaultConfig;

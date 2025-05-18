@@ -1,27 +1,44 @@
 :root {
-    color-scheme: light dark;
+    @media (prefers-color-scheme: light) {
+        --body-bg: #fafafa;
+        --body-text: black;
+        --body-text-desp: gray;
+        --toolbar-bg: #fafafa;
+        --button-bg: whitesmoke;
+        --button-border: lightgray;
+        --button-hover: white;
+        --button-text: black;
+        --button-selected: lightgray;
+        --verse-number-text: darkred;
 
-    --light-bg: #fafafa;
-    --light-color-0: white;
-    --light-color-1: whitesmoke;
-    --light-color-2: lightgray;
-    --light-color-3: #aaaaaa;
-    --light-red: darkred;
+        &[data-theme-light="soft"] {
+            --body-bg: gray;
+            --toolbar-bg: gray;
+        }
+    }
 
-    --dark-bg: #1d1d1d;
-    --dark-color-0: black;
-    --dark-color-1: #242424;
-    --dark-color-2: #3c3c3c;
-    --dark-color-3: #595959;
+    @media (prefers-color-scheme: dark) {
+        --body-bg: #1d1d1d;
+        --body-text: #aaa;
+        --body-text-desp: gray;
+        --toolbar-bg: #1d1d1d;
+        --button-bg: #242424;
+        --button-border: #3c3c3c;
+        --button-hover: black;
+        --button-text: #aaa;
+        --button-selected: gray;
+        --verse-number-text: darkred;
+
+        &[data-theme-dark="night"] {
+            --body-bg: black;
+            --toolbar-bg: black;
+        }
+    }
 }
 
 body {
     margin: 0;
-    background-color: light-dark(var(--light-bg), var(--dark-bg));
-
-    &:has(.theme-lightSoft) {
-        --light-bg: rgb(248, 241, 227);
-    }
+    background-color: var(--body-bg);
 }
 
 button {
@@ -34,10 +51,9 @@ button {
     padding: 10px;
     bottom: 0px;
     position: fixed;
-    background-color: light-dark(var(--light-bg), var(--dark-bg));
-    touch-action: none;
+    background-color: var(--toolbar-bg);
     justify-content: space-between;
-    width: -webkit-fill-available;
+    width: stretch;
 
     @media screen and (min-width: 768px) {
         bottom: 20px;
@@ -78,7 +94,7 @@ button {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    background-color: light-dark(var(--light-bg), var(--dark-bg));
+    background-color: var(--body-bg);
 
     .setting-item {
         display: flex;
@@ -93,27 +109,27 @@ button {
 
             .setting-label {
                 font-size: large;
-                color: light-dark(var(--dark-color-0), var(--light-color-2));
+                color: var(--body-text);
             }
 
             .setting-description {
                 font-size: small;
-                color: light-dark(var(--dark-color-3), var(--light-color-3));
+                color: var(--body-text-desp);
             }
         }
     }
 }
 
 .chapter {
-    color: light-dark(var(--dark-color-1), var(--light-color-3));
-    background-color: light-dark(var(--light-bg), var(--dark-bg));
+    color: var(--body-text);
+    background-color: var(--body-bg);
 
     span {
         font-size: x-large;
     }
 
     .verse-number {
-        color: var(--light-red);
+        color: var(--verse-number-text);
         user-select: none;
     }
 
@@ -160,23 +176,23 @@ button {
     height: 40px;
     width: auto;
     outline: none;
-    border: 1px solid light-dark(var(--light-color-2), var(--dark-color-2));
+    border: 1px solid var(--button-border);
     border-radius: 6px;
     padding: 0 16px;
-    background-color: light-dark(var(--light-color-1), var(--dark-color-1));
-    color: light-dark(var(--dark-color-0), var(--light-color-3));
+    background-color: var(--button-bg);
+    color: var(--button-text);
     font-size: 16px;
     line-height: 0;
     transition: 250ms background-color;
-}
 
-@media (any-hover: hover) {
-    .button:hover {
-        background-color: light-dark(var(--light-color-0), var(--dark-color-0));
-    }
+    @media (any-hover: hover) {
+        &:hover {
+            background-color: var(--button-hover);
+        }
 
-    .button:active {
-        color: light-dark(var(--light-color-2), var(--dark-color-2));
+        &:active {
+            color: #0005;
+        }
     }
 }
 
@@ -190,17 +206,17 @@ button {
     font-size: 16px;
     height: 40px;
     outline: none;
-    background-color: light-dark(var(--light-color-1), var(--dark-color-1));
-    border: 1px solid light-dark(var(--light-color-2), var(--dark-color-2));
-    color: light-dark(var(--dark-color-0), var(--light-color-2));
+    background-color: var(--button-bg);
+    border: 1px solid var(--button-border);
+    color: var(--button-text);
     transition:
         border-color 250ms,
         color 250ms;
-}
 
-@media (any-hover: hover) {
-    .select__trigger:hover {
-        background-color: light-dark(var(--light-color-0), var(--dark-color-0));
+    @media (any-hover: hover) {
+        &:hover {
+            background-color: var(--button-hover);
+        }
     }
 }
 
@@ -208,13 +224,13 @@ button {
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
-    color: light-dark(var(--dark-color-0), var(--light-color-3));
+    color: var(--button-text);
 }
 
 .select__content {
-    background-color: light-dark(var(--light-color-1), var(--dark-color-1));
+    background-color: var(--button-bg);
     border-radius: 6px;
-    border: 1px solid light-dark(var(--light-color-2), var(--dark-color-2));
+    border: 1px solid var(--button-border);
     box-shadow:
         0 4px 6px -1px rgb(0 0 0 / 0.1),
         0 2px 4px -2px rgb(0 0 0 / 0.1);
@@ -237,7 +253,7 @@ button {
 .select__item {
     font-size: 16px;
     line-height: 1;
-    color: light-dark(var(--dark-color-0), var(--light-color-3));
+    color: var(--button-text);
     border-radius: 4px;
     display: flex;
     align-items: center;
@@ -252,14 +268,14 @@ button {
 
 .select__item[data-highlighted] {
     outline: none;
-    background-color: light-dark(var(--light-color-3), var(--dark-color-3));
-    color: light-dark(var(--dark-color-1), var(--light-color-1));
+    background-color: var(--button-selected);
+    color: var(--button-text);
 }
 
 .select__section {
     margin: 4px 0;
     font-size: 20px;
-    color: var(--light-red);
+    color: var(--verse-number-text);
     border-bottom: 1px solid;
 }
 
@@ -301,17 +317,17 @@ button {
     height: 40px;
     width: 40px;
     outline: none;
-    border: 1px solid light-dark(var(--light-color-2), var(--dark-color-2));
+    border: 1px solid var(--button-border);
     border-radius: 6px;
-    background-color: light-dark(var(--light-color-1), var(--dark-color-1));
-    color: light-dark(var(--dark-color-0), var(--light-color-3));
+    background-color: var(--button-bg);
+    color: var(--button-text);
     font-size: 16px;
     line-height: 0;
-}
 
-@media (any-hover: hover) {
-    .toggle-button:hover {
-        background-color: light-dark(var(--light-color-0), var(--dark-color-0));
+    @media (any-hover: hover) {
+        &:hover {
+            background-color: var(--button-hover);
+        }
     }
 }
 
@@ -325,10 +341,10 @@ button {
     align-items: center;
     height: 24px;
     width: 40px;
-    border: 1px solid light-dark(var(--light-color-2), var(--dark-color-2));
+    border: 1px solid var(--button-border);
     border-radius: 12px;
     padding: 0 2px;
-    background-color: light-dark(var(--light-color-1), var(--dark-color-1));
+    background-color: var(--button-bg);
     transition: 250ms background-color;
 }
 
@@ -336,13 +352,13 @@ button {
     height: 20px;
     width: 20px;
     border-radius: 50%;
-    background-color: light-dark(var(--light-color-2), var(--dark-color-3));
+    background-color: var(--button-selected);
     transition: 250ms transform;
 }
 
 .switch__thumb[data-checked] {
     background-color: seagreen;
-    transform: translateX(calc(100% - 1px));
+    transform: translateX(100%);
 }
 
 .radio-group {
@@ -363,8 +379,8 @@ button {
     height: 24px;
     width: 24px;
     border-radius: 50%;
-    border: 1px solid light-dark(var(--light-color-2), var(--dark-color-2));
-    background-color: light-dark(var(--light-color-1), var(--dark-color-1));
+    border: 1px solid var(--button-border);
+    background-color: var(--button-bg);
 }
 
 .radio__indicator {
@@ -375,7 +391,7 @@ button {
 }
 
 .radio__label {
-    color: light-dark(var(--dark-color-3), var(--light-color-3));
+    color: var(--button-text);
     font-size: 14px;
     user-select: none;
 }
