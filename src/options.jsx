@@ -349,6 +349,7 @@ function SearchBox() {
     <SearchComponent
       debounceOptionsMillisecond={1000}
       triggerMode="focus"
+      modal={true}
       options={options()}
       onInputChange={handleChange}
       onChange={(result) => setVerse(result)}

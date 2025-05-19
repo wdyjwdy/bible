@@ -478,7 +478,7 @@ button {
     transform-origin: var(--kb-search-content-transform-origin);
     animation: contentHide 250ms ease-in forwards;
     width: var(--kb-popper-anchor-width);
-    max-height: 88vh;
+    max-height: 50vh;
     overflow-y: scroll;
 }
 

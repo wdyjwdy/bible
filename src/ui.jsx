@@ -5,7 +5,7 @@ import {
   Settings,
   Undo2,
   Search as SearchIcon,
-  Loader,
+  LoaderCircle,
 } from "lucide-solid";
 import { Show } from "solid-js";
 import { Button } from "@kobalte/core/button";
@@ -144,7 +144,7 @@ function SearchComponent(props) {
             class="search__indicator"
             loadingComponent={
               <Search.Icon class="load__icon">
-                <Loader class="spin__icon" />
+                <LoaderCircle class="spin__icon" />
               </Search.Icon>
             }
           >
