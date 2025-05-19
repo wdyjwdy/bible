@@ -130,7 +130,6 @@ function SearchComponent(props) {
       <Search
         {...props}
         triggerMode="focus"
-        virtualized={true}
         itemComponent={(props) => (
           <Search.Item item={props.item} class="search__item">
             <Search.ItemLabel>

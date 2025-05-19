@@ -342,9 +342,9 @@ function SearchBox() {
 
   async function handleChange(query) {
     const result = await searchVerses(version().version, query);
-    console.log(result);
     setOptions(result);
   }
+
   return (
     <SearchComponent
       debounceOptionsMillisecond={1000}
@@ -354,7 +354,7 @@ function SearchBox() {
       onChange={(result) => setVerse(result)}
       optionValue="t"
       optionLabel="t"
-      placeholder="Search an emoji…"
+      placeholder="Search"
     />
   );
 }

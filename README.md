@@ -8,7 +8,7 @@ A simple Bible web app. [Visit the website](https://wdyjwdy.github.io/bible/).
 - [x] Paragraph or list layout
 - [x] Dark mode
 - [ ] Add to favorites
-- [ ] Search function
+- [x] Search function
 - [ ] Highlight names of people and places
 - [ ] Compare translations layout
 - [ ] Adjustable font size
