@@ -5,7 +5,7 @@ import {
   onCleanup,
   onMount,
 } from "solid-js";
-import { setOptionsConfig, getOptionsConfig } from "./api";
+import { setOptionsConfig, getOptionsConfig, searchVerses } from "./api";
 import { ControlContext } from "./context";
 import {
   SelectObject,
@@ -14,6 +14,7 @@ import {
   SettingToggleButton,
   Switch,
   ToggleGroupTheme,
+  SearchComponent,
 } from "./ui";
 
 const bibleOptions = [
@@ -334,6 +335,30 @@ function ToggleGroupThemeDark() {
   );
 }
 
+function SearchBox() {
+  const { version } = useContext(ControlContext);
+  const [options, setOptions] = createSignal([]);
+  const [verse, setVerse] = createSignal();
+
+  async function handleChange(query) {
+    const result = await searchVerses(version().version, query);
+    console.log(result);
+    setOptions(result);
+  }
+  return (
+    <SearchComponent
+      debounceOptionsMillisecond={1000}
+      triggerMode="focus"
+      options={options()}
+      onInputChange={handleChange}
+      onChange={(result) => setVerse(result)}
+      optionValue="t"
+      optionLabel="t"
+      placeholder="Search an emoji…"
+    />
+  );
+}
+
 export {
   getOptionsVersion,
   getOptionsVolumn,
@@ -349,4 +374,5 @@ export {
   SwitchChapterView,
   ToggleGroupThemeLight,
   ToggleGroupThemeDark,
+  SearchBox,
 };

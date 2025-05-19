@@ -14,6 +14,7 @@ import {
   SwitchChapterView,
   ToggleGroupThemeLight,
   ToggleGroupThemeDark,
+  SearchBox,
 } from "./options";
 
 function Toolbar() {
@@ -92,6 +93,7 @@ function Content() {
 function Setting() {
   return (
     <div class="setting">
+      <SearchBox />
       <SettingItem
         label="Version"
         description="Select Bible translation"

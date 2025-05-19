@@ -60,6 +60,12 @@ async function getVerses(version = "cus", volumn = 1, chapter = 1) {
   return data.filter((x) => x.b === volumn && x.c === chapter);
 }
 
+async function searchVerses(version, query) {
+  console.log(version, query);
+  const data = await getBibleData(version);
+  return data.filter((q) => q.t.includes(query));
+}
+
 async function getOptionsConfig() {
   try {
     const cache = await readFromCache("config");
@@ -94,4 +100,4 @@ async function setOptionsConfig(key, value) {
   }
 }
 
-export { getVerses, getOptionsConfig, setOptionsConfig };
+export { getVerses, getOptionsConfig, setOptionsConfig, searchVerses };

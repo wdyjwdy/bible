@@ -4,13 +4,16 @@ import {
   CheckIcon,
   Settings,
   Undo2,
+  Search as SearchIcon,
+  Loader,
 } from "lucide-solid";
+import { Show } from "solid-js";
 import { Button } from "@kobalte/core/button";
 import { Select } from "@kobalte/core/select";
 import { ToggleButton } from "@kobalte/core/toggle-button";
 import { Switch } from "@kobalte/core/switch";
 import { RadioGroup } from "@kobalte/core/radio-group";
-import { Show } from "solid-js";
+import { Search } from "@kobalte/core/search";
 
 function SelectObject(props) {
   const { optionTextValue } = props;
@@ -121,6 +124,53 @@ function ToggleGroupTheme(props) {
   );
 }
 
+function SearchComponent(props) {
+  return (
+    <>
+      <Search
+        {...props}
+        triggerMode="focus"
+        virtualized={true}
+        itemComponent={(props) => (
+          <Search.Item item={props.item} class="search__item">
+            <Search.ItemLabel>
+              {props.item.rawValue.b}-{props.item.rawValue.c}-
+              {props.item.rawValue.v} {props.item.rawValue.t}
+            </Search.ItemLabel>
+          </Search.Item>
+        )}
+      >
+        <Search.Control class="search__control">
+          <Search.Indicator
+            class="search__indicator"
+            loadingComponent={
+              <Search.Icon class="load__icon">
+                <Loader class="spin__icon" />
+              </Search.Icon>
+            }
+          >
+            <Search.Icon class="search__icon">
+              <SearchIcon class="center__icon" />
+            </Search.Icon>
+          </Search.Indicator>
+          <Search.Input class="search__input" />
+        </Search.Control>
+        <Search.Portal>
+          <Search.Content
+            class="search__content"
+            onCloseAutoFocus={(e) => e.preventDefault()}
+          >
+            <Search.Listbox class="search__listbox" />
+            <Search.NoResult class="search__no_result">
+              🛀 No verses found
+            </Search.NoResult>
+          </Search.Content>
+        </Search.Portal>
+      </Search>
+    </>
+  );
+}
+
 export {
   PrevArrowButton,
   NextArrowButton,
@@ -129,4 +179,5 @@ export {
   SwitchComponent as Switch,
   SettingItem,
   ToggleGroupTheme,
+  SearchComponent,
 };
