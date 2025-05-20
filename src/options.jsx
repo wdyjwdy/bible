@@ -348,7 +348,7 @@ function SearchBox() {
     setOptions(result);
   }
 
-  function handleChange({ b, c }) {
+  function handleChange({ b, c, v }) {
     setSetting(true);
     setVolume(getOptionsVolumn(version().lang)[b - 1]);
     setChapter(getOptionsChapter(b)[c - 1]);
