@@ -126,40 +126,29 @@ function ToggleGroupTheme(props) {
 }
 
 function SearchComponent(props) {
-  function Mark({ text }) {
-    const { query } = props;
-    console.log(query());
-    if (!query()) return text;
-    const parts = text.split(new RegExp(`(${query()})`, "gi"));
+  const { query, lang } = props;
+
+  function ItemComponent({ item }) {
+    const { b, c, v, t } = item.rawValue;
+    const parts = t.split(new RegExp(`(${query()})`, "gi"));
+    const bookName = getOptionsVolumn(lang)[b - 1].volume;
     return (
-      <span>
-        <For each={parts}>{(p) => (p === query() ? <mark>{p}</mark> : p)}</For>
-      </span>
+      <Search.Item item={item} class="search__item">
+        <span class="number">
+          {bookName}-{c}-{v}
+        </span>
+        <span>
+          <For each={parts}>
+            {(p) => (p === query() ? <mark>{p}</mark> : p)}
+          </For>
+        </span>
+      </Search.Item>
     );
   }
 
   return (
     <>
-      <Search
-        {...props}
-        triggerMode="focus"
-        itemComponent={(props) => (
-          <Search.Item item={props.item} class="search__item">
-            <Search.ItemLabel>
-              <p class="verse">
-                <span class="number">
-                  {
-                    getOptionsVolumn(props.lang)[props.item.rawValue.b - 1]
-                      .volume
-                  }
-                  -{props.item.rawValue.c}-{props.item.rawValue.v}
-                </span>
-                <Mark text={props.item.rawValue.t} />
-              </p>
-            </Search.ItemLabel>
-          </Search.Item>
-        )}
-      >
+      <Search {...props} triggerMode="focus" itemComponent={ItemComponent}>
         <Search.Control class="search__control">
           <Search.Indicator
             class="search__indicator"

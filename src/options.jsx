@@ -342,17 +342,18 @@ function SearchBox() {
   const [query, setQuery] = createSignal();
 
   async function handleInputChange(query) {
+    if (query.length < 2) return;
     const result = await searchVerses(version().version, query);
     setQuery(query);
     setOptions(result);
   }
 
-  function handleChange(value) {
+  function handleChange({ b, c }) {
     setSetting(true);
-    setVolume(getOptionsVolumn(version().lang)[value.b - 1]);
-    setChapter(getOptionsChapter(value.b)[value.c - 1]);
+    setVolume(getOptionsVolumn(version().lang)[b - 1]);
+    setChapter(getOptionsChapter(b)[c - 1]);
     setTimeout(() => {
-      const el = document.getElementById(value.v);
+      const el = document.getElementById(v);
       el.scrollIntoView({ behavior: "smooth" });
       el.classList.add("highlight");
     }, 500);
@@ -366,7 +367,7 @@ function SearchBox() {
       options={options()}
       onInputChange={handleInputChange}
       onChange={handleChange}
-      optionValue="t"
+      optionValue="i"
       optionLabel="t"
       placeholder="Search"
       lang={version().lang}
