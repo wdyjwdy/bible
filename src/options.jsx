@@ -353,7 +353,7 @@ function SearchBox() {
       const el = document.getElementById(value.v);
       el.scrollIntoView({ behavior: "smooth" });
       el.classList.add("highlight");
-    }, 1000);
+    }, 500);
   }
 
   return (

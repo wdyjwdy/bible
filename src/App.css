@@ -169,11 +169,10 @@ button {
     }
 
     &.list-view {
-        padding-right: 20px;
-
         p {
             display: flex;
             align-items: baseline;
+            padding-right: 20px;
         }
 
         .verse-number {
@@ -197,7 +196,7 @@ button {
 }
 
 .highlight {
-    animation: flash 3s ease;
+    animation: flash 3s cubic-bezier(0.8, 0, 0.2, 1);
 }
 
 .button {
