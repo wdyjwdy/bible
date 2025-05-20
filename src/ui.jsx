@@ -8,7 +8,7 @@ import {
   LoaderCircle,
 } from "lucide-solid";
 import { getOptionsVolumn } from "./options";
-import { Show } from "solid-js";
+import { For, Show } from "solid-js";
 import { Button } from "@kobalte/core/button";
 import { Select } from "@kobalte/core/select";
 import { ToggleButton } from "@kobalte/core/toggle-button";
@@ -126,6 +126,18 @@ function ToggleGroupTheme(props) {
 }
 
 function SearchComponent(props) {
+  function Mark({ text }) {
+    const { query } = props;
+    console.log(query());
+    if (!query()) return text;
+    const parts = text.split(new RegExp(`(${query()})`, "gi"));
+    return (
+      <span>
+        <For each={parts}>{(p) => (p === query() ? <mark>{p}</mark> : p)}</For>
+      </span>
+    );
+  }
+
   return (
     <>
       <Search
@@ -142,7 +154,7 @@ function SearchComponent(props) {
                   }
                   -{props.item.rawValue.c}-{props.item.rawValue.v}
                 </span>
-                <span>{props.item.rawValue.t}</span>
+                <Mark text={props.item.rawValue.t} />
               </p>
             </Search.ItemLabel>
           </Search.Item>

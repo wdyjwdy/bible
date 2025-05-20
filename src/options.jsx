@@ -339,9 +339,11 @@ function SearchBox() {
   const { version, setSetting, setVolume, setChapter } =
     useContext(ControlContext);
   const [options, setOptions] = createSignal([]);
+  const [query, setQuery] = createSignal();
 
   async function handleInputChange(query) {
     const result = await searchVerses(version().version, query);
+    setQuery(query);
     setOptions(result);
   }
 
@@ -368,6 +370,7 @@ function SearchBox() {
       optionLabel="t"
       placeholder="Search"
       lang={version().lang}
+      query={query}
     />
   );
 }

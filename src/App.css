@@ -61,6 +61,11 @@ body {
     background-color: var(--body-bg);
 }
 
+mark {
+    color: var(--button-checked);
+    background-color: unset;
+}
+
 button {
     touch-action: none;
 }
