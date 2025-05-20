@@ -367,6 +367,7 @@ function SearchBox() {
       optionValue="t"
       optionLabel="t"
       placeholder="Search"
+      lang={version().lang}
     />
   );
 }

@@ -189,7 +189,7 @@ button {
 
 @keyframes flash {
     from {
-        background-color: yellow;
+        background-color: var(--button-selected);
     }
     to {
         background-color: transparent;
@@ -519,6 +519,17 @@ button {
     padding: 8px;
     user-select: none;
     display: flex;
+
+    .verse {
+        margin: 0px;
+        display: flex;
+        flex-direction: column;
+
+        .number {
+            color: var(--body-text-desp);
+            font-size: 14px;
+        }
+    }
 }
 
 .search__item[data-highlighted] {

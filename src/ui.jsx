@@ -7,6 +7,7 @@ import {
   Search as SearchIcon,
   LoaderCircle,
 } from "lucide-solid";
+import { getOptionsVolumn } from "./options";
 import { Show } from "solid-js";
 import { Button } from "@kobalte/core/button";
 import { Select } from "@kobalte/core/select";
@@ -133,8 +134,16 @@ function SearchComponent(props) {
         itemComponent={(props) => (
           <Search.Item item={props.item} class="search__item">
             <Search.ItemLabel>
-              {props.item.rawValue.b}-{props.item.rawValue.c}-
-              {props.item.rawValue.v} {props.item.rawValue.t}
+              <p class="verse">
+                <span class="number">
+                  {
+                    getOptionsVolumn(props.lang)[props.item.rawValue.b - 1]
+                      .volume
+                  }
+                  -{props.item.rawValue.c}-{props.item.rawValue.v}
+                </span>
+                <span>{props.item.rawValue.t}</span>
+              </p>
             </Search.ItemLabel>
           </Search.Item>
         )}
