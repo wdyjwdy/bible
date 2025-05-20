@@ -59,7 +59,9 @@ function Content() {
             <Show when={verseNumber()}>
               <span class="verse-number">{v}</span>
             </Show>
-            <span class="verse-text">{t}</span>
+            <span id={v} class="verse-text">
+              {t}
+            </span>
           </>
         )}
       </For>
@@ -71,7 +73,7 @@ function Content() {
       <ChapterTitle />
       <For each={verses()}>
         {({ v, t }) => (
-          <p key={v}>
+          <p key={v} id={v}>
             <span class="verse-number">{v}</span>
             <span class="verse-text">{t}</span>
           </p>

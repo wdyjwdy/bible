@@ -336,13 +336,24 @@ function ToggleGroupThemeDark() {
 }
 
 function SearchBox() {
-  const { version } = useContext(ControlContext);
+  const { version, setSetting, setVolume, setChapter } =
+    useContext(ControlContext);
   const [options, setOptions] = createSignal([]);
-  const [verse, setVerse] = createSignal();
 
-  async function handleChange(query) {
+  async function handleInputChange(query) {
     const result = await searchVerses(version().version, query);
     setOptions(result);
+  }
+
+  function handleChange(value) {
+    setSetting(true);
+    setVolume(getOptionsVolumn(version().lang)[value.b - 1]);
+    setChapter(getOptionsChapter(value.b)[value.c - 1]);
+    setTimeout(() => {
+      const el = document.getElementById(value.v);
+      el.scrollIntoView({ behavior: "smooth" });
+      el.classList.add("highlight");
+    }, 1000);
   }
 
   return (
@@ -351,8 +362,8 @@ function SearchBox() {
       triggerMode="focus"
       modal={true}
       options={options()}
-      onInputChange={handleChange}
-      onChange={(result) => setVerse(result)}
+      onInputChange={handleInputChange}
+      onChange={handleChange}
       optionValue="t"
       optionLabel="t"
       placeholder="Search"
