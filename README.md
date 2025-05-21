@@ -18,7 +18,7 @@ A simple Bible web app. [Visit the website](https://wdyjwdy.github.io/bible/).
 - [x] CUV: 和合本
 - [x] CUNPSS: 和合本（新标点）
 - [x] RCUVSS: 和合本（修订版）
-- [ ] CNVS: 新译本
+- [x] CNVS: 新译本
 - [ ] CSB: 中文标准译本
 - [x] KJV: King James Version
 - [x] ESV: English Standard Version

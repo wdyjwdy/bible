@@ -131,7 +131,7 @@ function Setting() {
       />
       <SettingItem
         label="Font Size"
-        description="Press Cmd/Ctrl +/- to adjust font size"
+        description="Press Cmd +/- to adjust font size"
       />
     </div>
   );
