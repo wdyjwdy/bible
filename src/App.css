@@ -9,7 +9,7 @@
         --button-hover: oklch(1 0 0);
         --button-text: oklch(0 0 0);
         --button-selected: oklch(0.9 0 0);
-        --button-checked: oklch(0.57 0.2 150.78);
+        --button-checked: oklch(0.57 0.12 154.94);
         --verse-number-text: oklch(0.47 0.21 27.88);
 
         &[data-theme-light="soft"] {
@@ -36,8 +36,8 @@
         --button-border: oklch(0.28 0 0);
         --button-hover: oklch(0.2 0 0);
         --button-text: oklch(0.7 0 0);
-        --button-selected: oklch(0.3 0 0);
-        --button-checked: oklch(0.34 0.19 150.83 / 1);
+        --button-selected: oklch(0.4 0 0);
+        --button-checked: oklch(0.36 0.12 154.94);
         --verse-number-text: oklch(0.3 0.21 27.88);
 
         &[data-theme-dark="night"] {
@@ -556,8 +556,7 @@ button {
 .search__no_result {
     text-align: center;
     padding-bottom: 24px;
-    color: var(--body-text-desp);
-    font-size: 20px;
+    font-size: 50px;
 }
 
 @keyframes spin {

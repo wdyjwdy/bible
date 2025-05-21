@@ -135,7 +135,7 @@ function SearchComponent(props) {
     return (
       <Search.Item item={item} class="search__item">
         <span class="number">
-          {bookName}-{c}-{v}
+          {bookName} {c}:{v}
         </span>
         <span>
           <For each={parts}>
@@ -170,9 +170,7 @@ function SearchComponent(props) {
             onCloseAutoFocus={(e) => e.preventDefault()}
           >
             <Search.Listbox class="search__listbox" />
-            <Search.NoResult class="search__no_result">
-              🛀 No verses found
-            </Search.NoResult>
+            <Search.NoResult class="search__no_result">🛀</Search.NoResult>
           </Search.Content>
         </Search.Portal>
       </Search>
