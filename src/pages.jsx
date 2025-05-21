@@ -11,6 +11,7 @@ import {
   ButtonToggleSetting,
   SwitchVerseNumber,
   SwitchChapterTitle,
+  SwitchChapterHeading,
   SwitchChapterView,
   ToggleGroupThemeLight,
   ToggleGroupThemeDark,
@@ -30,8 +31,15 @@ function Toolbar() {
 }
 
 function Content() {
-  const { version, volume, chapter, view, verseNumber, chapterTitle } =
-    useContext(ControlContext);
+  const {
+    version,
+    volume,
+    chapter,
+    view,
+    verseNumber,
+    chapterTitle,
+    chapterHeading,
+  } = useContext(ControlContext);
   const [verses, setVerses] = createSignal([]);
 
   createEffect(async () => {
@@ -46,43 +54,38 @@ function Content() {
 
   const ChapterTitle = () => (
     <Show when={chapterTitle()}>
-      <p class="chapter-title">{`${volume().volume} ${chapter().id}`}</p>
+      <h1 class="chapter-title">{`${volume().volume} ${chapter().id}`}</h1>
     </Show>
   );
 
-  const TextView = () => (
-    <div class="chapter text-view">
+  const View = ({ view }) => (
+    <div
+      classList={{
+        chapter: true,
+        [view]: true,
+      }}
+    >
       <ChapterTitle />
       <For each={verses()}>
-        {({ v, t }) => (
-          <p id={v}>
-            <Show when={verseNumber()}>
-              <span class="verse-number">{v}</span>
-            </Show>
-            <span class="verse-text">{t}</span>
-          </p>
-        )}
-      </For>
-    </div>
-  );
-
-  const ListView = () => (
-    <div class="chapter list-view">
-      <ChapterTitle />
-      <For each={verses()}>
-        {({ v, t }) => (
-          <p id={v}>
-            <span class="verse-number">{v}</span>
-            <span class="verse-text">{t}</span>
-          </p>
-        )}
+        {({ v, t, h }) =>
+          h && chapterHeading() ? (
+            <h2>{h}</h2>
+          ) : (
+            <p id={v}>
+              <Show when={verseNumber()}>
+                <span class="verse-number">{v}</span>
+              </Show>
+              <span class="verse-text">{t}</span>
+            </p>
+          )
+        }
       </For>
     </div>
   );
 
   return (
-    <Show when={view()} fallback={<TextView />}>
-      <ListView />
+    <Show when={view()} fallback={<View view="text-view" />}>
+      <View view="list-view" />
     </Show>
   );
 }
@@ -110,6 +113,11 @@ function Setting() {
         label="Chapter Title"
         description="Show chapter name above the verses"
         option={<SwitchChapterTitle />}
+      />
+      <SettingItem
+        label="Chapter Heading"
+        description="Show verses summary (available in some version)"
+        option={<SwitchChapterHeading />}
       />
       <SettingItem
         label="Theme Light"

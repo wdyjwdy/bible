@@ -16,7 +16,8 @@ const App = () => {
   const [view, setView] = createSignal(true);
   const [setting, setSetting] = createSignal(true);
   const [verseNumber, setVerseNumber] = createSignal(true);
-  const [chapterTitle, setChapterTitle] = createSignal(false);
+  const [chapterTitle, setChapterTitle] = createSignal(true);
+  const [chapterHeading, setChapterHeading] = createSignal(true);
 
   onMount(async () => {
     const config = await getOptionsConfig();
@@ -27,6 +28,7 @@ const App = () => {
     setSetting(config.setting);
     setVerseNumber(config.verseNumber);
     setChapterTitle(config.chapterTitle);
+    setChapterHeading(config.chapterHeading);
     document.documentElement.dataset.themeLight = config.themeLight;
     document.documentElement.dataset.themeDark = config.themeDark;
   });
@@ -46,6 +48,8 @@ const App = () => {
     setVerseNumber,
     chapterTitle,
     setChapterTitle,
+    chapterHeading,
+    setChapterHeading,
   };
 
   return (

@@ -9,8 +9,8 @@
         --button-hover: oklch(1 0 0);
         --button-text: oklch(0 0 0);
         --button-selected: oklch(0.9 0 0);
-        --button-checked: oklch(0.57 0.12 154.94);
-        --verse-number-text: oklch(0.47 0.21 27.88);
+        --green: oklch(0.57 0.12 154.94);
+        --red: oklch(0.47 0.21 27.88);
 
         &[data-theme-light="soft"] {
             --body-bg: #f1e1c8;
@@ -22,8 +22,8 @@
             --button-hover: #eadec0;
             --button-text: #34281b;
             --button-selected: #c1b391;
-            --button-checked: seagreen;
-            --verse-number-text: darkred;
+            --green: seagreen;
+            --red: darkred;
         }
     }
 
@@ -37,8 +37,8 @@
         --button-hover: oklch(0.2 0 0);
         --button-text: oklch(0.7 0 0);
         --button-selected: oklch(0.4 0 0);
-        --button-checked: oklch(0.36 0.12 154.94);
-        --verse-number-text: oklch(0.3 0.21 27.88);
+        --green: oklch(0.36 0.12 154.94);
+        --red: oklch(0.3 0.21 27.88);
 
         &[data-theme-dark="night"] {
             --body-bg: #000000;
@@ -50,8 +50,8 @@
             --button-hover: #161616;
             --button-text: #8c8c93;
             --button-selected: #222222;
-            --button-checked: seagreen;
-            --verse-number-text: darkred;
+            --green: seagreen;
+            --red: darkred;
         }
     }
 }
@@ -66,7 +66,7 @@ p {
 }
 
 mark {
-    color: var(--button-checked);
+    color: var(--green);
     background-color: unset;
 }
 
@@ -148,25 +148,25 @@ button {
     margin-bottom: 80px;
     font-size: x-large;
 
-    .chapter-title {
-        display: flex;
-        justify-content: center;
+    h1 {
+        text-align: center;
         font-size: xx-large;
-        margin: 20px 0;
+    }
+
+    h2 {
+        text-align: center;
+        font-size: x-large;
+        color: var(--green);
     }
 
     .verse-number {
-        color: var(--verse-number-text);
+        color: var(--red);
         user-select: none;
     }
 
     &.text-view {
         line-height: 2em;
         padding: 20px 20px;
-
-        .chapter-title {
-            display: flex;
-        }
 
         p {
             display: inline;
@@ -319,7 +319,7 @@ button {
 .select__section {
     margin: 4px 0;
     font-size: 20px;
-    color: var(--verse-number-text);
+    color: var(--red);
     border-bottom: 1px solid;
 }
 
@@ -401,7 +401,7 @@ button {
 }
 
 .switch__thumb[data-checked] {
-    background-color: var(--button-checked);
+    background-color: var(--green);
     transform: translateX(100%);
 }
 
@@ -431,7 +431,7 @@ button {
     height: 20px;
     width: 20px;
     border-radius: 50%;
-    background-color: var(--button-checked);
+    background-color: var(--green);
 }
 
 .radio__label {

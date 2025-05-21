@@ -86,58 +86,66 @@ const bibleOptions = [
   { id: 66, cn: "启示录", en: "Revelation", num: 22 },
 ];
 
+const bibleVersions = [
+  { id: 1, version: "cuv", lang: "cn", description: "和合本" },
+  {
+    id: 2,
+    version: "cunpss",
+    lang: "cn",
+    description: "和合本（新标点）",
+  },
+  {
+    id: 3,
+    version: "rcuvss",
+    lang: "cn",
+    description: "和合本（修订版）",
+  },
+  {
+    id: 4,
+    version: "kjv",
+    lang: "en",
+    description: "King James Version",
+  },
+  {
+    id: 5,
+    version: "nkjv",
+    lang: "en",
+    description: "New King James Version",
+  },
+  {
+    id: 6,
+    version: "esv",
+    lang: "en",
+    description: "English Standard Version",
+  },
+  {
+    id: 7,
+    version: "niv",
+    lang: "en",
+    description: "New International Version",
+  },
+  {
+    id: 8,
+    version: "nlt",
+    lang: "en",
+    description: "New Living Translation",
+  },
+  {
+    id: 9,
+    version: "nasb",
+    lang: "en",
+    description: "New American Standard Bible",
+  },
+  {
+    id: 10,
+    version: "cnvs",
+    lang: "cn",
+    description: "新译本",
+  },
+];
+
 function getOptionsVersion() {
-  return [
-    { id: 1, version: "cuv", lang: "cn", description: "和合本" },
-    {
-      id: 2,
-      version: "cunpss",
-      lang: "cn",
-      description: "和合本（新标点）",
-    },
-    {
-      id: 3,
-      version: "rcuvss",
-      lang: "cn",
-      description: "和合本（修订版）",
-    },
-    {
-      id: 4,
-      version: "kjv",
-      lang: "en",
-      description: "King James Version",
-    },
-    {
-      id: 5,
-      version: "nkjv",
-      lang: "en",
-      description: "New King James Version",
-    },
-    {
-      id: 6,
-      version: "esv",
-      lang: "en",
-      description: "English Standard Version",
-    },
-    {
-      id: 7,
-      version: "niv",
-      lang: "en",
-      description: "New International Version",
-    },
-    {
-      id: 8,
-      version: "nlt",
-      lang: "en",
-      description: "New Living Translation",
-    },
-    {
-      id: 9,
-      version: "nasb",
-      lang: "en",
-      description: "New American Standard Bible",
-    },
-  ];
+  return bibleVersions.sort((a, b) => (a.lang > b.lang ? 1 : -1));
 }
 
 function getOptionsVolumn(lang = "cn") {
@@ -332,6 +340,17 @@ function SwitchChapterTitle() {
   return <Switch checked={chapterTitle()} onChange={handleChange} />;
 }
 
+function SwitchChapterHeading() {
+  const { chapterHeading, setChapterHeading } = useContext(ControlContext);
+
+  function handleChange(value) {
+    setChapterHeading(value);
+    setOptionsConfig("chapterHeading", value);
+  }
+
+  return <Switch checked={chapterHeading()} onChange={handleChange} />;
+}
+
 function ToggleGroupThemeLight() {
   const [theme, setTheme] = createSignal("light");
   const options = ["light", "soft"];
@@ -433,6 +452,7 @@ export {
   ButtonToggleSetting,
   SwitchVerseNumber,
   SwitchChapterTitle,
+  SwitchChapterHeading,
   SwitchChapterView,
   ToggleGroupThemeLight,
   ToggleGroupThemeDark,

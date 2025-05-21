@@ -62,8 +62,11 @@ async function getVerses(version = "cus", volumn = 1, chapter = 1) {
 
 async function searchVerses(version, query) {
   if (!query) return [];
-  const data = await getBibleData(version);
-  return data.filter((q) => q.t.includes(query));
+  const verses = await getBibleData(version);
+  return verses.filter(({ t, h }) => {
+    if (h) return false;
+    return t.includes(query);
+  });
 }
 
 async function getOptionsConfig() {
