@@ -151,11 +151,13 @@ button {
     h1 {
         text-align: center;
         font-size: xx-large;
+        font-weight: normal;
     }
 
     h2 {
         text-align: center;
         font-size: x-large;
+        font-weight: normal;
         color: var(--green);
     }
 
@@ -288,7 +290,7 @@ button {
 
 .select__listbox {
     overflow-y: auto;
-    max-height: 360px;
+    max-height: 400px;
     padding: 8px;
     scrollbar-width: none;
     margin: 0;

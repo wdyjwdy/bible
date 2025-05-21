@@ -173,14 +173,28 @@ function SelectVersion() {
     setOptionsConfig("version", value);
   }
 
+  function getOptionGroup() {
+    return [
+      {
+        label: "中文",
+        options: options.filter(({ lang }) => lang === "cn"),
+      },
+      {
+        label: "English",
+        options: options.filter(({ lang }) => lang === "en"),
+      },
+    ];
+  }
+
   return (
     <SelectObject
       class="select-version"
       value={version()}
       onChange={handleChange}
-      options={options}
+      options={getOptionGroup()}
       optionValue="id"
       optionTextValue="description"
+      optionGroupChildren="options"
     />
   );
 }

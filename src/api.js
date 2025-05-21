@@ -76,13 +76,14 @@ async function getOptionsConfig() {
       return cache;
     }
     const defaultConfig = {
-      version: getOptionsVersion()[0],
+      version: getOptionsVersion().find(({ id }) => id === 10),
       volume: getOptionsVolumn()[0],
       chapter: getOptionsChapter()[0],
       view: true,
       setting: true,
       verseNumber: true,
       chapterTitle: false,
+      chapterHeading: true,
       themeLight: "light",
       themeDark: "dark",
     };
