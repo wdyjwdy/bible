@@ -1,16 +1,16 @@
 :root {
     @media (prefers-color-scheme: light) {
-        --body-bg: #fafafa;
-        --body-text: black;
-        --body-text-desp: gray;
-        --toolbar-bg: #fafafa;
-        --button-bg: whitesmoke;
-        --button-border: lightgray;
-        --button-hover: white;
-        --button-text: black;
-        --button-selected: lightgray;
-        --button-checked: seagreen;
-        --verse-number-text: darkred;
+        --body-bg: oklch(1 0 0);
+        --body-text: oklch(0 0 0);
+        --body-text-desp: oklch(0.5 0 0);
+        --toolbar-bg: oklch(1 0 0);
+        --button-bg: oklch(0.98 0 0);
+        --button-border: oklab(0.9 0 0);
+        --button-hover: oklch(1 0 0);
+        --button-text: oklch(0 0 0);
+        --button-selected: oklch(0.9 0 0);
+        --button-checked: oklch(0.57 0.2 150.78);
+        --verse-number-text: oklch(0.47 0.21 27.88);
 
         &[data-theme-light="soft"] {
             --body-bg: #f1e1c8;
@@ -28,17 +28,17 @@
     }
 
     @media (prefers-color-scheme: dark) {
-        --body-bg: #1d1d1d;
-        --body-text: #aaa;
-        --body-text-desp: gray;
-        --toolbar-bg: #1d1d1d;
-        --button-bg: #242424;
-        --button-border: #3c3c3c;
-        --button-hover: #1c1c1c;
-        --button-text: #aaa;
-        --button-selected: #343434;
-        --button-checked: seagreen;
-        --verse-number-text: darkred;
+        --body-bg: oklch(0.2 0 0);
+        --body-text: oklch(0.7 0 0);
+        --body-text-desp: oklch(0.5 0 0);
+        --toolbar-bg: oklch(0.24 0 0);
+        --button-bg: oklch(0.22 0 0);
+        --button-border: oklch(0.28 0 0);
+        --button-hover: oklch(0.2 0 0);
+        --button-text: oklch(0.7 0 0);
+        --button-selected: oklch(0.3 0 0);
+        --button-checked: oklch(0.34 0.19 150.83 / 1);
+        --verse-number-text: oklch(0.3 0.21 27.88);
 
         &[data-theme-dark="night"] {
             --body-bg: #000000;
@@ -59,6 +59,10 @@
 body {
     margin: 0;
     background-color: var(--body-bg);
+}
+
+p {
+    margin: 0px;
 }
 
 mark {
@@ -106,14 +110,6 @@ button {
     }
 }
 
-.bottom-placeholder {
-    height: 60px;
-
-    @media screen and (min-width: 768px) {
-        height: 80px;
-    }
-}
-
 .setting {
     padding: 20px;
     display: flex;
@@ -148,15 +144,15 @@ button {
 .chapter {
     color: var(--body-text);
     background-color: var(--body-bg);
+    padding: 20px 10px;
+    margin-bottom: 80px;
+    font-size: x-large;
 
     .chapter-title {
         display: flex;
         justify-content: center;
         font-size: xx-large;
-    }
-
-    span {
-        font-size: x-large;
+        margin: 20px 0;
     }
 
     .verse-number {
@@ -165,8 +161,16 @@ button {
     }
 
     &.text-view {
-        padding: 0px 20px;
-        line-height: 3em;
+        line-height: 2em;
+        padding: 20px 20px;
+
+        .chapter-title {
+            display: flex;
+        }
+
+        p {
+            display: inline;
+        }
 
         .verse-number {
             margin: 0px 4px;
@@ -174,14 +178,18 @@ button {
     }
 
     &.list-view {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+
         p {
             display: flex;
             align-items: baseline;
-            padding-right: 20px;
+            gap: 10px;
         }
 
         .verse-number {
-            flex-basis: 2em;
+            flex-basis: 1em;
             text-align: center;
         }
 

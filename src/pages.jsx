@@ -55,14 +55,12 @@ function Content() {
       <ChapterTitle />
       <For each={verses()}>
         {({ v, t }) => (
-          <>
+          <p id={v}>
             <Show when={verseNumber()}>
               <span class="verse-number">{v}</span>
             </Show>
-            <span id={v} class="verse-text">
-              {t}
-            </span>
-          </>
+            <span class="verse-text">{t}</span>
+          </p>
         )}
       </For>
     </div>
@@ -73,7 +71,7 @@ function Content() {
       <ChapterTitle />
       <For each={verses()}>
         {({ v, t }) => (
-          <p key={v} id={v}>
+          <p id={v}>
             <span class="verse-number">{v}</span>
             <span class="verse-text">{t}</span>
           </p>
@@ -83,12 +81,9 @@ function Content() {
   );
 
   return (
-    <>
-      <Show when={view()} fallback={<TextView />}>
-        <ListView />
-      </Show>
-      <div class="bottom-placeholder" />
-    </>
+    <Show when={view()} fallback={<TextView />}>
+      <ListView />
+    </Show>
   );
 }
 
