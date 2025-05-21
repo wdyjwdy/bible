@@ -88,10 +88,55 @@ const bibleOptions = [
 
 function getOptionsVersion() {
   return [
-    { id: 1, version: "cus", lang: "cn", description: "和合本" },
-    { id: 2, version: "cunpss", lang: "cn", description: "和合本（新标点）" },
-    { id: 3, version: "rcuvss", lang: "cn", description: "和合本（修订版）" },
-    { id: 4, version: "kjv", lang: "en", description: "King James Version" },
+    { id: 1, version: "cuv", lang: "cn", description: "和合本" },
+    {
+      id: 2,
+      version: "cunpss",
+      lang: "cn",
+      description: "和合本（新标点）",
+    },
+    {
+      id: 3,
+      version: "rcuvss",
+      lang: "cn",
+      description: "和合本（修订版）",
+    },
+    {
+      id: 4,
+      version: "kjv",
+      lang: "en",
+      description: "King James Version",
+    },
+    {
+      id: 5,
+      version: "nkjv",
+      lang: "en",
+      description: "New King James Version",
+    },
+    {
+      id: 6,
+      version: "esv",
+      lang: "en",
+      description: "English Standard Version",
+    },
+    {
+      id: 7,
+      version: "niv",
+      lang: "en",
+      description: "New International Version",
+    },
+    {
+      id: 8,
+      version: "nlt",
+      lang: "en",
+      description: "New Living Translation",
+    },
+    {
+      id: 9,
+      version: "nasb",
+      lang: "en",
+      description: "New American Standard Bible",
+    },
   ];
 }
 

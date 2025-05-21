@@ -15,11 +15,14 @@ A simple Bible web app. [Visit the website](https://wdyjwdy.github.io/bible/).
 
 ## Translations
 
-- [x] CUS: 和合本
+- [x] CUV: 和合本
 - [x] CUNPSS: 和合本（新标点）
 - [x] RCUVSS: 和合本（修订版）
 - [ ] CNVS: 新译本
+- [ ] CSB: 中文标准译本
 - [x] KJV: King James Version
-- [ ] ESV: English Standard Version
-- [ ] NIV: New International Version
-- [ ] NKJV: New King James Version
+- [x] ESV: English Standard Version
+- [x] NIV: New International Version
+- [x] NKJV: New King James Version
+- [x] NLT: New Living Translation
+- [x] NASB: New American Standard Bible
