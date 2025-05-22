@@ -142,6 +142,12 @@ const bibleVersions = [
     lang: "cn",
     description: "新译本",
   },
+  {
+    id: 11,
+    version: "ccb",
+    lang: "cn",
+    description: "当代译本",
+  },
 ];
 
 function getOptionsVersion() {
