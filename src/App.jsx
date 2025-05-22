@@ -22,8 +22,8 @@ const App = () => {
   onMount(async () => {
     const config = await getOptionsConfig();
     setVersion(config.version);
-    setVolume(config.volume);
-    setChapter(config.chapter);
+    // setVolume(config.volume);
+    // setChapter(config.chapter);
     setView(config.view);
     setSetting(config.setting);
     setVerseNumber(config.verseNumber);
