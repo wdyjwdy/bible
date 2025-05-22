@@ -148,6 +148,12 @@ const bibleVersions = [
     lang: "cn",
     description: "当代译本",
   },
+  {
+    id: 12,
+    version: "csb",
+    lang: "en",
+    description: "Christian Standard Bible",
+  },
 ];
 
 function getOptionsVersion() {
