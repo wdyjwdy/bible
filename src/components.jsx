@@ -65,6 +65,7 @@ function Select(props) {
                 onClick={() => {
                   handleClick(option);
                 }}
+                classList={{ selected: value().id === option.id }}
               >
                 {option.label}
               </li>
