@@ -99,11 +99,11 @@ mark {
     }
 
     .select-volume button {
-        width: 120px;
+        width: 80px;
     }
 
     .select-chapter button {
-        width: 60px;
+        width: 24px;
     }
 }
 
