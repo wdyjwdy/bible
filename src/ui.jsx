@@ -1,46 +1,8 @@
-import { CheckIcon, Search as SearchIcon, LoaderCircle } from "lucide-solid";
+import { Search as SearchIcon, LoaderCircle } from "lucide-solid";
 import { getOptionsVolumn } from "./options";
 import { For, Show } from "solid-js";
-import { Select } from "@kobalte/core/select";
-import { Switch } from "@kobalte/core/switch";
 import { RadioGroup } from "@kobalte/core/radio-group";
 import { Search } from "@kobalte/core/search";
-
-function SelectObject(props) {
-  const { optionTextValue } = props;
-  return (
-    <Select
-      {...props}
-      disallowEmptySelection={true}
-      sectionComponent={(props) => (
-        <Select.Section class="select__section">
-          {props.section.rawValue.label}
-        </Select.Section>
-      )}
-      itemComponent={(props) => (
-        <Select.Item item={props.item} class="select__item">
-          <Select.ItemLabel>
-            {props.item.rawValue?.[optionTextValue]}
-          </Select.ItemLabel>
-          <Select.ItemIndicator class="select__item-indicator">
-            <CheckIcon />
-          </Select.ItemIndicator>
-        </Select.Item>
-      )}
-    >
-      <Select.Trigger class="select__trigger">
-        <Select.Value class="select__value">
-          {(state) => state.selectedOption()?.[optionTextValue]}
-        </Select.Value>
-      </Select.Trigger>
-      <Select.Portal>
-        <Select.Content class="select__content">
-          <Select.Listbox class="select__listbox" />
-        </Select.Content>
-      </Select.Portal>
-    </Select>
-  );
-}
 
 function SettingItem({ label, description, option }) {
   return (
@@ -129,4 +91,4 @@ function SearchComponent(props) {
   );
 }
 
-export { SelectObject, SettingItem, ToggleGroupTheme, SearchComponent };
+export { SettingItem, ToggleGroupTheme, SearchComponent };

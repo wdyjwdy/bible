@@ -4,7 +4,7 @@ button {
     justify-content: center;
     align-items: center;
     color: var(--button-text);
-    padding: 0 16px;
+    padding: 8px 16px;
     border: 1px solid var(--button-border);
     border-radius: 6px;
     background-color: var(--button-bg);
@@ -22,11 +22,34 @@ button {
     }
 }
 
+button[popovertarget="select-version"] {
+    width: 140px;
+    height: 24px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+    display: inline-block;
+}
+
+button[popovertarget="select-book"] {
+    width: 80px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+    display: inline-block;
+}
+
+button[popovertarget="select-chapter"] {
+    width: 20px;
+}
+
 .button {
     flex: 1;
 }
 
-.xx-switch {
+.switch {
     display: flex;
     align-items: center;
     width: 42px;
@@ -51,4 +74,46 @@ button {
             background-color: var(--green);
         }
     }
+}
+
+.select-popover {
+    border: 1px solid var(--button-border);
+    border-radius: 12px;
+    width: fit-content;
+    max-width: 90%;
+    max-height: 80%;
+    box-shadow: 0 0 10px 1px #00000021;
+
+    ul {
+        all: unset;
+        display: grid;
+        grid-template-columns: repeat(5, minmax(10px, 1fr));
+        padding: 10px;
+
+        li {
+            all: unset;
+            user-select: none;
+            padding: 4px;
+
+            &:hover {
+                background-color: var(--button-selected);
+                border-radius: 6px;
+            }
+        }
+    }
+}
+
+#select-version ul {
+    grid-template-columns: repeat(1, minmax(120px, 1fr));
+}
+
+#select-book ul {
+    @media screen and (max-width: 768px) {
+        grid-template-columns: repeat(3, minmax(120px, 1fr));
+    }
+}
+
+#select-chapter ul {
+    place-items: center;
+    font-size: x-large;
 }

@@ -7,8 +7,8 @@ import {
 } from "solid-js";
 import { setOptionsConfig, getOptionsConfig, searchVerses } from "./api";
 import { ControlContext } from "./context";
-import { SelectObject, ToggleGroupTheme, SearchComponent } from "./ui";
-import { Button, Toggle, Switch } from "./components";
+import { ToggleGroupTheme, SearchComponent } from "./ui";
+import { Button, Toggle, Switch, Select } from "./components";
 import { ArrowLeft, ArrowRight, Ellipsis, Undo2 } from "lucide-solid";
 
 const bibleOptions = [
@@ -81,72 +81,72 @@ const bibleOptions = [
 ];
 
 const bibleVersions = [
-  { id: 1, version: "cuv", lang: "cn", description: "和合本" },
+  { id: 1, version: "cuv", lang: "cn", label: "和合本" },
   {
     id: 2,
     version: "cunpss",
     lang: "cn",
-    description: "和合本（新标点）",
+    label: "和合本（新标点）",
   },
   {
     id: 3,
     version: "rcuvss",
     lang: "cn",
-    description: "和合本（修订版）",
+    label: "和合本（修订版）",
   },
   {
     id: 4,
     version: "kjv",
     lang: "en",
-    description: "King James Version",
+    label: "King James Version",
   },
   {
     id: 5,
     version: "nkjv",
     lang: "en",
-    description: "New King James Version",
+    label: "New King James Version",
   },
   {
     id: 6,
     version: "esv",
     lang: "en",
-    description: "English Standard Version",
+    label: "English Standard Version",
   },
   {
     id: 7,
     version: "niv",
     lang: "en",
-    description: "New International Version",
+    label: "New International Version",
   },
   {
     id: 8,
     version: "nlt",
     lang: "en",
-    description: "New Living Translation",
+    label: "New Living Translation",
   },
   {
     id: 9,
     version: "nasb",
     lang: "en",
-    description: "New American Standard Bible",
+    label: "New American Standard Bible",
   },
   {
     id: 10,
     version: "cnvs",
     lang: "cn",
-    description: "新译本",
+    label: "新译本",
   },
   {
     id: 11,
     version: "ccb",
     lang: "cn",
-    description: "当代译本",
+    label: "当代译本",
   },
   {
     id: 12,
     version: "csb",
     lang: "en",
-    description: "Christian Standard Bible",
+    label: "Christian Standard Bible",
   },
 ];
 
@@ -163,7 +163,7 @@ function getOptionsVersion() {
 function getOptionsVolumn(lang = "cn") {
   return bibleOptions.map((option) => ({
     id: option.id,
-    volume: option[lang],
+    label: option[lang],
   }));
 }
 
@@ -171,7 +171,7 @@ function getOptionsChapter(volume = 1) {
   const { num } = bibleOptions[volume - 1];
   const options = [];
   for (let i = 1; i <= num; i++) {
-    options.push({ id: i });
+    options.push({ id: i, label: i });
   }
   return options;
 }
@@ -185,28 +185,12 @@ function SelectVersion() {
     setOptionsConfig("version", value);
   }
 
-  function getOptionGroup() {
-    return [
-      {
-        label: "中文",
-        options: options.filter(({ lang }) => lang === "cn"),
-      },
-      {
-        label: "English",
-        options: options.filter(({ lang }) => lang === "en"),
-      },
-    ];
-  }
-
   return (
-    <SelectObject
-      class="select-version"
-      value={version()}
+    <Select
+      id="select-version"
+      options={() => options}
+      value={version}
       onChange={handleChange}
-      options={getOptionGroup()}
-      optionValue="id"
-      optionTextValue="description"
-      optionGroupChildren="options"
     />
   );
 }
@@ -219,33 +203,16 @@ function SelectVolume() {
     setVolume(value);
   }
 
-  function getOptionGroup() {
-    const { lang } = version();
-    return [
-      {
-        label: lang === "cn" ? "旧约" : "OLD",
-        options: options().slice(0, 39),
-      },
-      {
-        label: lang === "cn" ? "新约" : "NEW",
-        options: options().slice(39),
-      },
-    ];
-  }
-
   createEffect(() => {
     setOptions(getOptionsVolumn(version().lang));
   });
 
   return (
-    <SelectObject
-      class="select-volume"
-      value={volume()}
+    <Select
+      id="select-book"
+      options={options}
+      value={volume}
       onChange={handleChange}
-      options={getOptionGroup()}
-      optionValue="id"
-      optionTextValue="volume"
-      optionGroupChildren="options"
     />
   );
 }
@@ -265,13 +232,11 @@ function SelectChapter() {
   });
 
   return (
-    <SelectObject
-      class="select-chapter"
-      value={chapter()}
+    <Select
+      id="select-chapter"
+      options={options}
+      value={chapter}
       onChange={handleChange}
-      options={options()}
-      optionValue="id"
-      optionTextValue="id"
     />
   );
 }

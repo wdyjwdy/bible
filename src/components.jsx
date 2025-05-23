@@ -1,4 +1,4 @@
-import { onMount, Show } from "solid-js";
+import { For, onMount, Show } from "solid-js";
 import "./components.css";
 
 function Button(props) {
@@ -37,10 +37,43 @@ function Switch(props) {
   });
 
   return (
-    <div class="xx-switch" ref={ref} onClick={handleClick} {...props}>
+    <div class="switch" ref={ref} onClick={handleClick} {...props}>
       <span />
     </div>
   );
 }
 
-export { Button, Toggle, Switch };
+function Select(props) {
+  const { id, options, value, onChange } = props;
+  let ref;
+
+  function handleClick(value) {
+    onChange(value);
+    ref.hidePopover();
+  }
+
+  return (
+    <>
+      <button type="button" class="select" popovertarget={id}>
+        {value().label}
+      </button>
+      <div ref={ref} class="select-popover" id={id} popover>
+        <ul>
+          <For each={options()}>
+            {(option) => (
+              <li
+                onClick={() => {
+                  handleClick(option);
+                }}
+              >
+                {option.label}
+              </li>
+            )}
+          </For>
+        </ul>
+      </div>
+    </>
+  );
+}
+
+export { Button, Toggle, Switch, Select };
