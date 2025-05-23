@@ -71,10 +71,6 @@ mark {
     background-color: unset;
 }
 
-button {
-    touch-action: none;
-}
-
 .toolbar {
     display: flex;
     gap: 10px;
@@ -217,34 +213,6 @@ button {
     animation: flash 3s cubic-bezier(0.8, 0, 0.2, 1);
 }
 
-.button {
-    appearance: none;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    height: 40px;
-    width: auto;
-    outline: none;
-    border: 1px solid var(--button-border);
-    border-radius: 6px;
-    padding: 0 16px;
-    background-color: var(--button-bg);
-    color: var(--button-text);
-    font-size: 16px;
-    line-height: 0;
-    transition: 250ms background-color;
-
-    @media (any-hover: hover) {
-        &:hover {
-            background-color: var(--button-hover);
-        }
-
-        &:active {
-            color: #636363;
-        }
-    }
-}
-
 .select__trigger {
     display: inline-flex;
     align-items: center;
@@ -355,28 +323,6 @@ button {
     to {
         opacity: 0;
         transform: translateY(-8px);
-    }
-}
-
-.toggle-button {
-    appearance: none;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    height: 40px;
-    width: 40px;
-    outline: none;
-    border: 1px solid var(--button-border);
-    border-radius: 6px;
-    background-color: var(--button-bg);
-    color: var(--button-text);
-    font-size: 16px;
-    line-height: 0;
-
-    @media (any-hover: hover) {
-        &:hover {
-            background-color: var(--button-hover);
-        }
     }
 }
 

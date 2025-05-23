@@ -1,17 +1,7 @@
-import {
-  ArrowLeft,
-  ArrowRight,
-  CheckIcon,
-  Settings,
-  Undo2,
-  Search as SearchIcon,
-  LoaderCircle,
-} from "lucide-solid";
+import { CheckIcon, Search as SearchIcon, LoaderCircle } from "lucide-solid";
 import { getOptionsVolumn } from "./options";
 import { For, Show } from "solid-js";
-import { Button } from "@kobalte/core/button";
 import { Select } from "@kobalte/core/select";
-import { ToggleButton } from "@kobalte/core/toggle-button";
 import { Switch } from "@kobalte/core/switch";
 import { RadioGroup } from "@kobalte/core/radio-group";
 import { Search } from "@kobalte/core/search";
@@ -49,45 +39,6 @@ function SelectObject(props) {
         </Select.Content>
       </Select.Portal>
     </Select>
-  );
-}
-
-const SettingToggleButton = (props) => {
-  return (
-    <ToggleButton class="toogle-setting toggle-button" {...props}>
-      {(state) => (
-        <Show when={state.pressed()} fallback={<Undo2 />}>
-          <Settings />
-        </Show>
-      )}
-    </ToggleButton>
-  );
-};
-
-const PrevArrowButton = (props) => {
-  return (
-    <Button class="button arrow-button" {...props}>
-      <ArrowLeft />
-    </Button>
-  );
-};
-
-const NextArrowButton = (props) => {
-  return (
-    <Button class="button arrow-button" {...props}>
-      <ArrowRight />
-    </Button>
-  );
-};
-
-function SwitchComponent(props) {
-  return (
-    <Switch class="switch" {...props}>
-      <Switch.Input class="switch__input" />
-      <Switch.Control class="switch__control">
-        <Switch.Thumb class="switch__thumb" />
-      </Switch.Control>
-    </Switch>
   );
 }
 
@@ -178,13 +129,4 @@ function SearchComponent(props) {
   );
 }
 
-export {
-  PrevArrowButton,
-  NextArrowButton,
-  SettingToggleButton,
-  SelectObject,
-  SwitchComponent as Switch,
-  SettingItem,
-  ToggleGroupTheme,
-  SearchComponent,
-};
+export { SelectObject, SettingItem, ToggleGroupTheme, SearchComponent };

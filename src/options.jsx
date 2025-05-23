@@ -7,15 +7,9 @@ import {
 } from "solid-js";
 import { setOptionsConfig, getOptionsConfig, searchVerses } from "./api";
 import { ControlContext } from "./context";
-import {
-  SelectObject,
-  PrevArrowButton,
-  NextArrowButton,
-  SettingToggleButton,
-  Switch,
-  ToggleGroupTheme,
-  SearchComponent,
-} from "./ui";
+import { SelectObject, ToggleGroupTheme, SearchComponent } from "./ui";
+import { Button, Toggle, Switch } from "./components";
+import { ArrowLeft, ArrowRight, Ellipsis, Undo2 } from "lucide-solid";
 
 const bibleOptions = [
   { id: 1, cn: "创世纪", en: "Genesis", num: 50 },
@@ -304,8 +298,11 @@ function ButtonPrevArrow() {
       document.removeEventListener("keydown", handler);
     });
   });
-
-  return <PrevArrowButton onClick={handleClick} />;
+  return (
+    <Button onClick={handleClick}>
+      <ArrowLeft />
+    </Button>
+  );
 }
 
 function ButtonNextArrow() {
@@ -331,12 +328,27 @@ function ButtonNextArrow() {
     });
   });
 
-  return <NextArrowButton onClick={handleClick} />;
+  return (
+    <Button onClick={handleClick}>
+      <ArrowRight />
+    </Button>
+  );
 }
 
 function ButtonToggleSetting() {
   const { setting, setSetting } = useContext(ControlContext);
-  return <SettingToggleButton pressed={setting()} onChange={setSetting} />;
+
+  function handleClick() {
+    setSetting((s) => !s);
+  }
+
+  return (
+    <Toggle onClick={handleClick}>
+      <Show when={setting()} fallback={<Undo2 />}>
+        <Ellipsis />
+      </Show>
+    </Toggle>
+  );
 }
 
 function SwitchChapterView() {
@@ -347,7 +359,7 @@ function SwitchChapterView() {
     setOptionsConfig("view", value);
   }
 
-  return <Switch checked={view()} onChange={handleChange} />;
+  return <Switch checked={view} onChange={handleChange} />;
 }
 
 function SwitchVerseNumber() {
@@ -358,7 +370,7 @@ function SwitchVerseNumber() {
     setOptionsConfig("verseNumber", value);
   }
 
-  return <Switch checked={verseNumber()} onChange={handleChange} />;
+  return <Switch checked={verseNumber} onChange={handleChange} />;
 }
 
 function SwitchChapterTitle() {
@@ -369,7 +381,7 @@ function SwitchChapterTitle() {
     setOptionsConfig("chapterTitle", value);
   }
 
-  return <Switch checked={chapterTitle()} onChange={handleChange} />;
+  return <Switch checked={chapterTitle} onChange={handleChange} />;
 }
 
 function SwitchChapterHeading() {
@@ -380,7 +392,7 @@ function SwitchChapterHeading() {
     setOptionsConfig("chapterHeading", value);
   }
 
-  return <Switch checked={chapterHeading()} onChange={handleChange} />;
+  return <Switch checked={chapterHeading} onChange={handleChange} />;
 }
 
 function ToggleGroupThemeLight() {
