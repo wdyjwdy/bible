@@ -83,22 +83,32 @@ button[popovertarget="select-chapter"] {
     max-width: 90%;
     max-height: 80%;
     box-shadow: 0 0 10px 1px #00000021;
-    margin: auto auto 80px;
+    margin: auto auto 90px;
+
+    @media screen and (max-width: 768px) {
+        margin: auto auto 60px;
+    }
 
     ul {
         all: unset;
         display: grid;
         grid-template-columns: repeat(1, minmax(10px, 1fr));
         padding: 10px;
+        gap: 2px;
 
         li {
             all: unset;
             user-select: none;
             padding: 4px;
             border-radius: 6px;
+            width: 100%;
+            box-sizing: border-box;
+            text-align: center;
 
-            &:hover {
-                background-color: var(--button-selected);
+            @media (any-hover: hover) {
+                &:hover {
+                    background-color: var(--button-selected);
+                }
             }
 
             &.selected {
@@ -123,5 +133,8 @@ button[popovertarget="select-chapter"] {
     place-items: center;
     font-size: x-large;
 
-    grid-template-columns: repeat(7, minmax(10px, 1fr));
+    grid-template-columns: repeat(7, minmax(50px, 1fr));
+    @media screen and (max-width: 768px) {
+        grid-template-columns: repeat(5, minmax(50px, 1fr));
+    }
 }
