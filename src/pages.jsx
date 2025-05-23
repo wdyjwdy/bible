@@ -67,18 +67,19 @@ function Content() {
     >
       <ChapterTitle />
       <For each={verses()}>
-        {({ v, t, h }) =>
-          h && chapterHeading() ? (
-            <h2>{h}</h2>
-          ) : (
+        {({ v, t, h }) => {
+          if (h) {
+            return chapterHeading() ? <h2>{h}</h2> : null;
+          }
+          return (
             <p id={v}>
               <Show when={verseNumber()}>
                 <span class="verse-number">{v}</span>
               </Show>
               <span class="verse-text">{t}</span>
             </p>
-          )
-        }
+          );
+        }}
       </For>
     </div>
   );
