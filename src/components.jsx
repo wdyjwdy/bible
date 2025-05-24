@@ -3,7 +3,6 @@ import { Search as SearchIcon, LoaderCircle } from "lucide-solid";
 import { ControlContext } from "./context";
 import { searchVerses } from "./api";
 import { getOptionsVolumn, getOptionsChapter } from "./options";
-
 import "./components.css";
 
 function Button(props) {

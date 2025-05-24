@@ -151,11 +151,13 @@ const bibleVersions = [
 
 function getOptionsVersion() {
   return bibleVersions.sort((a, b) => {
-    if (a.lang === b.lang) {
-      return a.description > b.description ? 1 : -1;
-    } else {
-      return a.lang > b.lang ? 1 : -1;
-    }
+    return a.lang === b.lang
+      ? a.description > b.description
+        ? 1
+        : -1
+      : a.lang > b.lang
+        ? 1
+        : -1;
   });
 }
 

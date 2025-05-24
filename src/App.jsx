@@ -22,8 +22,6 @@ const App = () => {
   onMount(async () => {
     const config = await getOptionsConfig();
     setVersion(config.version);
-    // setBook(config.book);
-    // setChapter(config.chapter);
     setView(config.view);
     setSetting(config.setting);
     setVerseNumber(config.verseNumber);
