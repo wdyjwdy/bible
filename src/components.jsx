@@ -1,5 +1,5 @@
-import { createSignal, For, onMount, useContext } from "solid-js";
-import { Search as SearchIcon } from "lucide-solid";
+import { createSignal, For, onMount, Show, useContext } from "solid-js";
+import { Search as SearchIcon, LoaderCircle } from "lucide-solid";
 import { ControlContext } from "./context";
 import { searchVerses } from "./api";
 import { getOptionsVolumn, getOptionsChapter } from "./options";
@@ -91,6 +91,7 @@ function Search() {
     useContext(ControlContext);
   const [query, setQuery] = createSignal("");
   const [verses, setVerses] = createSignal([]);
+  const [loading, setLoading] = createSignal(false);
 
   function debounce(fn, wait) {
     let id;
@@ -99,11 +100,13 @@ function Search() {
         clearTimeout(id);
         id = setTimeout(() => {
           fn.call(this, ...args);
+          setLoading(false);
           id = null;
         }, wait);
       } else {
         id = setTimeout(() => {
           fn.call(this, ...args);
+          setLoading(false);
           id = null;
         }, wait);
       }
@@ -123,7 +126,13 @@ function Search() {
     ref.showPopover();
   }
 
-  const debouncedHandleChange = debounce(handleChange, 1000);
+  function handleInput(e) {
+    if (!loading()) {
+      setLoading(true);
+    }
+    const debouncedHandleChange = debounce(handleChange, 1000);
+    debouncedHandleChange(e);
+  }
 
   function Item({ verse }) {
     const { b, c, v, t } = verse;
@@ -159,13 +168,15 @@ function Search() {
     <>
       <div class="search">
         <div>
-          <SearchIcon />
+          <Show when={loading()} fallback={<SearchIcon />}>
+            <LoaderCircle class="loading" />
+          </Show>
         </div>
         <input
           type="text"
           placeholder="Search"
           value={query()}
-          onInput={debouncedHandleChange}
+          onInput={handleInput}
         />
       </div>
       <div ref={ref} id="search-result" popover>

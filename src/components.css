@@ -165,6 +165,11 @@ button[popovertarget="select-chapter"] {
         justify-content: center;
         align-items: center;
         padding: 8px;
+
+        .loading {
+            animation: spin 600ms linear;
+            animation-iteration-count: infinite;
+        }
     }
 
     input {
@@ -212,4 +217,13 @@ button[popovertarget="select-chapter"] {
         font-size: 50px;
         text-align: center;
     }
+}
+
+
+@keyframes spin {
+from {
+    transform: rotate(0deg);
+}
+to {
+    transform: rotate(360deg);
 }
