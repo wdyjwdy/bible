@@ -5,10 +5,9 @@ import {
   onCleanup,
   onMount,
 } from "solid-js";
-import { setOptionsConfig, getOptionsConfig, searchVerses } from "./api";
+import { setOptionsConfig, getOptionsConfig } from "./api";
 import { ControlContext } from "./context";
-import { SearchComponent } from "./ui";
-import { Button, Toggle, Switch, Select } from "./components";
+import { Button, Toggle, Switch, Select, Search } from "./components";
 import { ArrowLeft, ArrowRight, Ellipsis, Undo2 } from "lucide-solid";
 
 const bibleOptions = [
@@ -417,44 +416,7 @@ function ToggleGroupThemeDark() {
 }
 
 function SearchBox() {
-  const { version, setSetting, setVolume, setChapter } =
-    useContext(ControlContext);
-  const [options, setOptions] = createSignal([]);
-  const [query, setQuery] = createSignal();
-
-  async function handleInputChange(query) {
-    if (query.length < 2) return;
-    const result = await searchVerses(version().version, query);
-    setQuery(query);
-    setOptions(result);
-  }
-
-  function handleChange({ b, c, v }) {
-    setSetting(true);
-    setVolume(getOptionsVolumn(version().lang)[b - 1]);
-    setChapter(getOptionsChapter(b)[c - 1]);
-    setTimeout(() => {
-      const el = document.getElementById(v);
-      el.scrollIntoView({ behavior: "smooth" });
-      el.classList.add("highlight");
-    }, 500);
-  }
-
-  return (
-    <SearchComponent
-      debounceOptionsMillisecond={1000}
-      triggerMode="focus"
-      modal={true}
-      options={options()}
-      onInputChange={handleInputChange}
-      onChange={handleChange}
-      optionValue="i"
-      optionLabel="t"
-      placeholder="Search"
-      lang={version().lang}
-      query={query}
-    />
-  );
+  return <Search />;
 }
 
 export {

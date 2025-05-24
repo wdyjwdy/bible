@@ -1,6 +1,6 @@
 import { createSignal, createEffect, Show, useContext } from "solid-js";
 import { getVerses } from "./api";
-import { SettingItem } from "./ui";
+import { SettingItem } from "./components";
 import { ControlContext } from "./context";
 import {
   SelectVersion,
