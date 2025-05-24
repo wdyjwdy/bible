@@ -77,7 +77,7 @@ async function getOptionsConfig() {
     }
     const defaultConfig = {
       version: getOptionsVersion().find(({ id }) => id === 10),
-      volume: getOptionsVolumn()[0],
+      book: getOptionsVolumn()[0],
       chapter: getOptionsChapter()[0],
       view: true,
       setting: true,

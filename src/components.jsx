@@ -87,7 +87,7 @@ function Select(props) {
 
 function Search() {
   let ref;
-  const { version, setSetting, setVolume, setChapter } =
+  const { version, setSetting, setBook, setChapter } =
     useContext(ControlContext);
   const [query, setQuery] = createSignal("");
   const [verses, setVerses] = createSignal([]);
@@ -141,7 +141,7 @@ function Search() {
 
     function handleClick() {
       setSetting(true);
-      setVolume(getOptionsVolumn(version().lang)[b - 1]);
+      setBook(getOptionsVolumn(version().lang)[b - 1]);
       setChapter(getOptionsChapter(b)[c - 1]);
       setTimeout(() => {
         const el = document.getElementById(v);

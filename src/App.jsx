@@ -11,7 +11,7 @@ import "./App.css";
 
 const App = () => {
   const [version, setVersion] = createSignal(getOptionsVersion()[0]);
-  const [volume, setVolume] = createSignal(getOptionsVolumn()[0]);
+  const [book, setBook] = createSignal(getOptionsVolumn()[0]);
   const [chapter, setChapter] = createSignal(getOptionsChapter()[0]);
   const [view, setView] = createSignal(true);
   const [setting, setSetting] = createSignal(true);
@@ -22,7 +22,7 @@ const App = () => {
   onMount(async () => {
     const config = await getOptionsConfig();
     setVersion(config.version);
-    // setVolume(config.volume);
+    // setBook(config.book);
     // setChapter(config.chapter);
     setView(config.view);
     setSetting(config.setting);
@@ -36,8 +36,8 @@ const App = () => {
   const control = {
     version,
     setVersion,
-    volume,
-    setVolume,
+    book,
+    setBook,
     chapter,
     setChapter,
     view,

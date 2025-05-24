@@ -4,7 +4,7 @@ import { SettingItem } from "./components";
 import { ControlContext } from "./context";
 import {
   SelectVersion,
-  SelectVolume,
+  SelectBook,
   SelectChapter,
   ButtonPrevArrow,
   ButtonNextArrow,
@@ -21,7 +21,7 @@ import {
 function Toolbar() {
   return (
     <div class="toolbar">
-      <SelectVolume />
+      <SelectBook />
       <SelectChapter />
       <ButtonPrevArrow />
       <ButtonNextArrow />
@@ -33,7 +33,7 @@ function Toolbar() {
 function Content() {
   const {
     version,
-    volume,
+    book,
     chapter,
     view,
     verseNumber,
@@ -43,18 +43,14 @@ function Content() {
   const [verses, setVerses] = createSignal([]);
 
   createEffect(async () => {
-    const verses = await getVerses(
-      version().version,
-      volume().id,
-      chapter().id,
-    );
+    const verses = await getVerses(version().version, book().id, chapter().id);
     setVerses(verses);
     document.documentElement.scrollTop = 0;
   });
 
   const ChapterTitle = () => (
     <Show when={chapterTitle()}>
-      <h1 class="chapter-title">{`${volume().label} ${chapter().id}`}</h1>
+      <h1 class="chapter-title">{`${book().label} ${chapter().id}`}</h1>
     </Show>
   );
 

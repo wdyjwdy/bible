@@ -166,8 +166,8 @@ function getOptionsVolumn(lang = "cn") {
   }));
 }
 
-function getOptionsChapter(volume = 1) {
-  const { num } = bibleOptions[volume - 1];
+function getOptionsChapter(book = 1) {
+  const { num } = bibleOptions[book - 1];
   const options = [];
   for (let i = 1; i <= num; i++) {
     options.push({ id: i, label: i });
@@ -194,12 +194,12 @@ function SelectVersion() {
   );
 }
 
-function SelectVolume() {
-  const { version, volume, setVolume } = useContext(ControlContext);
+function SelectBook() {
+  const { version, book, setBook } = useContext(ControlContext);
   const [options, setOptions] = createSignal(getOptionsVolumn());
 
   function handleChange(value) {
-    setVolume(value);
+    setBook(value);
   }
 
   function getOptions() {
@@ -216,14 +216,14 @@ function SelectVolume() {
     <Select
       id="select-book"
       options={getOptions}
-      value={volume}
+      value={book}
       onChange={handleChange}
     />
   );
 }
 
 function SelectChapter() {
-  const { volume, chapter, setChapter } = useContext(ControlContext);
+  const { book, chapter, setChapter } = useContext(ControlContext);
   const [options, setOptions] = createSignal(getOptionsChapter());
 
   function handleChange(value) {
@@ -231,7 +231,7 @@ function SelectChapter() {
   }
 
   createEffect(() => {
-    const options = getOptionsChapter(volume().id);
+    const options = getOptionsChapter(book().id);
     setOptions(options);
     setChapter(options[0]);
   });
@@ -247,10 +247,10 @@ function SelectChapter() {
 }
 
 function ButtonPrevArrow() {
-  const { volume, chapter, setChapter } = useContext(ControlContext);
+  const { book, chapter, setChapter } = useContext(ControlContext);
 
   function handleClick() {
-    const options = getOptionsChapter(volume().id);
+    const options = getOptionsChapter(book().id);
     const { id } = chapter();
     if (id > 1) {
       setChapter(options[id - 2]);
@@ -276,10 +276,10 @@ function ButtonPrevArrow() {
 }
 
 function ButtonNextArrow() {
-  const { volume, chapter, setChapter } = useContext(ControlContext);
+  const { book, chapter, setChapter } = useContext(ControlContext);
 
   function handleClick() {
-    const options = getOptionsChapter(volume().id);
+    const options = getOptionsChapter(book().id);
     const { id } = chapter();
     if (id < options.length) {
       setChapter(options[id]);
@@ -430,7 +430,7 @@ export {
   getOptionsVolumn,
   getOptionsChapter,
   SelectVersion,
-  SelectVolume,
+  SelectBook,
   SelectChapter,
   ButtonPrevArrow,
   ButtonNextArrow,
