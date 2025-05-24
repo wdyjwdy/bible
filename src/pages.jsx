@@ -54,7 +54,7 @@ function Content() {
 
   const ChapterTitle = () => (
     <Show when={chapterTitle()}>
-      <h1 class="chapter-title">{`${volume().volume} ${chapter().id}`}</h1>
+      <h1 class="chapter-title">{`${volume().label} ${chapter().id}`}</h1>
     </Show>
   );
 
