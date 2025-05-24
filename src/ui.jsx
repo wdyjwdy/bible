@@ -1,7 +1,6 @@
 import { Search as SearchIcon, LoaderCircle } from "lucide-solid";
 import { getOptionsVolumn } from "./options";
 import { For, Show } from "solid-js";
-import { RadioGroup } from "@kobalte/core/radio-group";
 import { Search } from "@kobalte/core/search";
 
 function SettingItem({ label, description, option }) {
@@ -15,26 +14,6 @@ function SettingItem({ label, description, option }) {
       </div>
       {option}
     </div>
-  );
-}
-
-function ToggleGroupTheme(props) {
-  return (
-    <RadioGroup class="radio-group" {...props}>
-      <For each={props.options}>
-        {(item) => (
-          <RadioGroup.Item value={item} class="radio">
-            <RadioGroup.ItemInput class="radio__input" />
-            <RadioGroup.ItemControl class="radio__control">
-              <RadioGroup.ItemIndicator class="radio__indicator" />
-            </RadioGroup.ItemControl>
-            <RadioGroup.ItemLabel class="radio__label">
-              {item}
-            </RadioGroup.ItemLabel>
-          </RadioGroup.Item>
-        )}
-      </For>
-    </RadioGroup>
   );
 }
 
@@ -91,4 +70,4 @@ function SearchComponent(props) {
   );
 }
 
-export { SettingItem, ToggleGroupTheme, SearchComponent };
+export { SettingItem, SearchComponent };

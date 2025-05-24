@@ -7,7 +7,7 @@ import {
 } from "solid-js";
 import { setOptionsConfig, getOptionsConfig, searchVerses } from "./api";
 import { ControlContext } from "./context";
-import { ToggleGroupTheme, SearchComponent } from "./ui";
+import { SearchComponent } from "./ui";
 import { Button, Toggle, Switch, Select } from "./components";
 import { ArrowLeft, ArrowRight, Ellipsis, Undo2 } from "lucide-solid";
 
@@ -361,48 +361,56 @@ function SwitchChapterHeading() {
 }
 
 function ToggleGroupThemeLight() {
-  const [theme, setTheme] = createSignal("light");
-  const options = ["light", "soft"];
+  const options = [
+    { id: 1, label: "light" },
+    { id: 2, label: "soft" },
+  ];
+  const [theme, setTheme] = createSignal(options[0]);
 
   function handleChange(value) {
     setTheme(value);
-    document.documentElement.dataset.themeLight = value;
-    setOptionsConfig("themeLight", value);
+    document.documentElement.dataset.themeLight = value.label;
+    setOptionsConfig("themeLight", value.label);
   }
 
   onMount(async () => {
     const config = await getOptionsConfig();
-    setTheme(config.themeLight);
+    setTheme(options.find(({ label }) => label === config.themeLight));
   });
 
   return (
-    <ToggleGroupTheme
-      options={options}
-      value={theme()}
+    <Select
+      id="select-light-theme"
+      options={() => options}
+      value={theme}
       onChange={handleChange}
     />
   );
 }
 
 function ToggleGroupThemeDark() {
-  const [theme, setTheme] = createSignal("dark");
-  const options = ["dark", "night"];
+  const options = [
+    { id: 1, label: "dark" },
+    { id: 2, label: "night" },
+  ];
+  const [theme, setTheme] = createSignal(options[0]);
 
   function handleChange(value) {
     setTheme(value);
-    document.documentElement.dataset.themeDark = value;
-    setOptionsConfig("themeDark", value);
+    document.documentElement.dataset.themeDark = value.label;
+    setOptionsConfig("themeDark", value.label);
   }
 
   onMount(async () => {
     const config = await getOptionsConfig();
-    setTheme(config.themeDark);
+    setTheme(options.find(({ label }) => label === config.themeDark));
   });
 
   return (
-    <ToggleGroupTheme
-      options={options}
-      value={theme()}
+    <Select
+      id="select-dark-theme"
+      options={() => options}
+      value={theme}
       onChange={handleChange}
     />
   );

@@ -77,6 +77,8 @@ button[popovertarget="select-chapter"] {
 }
 
 .select-popover {
+    background-color: var(--body-bg);
+    color: var(--body-text);
     border: 1px solid var(--button-border);
     border-radius: 12px;
     width: fit-content;
