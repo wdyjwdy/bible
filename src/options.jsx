@@ -202,6 +202,12 @@ function SelectVolume() {
     setVolume(value);
   }
 
+  function getOptions() {
+    const sectionOptions = options();
+    sectionOptions.splice(39, 0, { separator: true });
+    return sectionOptions;
+  }
+
   createEffect(() => {
     setOptions(getOptionsVolumn(version().lang));
   });
@@ -209,7 +215,7 @@ function SelectVolume() {
   return (
     <Select
       id="select-book"
-      options={options}
+      options={getOptions}
       value={volume}
       onChange={handleChange}
     />

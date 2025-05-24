@@ -119,6 +119,15 @@ button[popovertarget="select-chapter"] {
                 background-color: var(--button-selected);
             }
         }
+
+        hr {
+            all: unset;
+            grid-column: 1 / -1;
+            width: 100%;
+            height: 1px;
+            background: var(--button-selected);
+            margin: 10px 0;
+        }
     }
 }
 

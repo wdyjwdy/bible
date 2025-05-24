@@ -66,15 +66,17 @@ function Select(props) {
         <ul>
           <For each={options()}>
             {(option) => (
-              <li
-                onClick={() => {
-                  handleClick(option);
-                }}
-                onKeyDown={null}
-                classList={{ selected: value().id === option.id }}
-              >
-                {option.label}
-              </li>
+              <Show when={!option.separator} fallback={<hr />}>
+                <li
+                  onClick={() => {
+                    handleClick(option);
+                  }}
+                  onKeyDown={null}
+                  classList={{ selected: value().id === option.id }}
+                >
+                  {option.label}
+                </li>
+              </Show>
             )}
           </For>
         </ul>
