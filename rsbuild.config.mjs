@@ -14,9 +14,9 @@ export default defineConfig({
   },
   html: {
     appIcon: {
-      icons: [{ src: "./src/icon.png", size: 512 }],
+      icons: [{ src: "./src/icon.svg", size: 256 }],
     },
-    favicon: "./src/icon.png",
+    favicon: "./src/icon.svg",
     title: "Bible",
   },
 });
