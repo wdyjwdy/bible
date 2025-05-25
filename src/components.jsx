@@ -2,7 +2,7 @@ import { createSignal, For, onMount, Show, useContext } from "solid-js";
 import { Search as SearchIcon, LoaderCircle } from "lucide-solid";
 import { ControlContext } from "./context";
 import { searchVerses } from "./api";
-import { getOptionsVolumn, getOptionsChapter } from "./options";
+import { getBookById } from "./data";
 import "./components.css";
 
 function Button(props) {
@@ -85,7 +85,7 @@ function Select(props) {
 
 function Search() {
   let ref;
-  const { version, setSetting, setBook, setChapter } =
+  const { version, setSetting, setBook, setChapter, config, setConfig } =
     useContext(ControlContext);
   const [query, setQuery] = createSignal("");
   const [verses, setVerses] = createSignal([]);
@@ -119,7 +119,7 @@ function Search() {
       return;
     }
 
-    const result = await searchVerses(version().version, query);
+    const result = await searchVerses(config.version, query);
     setVerses(result);
     ref.showPopover();
   }
@@ -135,12 +135,14 @@ function Search() {
   function Item({ verse }) {
     const { b, c, v, t } = verse;
     const parts = t.split(new RegExp(`(${query()})`, "gi"));
-    const bookName = getOptionsVolumn(version().lang)[b - 1].label;
+    const bookName = getBookById(config.version, b).label;
 
     function handleClick() {
       setSetting(true);
-      setBook(getOptionsVolumn(version().lang)[b - 1]);
-      setChapter(getOptionsChapter(b)[c - 1]);
+      setConfig({
+        book: b,
+        chapter: c,
+      });
       setTimeout(() => {
         const el = document.getElementById(v);
         el.scrollIntoView({ behavior: "smooth" });

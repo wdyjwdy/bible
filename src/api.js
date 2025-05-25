@@ -1,11 +1,4 @@
-import {
-  getOptionsVersion,
-  getOptionsVolumn,
-  getOptionsChapter,
-} from "./options";
-
 import { getVersionById } from "./data";
-import { cleanNode } from "solid-js/types/server/reactive.js";
 
 async function openDB() {
   return new Promise((resolve, reject) => {
@@ -59,7 +52,7 @@ async function getBibleData(version) {
   }
 }
 
-async function getVerses(version = 1, book = 1, chapter = 1) {
+async function getVerses(version, book, chapter) {
   const data = await getBibleData(version);
   return data.filter(({ b, c }) => b === book && c === chapter);
 }
@@ -80,16 +73,15 @@ async function getOptionsConfig() {
       return cache;
     }
     const defaultConfig = {
-      version: getOptionsVersion().find(({ id }) => id === 10),
-      book: getOptionsVolumn()[0],
-      chapter: getOptionsChapter()[0],
+      version: 1,
+      book: 1,
+      chapter: 1,
       newline: true,
-      setting: true,
       number: true,
       title: false,
       heading: true,
-      themeLight: "light",
-      themeDark: "dark",
+      light: 1,
+      dark: 1,
     };
     saveToCache("config", defaultConfig);
     return defaultConfig;

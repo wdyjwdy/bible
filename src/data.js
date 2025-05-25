@@ -13,6 +13,75 @@ const versionList = [
   { id: 12, code: "csb", lang: "en", label: "Christian Standard Bible" },
 ];
 
+const bookList = [
+  { id: 1, cn: "创世纪", en: "Genesis", count: 50 },
+  { id: 2, cn: "出埃及记", en: "Exodus", count: 40 },
+  { id: 3, cn: "利未记", en: "Leviticus", count: 27 },
+  { id: 4, cn: "民数记", en: "Numbers", count: 36 },
+  { id: 5, cn: "申命记", en: "Deuteronomy", count: 34 },
+  { id: 6, cn: "约书亚记", en: "Joshua", count: 24 },
+  { id: 7, cn: "士师记", en: "Judges", count: 21 },
+  { id: 8, cn: "路得记", en: "Ruth", count: 4 },
+  { id: 9, cn: "撒母耳记上", en: "1 Samuel", count: 31 },
+  { id: 10, cn: "撒母耳记下", en: "2 Samuel", count: 24 },
+  { id: 11, cn: "列王纪上", en: "1 Kings", count: 22 },
+  { id: 12, cn: "列王纪下", en: "2 Kings", count: 25 },
+  { id: 13, cn: "历代志上", en: "1 Chronicles", count: 29 },
+  { id: 14, cn: "历代志下", en: "2 Chronicles", count: 36 },
+  { id: 15, cn: "以斯拉记", en: "Ezra", count: 10 },
+  { id: 16, cn: "尼希米记", en: "Nehemiah", count: 13 },
+  { id: 17, cn: "以斯帖记", en: "Esther", count: 10 },
+  { id: 18, cn: "约伯记", en: "Job", count: 42 },
+  { id: 19, cn: "诗篇", en: "Psalms", count: 150 },
+  { id: 20, cn: "箴言", en: "Proverbs", count: 31 },
+  { id: 21, cn: "传道书", en: "Ecclesiastes", count: 12 },
+  { id: 22, cn: "雅歌", en: "Song of Songs", count: 8 },
+  { id: 23, cn: "以赛亚书", en: "Isaiah", count: 66 },
+  { id: 24, cn: "耶利米书", en: "Jeremiah", count: 52 },
+  { id: 25, cn: "耶利米哀歌", en: "Lamentations", count: 5 },
+  { id: 26, cn: "以西结书", en: "Ezekiel", count: 48 },
+  { id: 27, cn: "但以理书", en: "Daniel", count: 12 },
+  { id: 28, cn: "何西阿书", en: "Hosea", count: 14 },
+  { id: 29, cn: "约珥书", en: "Joel", count: 3 },
+  { id: 30, cn: "阿摩司书", en: "Amos", count: 9 },
+  { id: 31, cn: "俄巴底亚书", en: "Obadiah", count: 1 },
+  { id: 32, cn: "约拿书", en: "Jonah", count: 4 },
+  { id: 33, cn: "弥迦书", en: "Micah", count: 7 },
+  { id: 34, cn: "那鸿书", en: "Nahum", count: 3 },
+  { id: 35, cn: "哈巴谷书", en: "Habakkuk", count: 3 },
+  { id: 36, cn: "西番雅书", en: "Zephaniah", count: 3 },
+  { id: 37, cn: "哈该书", en: "Haggai", count: 2 },
+  { id: 38, cn: "撒迦利亚书", en: "Zechariah", count: 14 },
+  { id: 39, cn: "玛拉基书", en: "Malachi", count: 4 },
+  { id: 40, cn: "马太福音", en: "Matthew", count: 28 },
+  { id: 41, cn: "马可福音", en: "Mark", count: 16 },
+  { id: 42, cn: "路加福音", en: "Luke", count: 24 },
+  { id: 43, cn: "约翰福音", en: "John", count: 21 },
+  { id: 44, cn: "使徒行传", en: "Acts", count: 28 },
+  { id: 45, cn: "罗马书", en: "Romans", count: 16 },
+  { id: 46, cn: "哥林多前书", en: "1 Corinthians", count: 16 },
+  { id: 47, cn: "哥林多后书", en: "2 Corinthians", count: 13 },
+  { id: 48, cn: "加拉太书", en: "Galatians", count: 6 },
+  { id: 49, cn: "以弗所书", en: "Ephesians", count: 6 },
+  { id: 50, cn: "腓立比书", en: "Philippians", count: 4 },
+  { id: 51, cn: "歌罗西书", en: "Colossians", count: 4 },
+  { id: 52, cn: "帖撒罗尼迦前书", en: "1 Thessalonians", count: 5 },
+  { id: 53, cn: "帖撒罗尼迦后书", en: "2 Thessalonians", count: 3 },
+  { id: 54, cn: "提摩太前书", en: "1 Timothy", count: 6 },
+  { id: 55, cn: "提摩太后书", en: "2 Timothy", count: 4 },
+  { id: 56, cn: "提多书", en: "Titus", count: 3 },
+  { id: 57, cn: "腓利门书", en: "Philemon", count: 1 },
+  { id: 58, cn: "希伯来书", en: "Hebrews", count: 13 },
+  { id: 59, cn: "雅各书", en: "James", count: 5 },
+  { id: 60, cn: "彼得前书", en: "1 Peter", count: 5 },
+  { id: 61, cn: "彼得后书", en: "2 Peter", count: 3 },
+  { id: 62, cn: "约翰一书", en: "1 John", count: 5 },
+  { id: 63, cn: "约翰二书", en: "2 John", count: 1 },
+  { id: 64, cn: "约翰三书", en: "3 John", count: 1 },
+  { id: 65, cn: "犹大书", en: "Jude", count: 1 },
+  { id: 66, cn: "启示录", en: "Revelation", count: 22 },
+];
+
 function getVersionList() {
   return versionList;
 }
@@ -21,4 +90,33 @@ function getVersionById(id) {
   return versionList.find((v) => v.id === id);
 }
 
-export { getVersionList, getVersionById };
+function getBookList(version) {
+  const { lang } = getVersionById(version);
+  return bookList.map((book) => ({
+    id: book.id,
+    label: book[lang],
+  }));
+}
+
+function getBookById(version, book) {
+  const { lang } = getVersionById(version);
+  const bookItem = bookList[book - 1];
+  return { id: bookItem.id, label: bookItem[lang] };
+}
+
+function getChapterList(book) {
+  const { count } = bookList[book - 1];
+  const options = [];
+  for (let i = 1; i <= count; i++) {
+    options.push({ id: i, label: i });
+  }
+  return options;
+}
+
+export {
+  getVersionList,
+  getVersionById,
+  getBookList,
+  getBookById,
+  getChapterList,
+};

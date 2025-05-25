@@ -2,6 +2,7 @@ import { createSignal, createEffect, Show, useContext } from "solid-js";
 import { getVerses } from "./api";
 import { SettingItem } from "./components";
 import { ControlContext } from "./context";
+import { getBookById } from "./data";
 import {
   SelectVersion,
   SelectBook,
@@ -31,18 +32,18 @@ function Toolbar() {
 }
 
 function Content() {
-  const { version, book, chapter, config } = useContext(ControlContext);
+  const { chapter, config } = useContext(ControlContext);
   const [verses, setVerses] = createSignal([]);
 
   createEffect(async () => {
-    const verses = await getVerses(config.version, book().id, chapter().id);
+    const verses = await getVerses(config.version, config.book, config.chapter);
     setVerses(verses);
     document.documentElement.scrollTop = 0;
   });
 
   const ChapterTitle = () => (
     <Show when={config.title}>
-      <h1 class="chapter-title">{`${book().label} ${chapter().id}`}</h1>
+      <h1 class="chapter-title">{`${getBookById(config.version, config.book).label} ${config.chapter}`}</h1>
     </Show>
   );
 
