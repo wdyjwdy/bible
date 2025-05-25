@@ -4,6 +4,9 @@ import {
   getOptionsChapter,
 } from "./options";
 
+import { getVersionById } from "./data";
+import { cleanNode } from "solid-js/types/server/reactive.js";
+
 async function openDB() {
   return new Promise((resolve, reject) => {
     const request = indexedDB.open("BibleApp");
@@ -39,25 +42,26 @@ async function readFromCache(key) {
   });
 }
 
-async function getBibleData(version = "cus") {
+async function getBibleData(version) {
   try {
-    const cache = await readFromCache(version);
+    const { code } = getVersionById(version);
+    const cache = await readFromCache(code);
     if (cache) {
       return cache;
     }
-    const url = `https://raw.githubusercontent.com/wdyjwdy/bible/main/data/${version}.json`;
+    const url = `https://raw.githubusercontent.com/wdyjwdy/bible/main/data/${code}.json`;
     const res = await fetch(url);
     const json = await res.json();
-    saveToCache(version, json);
+    saveToCache(code, json);
     return json;
   } catch (error) {
     console.error("getBibleData", error);
   }
 }
 
-async function getVerses(version = "cus", volumn = 1, chapter = 1) {
+async function getVerses(version = 1, book = 1, chapter = 1) {
   const data = await getBibleData(version);
-  return data.filter((x) => x.b === volumn && x.c === chapter);
+  return data.filter(({ b, c }) => b === book && c === chapter);
 }
 
 async function searchVerses(version, query) {

@@ -17,4 +17,8 @@ function getVersionList() {
   return versionList;
 }
 
-export { getVersionList };
+function getVersionById(id) {
+  return versionList.find((v) => v.id === id);
+}
+
+export { getVersionList, getVersionById };

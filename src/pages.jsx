@@ -35,7 +35,7 @@ function Content() {
   const [verses, setVerses] = createSignal([]);
 
   createEffect(async () => {
-    const verses = await getVerses(version().version, book().id, chapter().id);
+    const verses = await getVerses(config.version, book().id, chapter().id);
     setVerses(verses);
     document.documentElement.scrollTop = 0;
   });

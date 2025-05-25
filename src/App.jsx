@@ -29,12 +29,12 @@ const App = () => {
   onMount(async () => {
     const config = await getOptionsConfig();
     setConfig({
+      version: config.version,
       newline: config.newline,
       number: config.number,
       title: config.title,
       heading: config.heading,
     });
-    setVersion(config.version);
     setSetting(config.setting);
     document.documentElement.dataset.themeLight = config.themeLight;
     document.documentElement.dataset.themeDark = config.themeDark;

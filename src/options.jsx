@@ -9,6 +9,7 @@ import { setOptionsConfig, getOptionsConfig } from "./api";
 import { ControlContext } from "./context";
 import { Button, Toggle, Switch, Select, Search } from "./components";
 import { ArrowLeft, ArrowRight, Ellipsis, Undo2 } from "lucide-solid";
+import { getVersionList, getVersionById } from "./data";
 
 const bibleOptions = [
   { id: 1, cn: "创世纪", en: "Genesis", num: 50 },
@@ -178,19 +179,22 @@ function getOptionsChapter(book = 1) {
 }
 
 function SelectVersion() {
-  const { version, setVersion } = useContext(ControlContext);
-  const options = getOptionsVersion();
+  const { config, setConfig } = useContext(ControlContext);
 
-  function handleChange(value) {
-    setVersion(value);
-    setOptionsConfig("version", value);
+  function handleChange({ id }) {
+    setConfig("version", id);
+    setOptionsConfig("version", id);
+  }
+
+  function getSelection() {
+    return getVersionById(config.version);
   }
 
   return (
     <Select
       id="select-version"
-      options={() => options}
-      value={version}
+      options={getVersionList}
+      value={getSelection}
       onChange={handleChange}
     />
   );
