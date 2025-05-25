@@ -324,47 +324,47 @@ function ButtonToggleSetting() {
 }
 
 function SwitchChapterView() {
-  const { view, setView } = useContext(ControlContext);
+  const { config, setConfig } = useContext(ControlContext);
 
   function handleChange(value) {
-    setView(value);
-    setOptionsConfig("view", value);
+    setConfig("newline", value);
+    setOptionsConfig("newline", value);
   }
 
-  return <Switch checked={view} onChange={handleChange} />;
+  return <Switch checked={config.newline} onChange={handleChange} />;
 }
 
 function SwitchVerseNumber() {
-  const { verseNumber, setVerseNumber } = useContext(ControlContext);
+  const { config, setConfig } = useContext(ControlContext);
 
   function handleChange(value) {
-    setVerseNumber(value);
-    setOptionsConfig("verseNumber", value);
+    setConfig("number", value);
+    setOptionsConfig("number", value);
   }
 
-  return <Switch checked={verseNumber} onChange={handleChange} />;
+  return <Switch checked={config.number} onChange={handleChange} />;
 }
 
 function SwitchChapterTitle() {
-  const { chapterTitle, setChapterTitle } = useContext(ControlContext);
+  const { config, setConfig } = useContext(ControlContext);
 
   function handleChange(value) {
-    setChapterTitle(value);
-    setOptionsConfig("chapterTitle", value);
+    setConfig("title", value);
+    setOptionsConfig("title", value);
   }
 
-  return <Switch checked={chapterTitle} onChange={handleChange} />;
+  return <Switch checked={config.title} onChange={handleChange} />;
 }
 
 function SwitchChapterHeading() {
-  const { chapterHeading, setChapterHeading } = useContext(ControlContext);
+  const { config, setConfig } = useContext(ControlContext);
 
   function handleChange(value) {
-    setChapterHeading(value);
-    setOptionsConfig("chapterHeading", value);
+    setConfig("heading", value);
+    setOptionsConfig("heading", value);
   }
 
-  return <Switch checked={chapterHeading} onChange={handleChange} />;
+  return <Switch checked={config.heading} onChange={handleChange} />;
 }
 
 function ToggleGroupThemeLight() {

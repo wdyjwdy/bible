@@ -31,15 +31,7 @@ function Toolbar() {
 }
 
 function Content() {
-  const {
-    version,
-    book,
-    chapter,
-    view,
-    verseNumber,
-    chapterTitle,
-    chapterHeading,
-  } = useContext(ControlContext);
+  const { version, book, chapter, config } = useContext(ControlContext);
   const [verses, setVerses] = createSignal([]);
 
   createEffect(async () => {
@@ -49,7 +41,7 @@ function Content() {
   });
 
   const ChapterTitle = () => (
-    <Show when={chapterTitle()}>
+    <Show when={config.title}>
       <h1 class="chapter-title">{`${book().label} ${chapter().id}`}</h1>
     </Show>
   );
@@ -65,11 +57,11 @@ function Content() {
       <For each={verses()}>
         {({ v, t, h }) => {
           if (h) {
-            return chapterHeading() ? <h2>{h}</h2> : null;
+            return config.heading ? <h2>{h}</h2> : null;
           }
           return (
             <p id={v}>
-              <Show when={verseNumber()}>
+              <Show when={config.number}>
                 <span class="verse-number">{v}</span>
               </Show>
               <span class="verse-text">{t}</span>
@@ -81,7 +73,7 @@ function Content() {
   );
 
   return (
-    <Show when={view()} fallback={<View view="text-view" />}>
+    <Show when={config.newline} fallback={<View view="text-view" />}>
       <View view="list-view" />
     </Show>
   );

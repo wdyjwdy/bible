@@ -12,6 +12,7 @@ A simple Bible web app. [Visit the website](https://wdyjwdy.github.io/bible/).
 - [ ] Highlight names of people and places
 - [ ] Compare translations layout
 - [x] Adjustable font size
+- [ ] Red letter
 
 ## Translations
 

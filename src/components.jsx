@@ -23,11 +23,10 @@ function Toggle(props) {
 
 function Switch(props) {
   let ref;
-  const { checked, onChange } = props;
 
   function handleClick() {
-    onChange(!checked());
-    if (checked()) {
+    props.onChange(!props.checked);
+    if (props.checked) {
       ref.dataset.checked = "";
     } else {
       delete ref.dataset.checked;
@@ -35,7 +34,7 @@ function Switch(props) {
   }
 
   onMount(() => {
-    if (checked()) {
+    if (props.checked) {
       ref.dataset.checked = "";
     }
   });
