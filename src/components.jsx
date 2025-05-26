@@ -85,8 +85,7 @@ function Select(props) {
 
 function Search() {
   let ref;
-  const { version, setSetting, setBook, setChapter, config, setConfig } =
-    useContext(ConfigContext);
+  const { setPage, setMore, config, setConfig } = useContext(ConfigContext);
   const [query, setQuery] = createSignal("");
   const [verses, setVerses] = createSignal([]);
   const [loading, setLoading] = createSignal(false);
@@ -138,7 +137,8 @@ function Search() {
     const bookName = getBookById(config.version, b).label;
 
     function handleClick() {
-      setSetting(true);
+      setMore(false);
+      setPage("verses");
       setConfig({
         book: b,
         chapter: c,

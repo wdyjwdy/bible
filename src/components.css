@@ -45,6 +45,14 @@ button[popovertarget="select-chapter"] {
     width: 20px;
 }
 
+button[popovertarget="select-light-theme"] {
+    width: 140px;
+}
+
+button[popovertarget="select-dark-theme"] {
+    width: 140px;
+}
+
 .button {
     flex: 1;
 }

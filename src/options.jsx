@@ -5,10 +5,18 @@ import {
   onCleanup,
   onMount,
 } from "solid-js";
-import { setCacheConfig, getCacheConfig } from "./api";
+import { setCacheConfig } from "./api";
 import { ConfigContext } from "./context";
 import { Button, Toggle, Switch, Select, Search } from "./components";
-import { ArrowLeft, ArrowRight, Ellipsis, Undo2 } from "lucide-solid";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Ellipsis,
+  Undo2,
+  Settings,
+  Search as SearchIcon,
+  Star,
+} from "lucide-solid";
 import {
   getVersionList,
   getVersionById,
@@ -157,18 +165,63 @@ function ButtonNextArrow() {
 }
 
 function ButtonToggleSetting() {
-  const { setting, setSetting } = useContext(ConfigContext);
+  const { more, setMore, setPage } = useContext(ConfigContext);
 
   function handleClick() {
-    setSetting((s) => !s);
+    if (more()) {
+      setPage("verses");
+    }
+    setMore((s) => !s);
   }
 
   return (
     <Toggle onClick={handleClick}>
-      <Show when={setting()} fallback={<Undo2 />}>
+      <Show when={!more()} fallback={<Undo2 />}>
         <Ellipsis />
       </Show>
     </Toggle>
+  );
+}
+
+function ButtonSetting() {
+  const { setPage } = useContext(ConfigContext);
+
+  function handleClick() {
+    setPage("setting");
+  }
+
+  return (
+    <Button onClick={handleClick}>
+      <Settings />
+    </Button>
+  );
+}
+
+function ButtonSearch() {
+  const { setPage } = useContext(ConfigContext);
+
+  function handleClick() {
+    setPage("search");
+  }
+
+  return (
+    <Button onClick={handleClick}>
+      <SearchIcon />
+    </Button>
+  );
+}
+
+function ButtonFavorites() {
+  const { setPage } = useContext(ConfigContext);
+
+  function handleClick() {
+    setPage("favorites");
+  }
+
+  return (
+    <Button onClick={handleClick}>
+      <Star />
+    </Button>
   );
 }
 
@@ -281,6 +334,9 @@ export {
   ButtonPrevArrow,
   ButtonNextArrow,
   ButtonToggleSetting,
+  ButtonSetting,
+  ButtonSearch,
+  ButtonFavorites,
   SwitchVerseNumber,
   SwitchChapterTitle,
   SwitchChapterHeading,

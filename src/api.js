@@ -57,6 +57,14 @@ async function getVerses(version, book, chapter) {
   return data.filter(({ b, c }) => b === book && c === chapter);
 }
 
+async function getFavorites() {
+  const { version, favorites } = await getCacheConfig();
+  const data = await getBibleData(version);
+  return favorites.map(({ b, c, v }) => {
+    return data.find((d) => d.b === b && d.c === c && d.v === v);
+  });
+}
+
 async function searchVerses(version, query) {
   if (!query) return [];
   const verses = await getBibleData(version);
@@ -101,4 +109,10 @@ async function setCacheConfig(key, value) {
   }
 }
 
-export { getVerses, getCacheConfig, setCacheConfig, searchVerses };
+export {
+  getFavorites,
+  getVerses,
+  getCacheConfig,
+  setCacheConfig,
+  searchVerses,
+};

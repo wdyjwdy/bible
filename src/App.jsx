@@ -1,12 +1,14 @@
 import { createSignal, onMount, Show } from "solid-js";
+import { Dynamic } from "solid-js/web";
 import { createStore } from "solid-js/store";
 import { ConfigContext } from "./context";
-import { Toolbar, Content, Setting } from "./pages";
+import { pages } from "./pages";
 import { getCacheConfig } from "./api";
 import "./App.css";
 
 const App = () => {
-  const [setting, setSetting] = createSignal(true);
+  const [more, setMore] = createSignal(false);
+  const [page, setPage] = createSignal("verses");
   const [config, setConfig] = createStore({
     version: 10,
     book: 1,
@@ -30,12 +32,10 @@ const App = () => {
   return (
     <div class="app">
       <ConfigContext.Provider
-        value={{ setting, setSetting, config, setConfig }}
+        value={{ more, setMore, page, setPage, config, setConfig }}
       >
-        <Toolbar />
-        <Show when={setting()} fallback={<Setting />}>
-          <Content />
-        </Show>
+        {pages.toolbar()}
+        <Dynamic component={pages[page()]} />
       </ConfigContext.Provider>
     </div>
   );

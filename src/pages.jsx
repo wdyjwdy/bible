@@ -1,5 +1,11 @@
-import { createSignal, createEffect, Show, useContext } from "solid-js";
-import { getVerses } from "./api";
+import {
+  createSignal,
+  createEffect,
+  Show,
+  useContext,
+  onMount,
+} from "solid-js";
+import { getVerses, getFavorites } from "./api";
 import { SettingItem } from "./components";
 import { ConfigContext } from "./context";
 import { getBookById } from "./data";
@@ -11,6 +17,9 @@ import {
   ButtonPrevArrow,
   ButtonNextArrow,
   ButtonToggleSetting,
+  ButtonSetting,
+  ButtonSearch,
+  ButtonFavorites,
   SwitchVerseNumber,
   SwitchChapterTitle,
   SwitchChapterHeading,
@@ -21,12 +30,27 @@ import {
 } from "./options";
 
 function Toolbar() {
-  return (
-    <div class="toolbar">
+  const { more } = useContext(ConfigContext);
+  const Settings = () => (
+    <>
+      <ButtonSetting />
+      <ButtonSearch />
+      <ButtonFavorites />
+    </>
+  );
+  const Actions = () => (
+    <>
       <SelectBook />
       <SelectChapter />
       <ButtonPrevArrow />
       <ButtonNextArrow />
+    </>
+  );
+  return (
+    <div class="toolbar">
+      <Show when={!more()} fallback={<Settings />}>
+        <Actions />
+      </Show>
       <ButtonToggleSetting />
     </div>
   );
@@ -103,49 +127,79 @@ function Content() {
 
 function Setting() {
   return (
-    <div class="setting">
-      <SearchBox />
-      <SettingItem
-        label="Version"
-        description="Select Bible translation"
-        option={<SelectVersion />}
-      />
-      <SettingItem
-        label="List View"
-        description="Show each verse in a separate paragraph"
-        option={<SwitchChapterView />}
-      />
-      <SettingItem
-        label="Verse Number"
-        description="Only effective in Paragraph View"
-        option={<SwitchVerseNumber />}
-      />
-      <SettingItem
-        label="Chapter Title"
-        description="Show chapter name above the verses"
-        option={<SwitchChapterTitle />}
-      />
-      <SettingItem
-        label="Chapter Heading"
-        description="Show verses summary (available in some version)"
-        option={<SwitchChapterHeading />}
-      />
-      <SettingItem
-        label="Theme Light"
-        description="Follow system theme by default"
-        option={<ToggleGroupThemeLight />}
-      />
-      <SettingItem
-        label="Theme Dark"
-        description="Follow system theme by default"
-        option={<ToggleGroupThemeDark />}
-      />
-      <SettingItem
-        label="Font Size"
-        description="Press Cmd +/- to adjust font size"
-      />
+    <div class="setting-page">
+      <span>Version</span>
+      <SelectVersion />
+      <span>Newline</span>
+      <SwitchChapterView />
+      <span>Verse Number</span>
+      <SwitchVerseNumber />
+      <span>Title</span>
+      <SwitchChapterTitle />
+      <span>Heading</span>
+      <SwitchChapterHeading />
+      <span>Light Theme</span>
+      <ToggleGroupThemeLight />
+      <span>Dark Theme</span>
+      <ToggleGroupThemeDark />
     </div>
   );
 }
 
-export { Toolbar, Content, Setting };
+function SearchPage() {
+  return (
+    <div class="search-page">
+      <SearchBox />
+    </div>
+  );
+}
+
+function FavoritesPage() {
+  const { config, setConfig, setPage, setMore } = useContext(ConfigContext);
+  const [verses, setVerses] = createSignal([]);
+
+  onMount(async () => {
+    const result = await getFavorites();
+    setVerses(result);
+  });
+
+  function getBookLabel(book) {
+    return getBookById(config.version, book).label;
+  }
+
+  function handleClick({ b, c, v }) {
+    setMore(false);
+    setPage("verses");
+    setConfig({
+      book: b,
+      chapter: c,
+    });
+    setTimeout(() => {
+      const el = document.getElementById(v);
+      el.scrollIntoView({ behavior: "smooth" });
+    }, 500);
+  }
+
+  return (
+    <div class="favorites-page">
+      {verses().map(({ b, c, v, t }) => (
+        <p onClick={[handleClick, { b, c, v }]}>
+          <span class="number">
+            {getBookLabel(b)} {c}:{v}
+          </span>
+          <span>{t}</span>
+        </p>
+      ))}
+    </div>
+  );
+}
+
+const pages = {
+  toolbar: () => <Toolbar />,
+  verses: () => <Content />,
+  setting: () => <Setting />,
+  search: () => <SearchPage />,
+  favorites: () => <FavoritesPage />,
+};
+
+export { pages };
