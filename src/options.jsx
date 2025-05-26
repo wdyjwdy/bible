@@ -7,7 +7,7 @@ import {
 } from "solid-js";
 import { setCacheConfig } from "./api";
 import { ConfigContext } from "./context";
-import { Button, Toggle, Switch, Select, Search } from "./components";
+import { Button, Switch, Select, Search } from "./components";
 import {
   ArrowLeft,
   ArrowRight,
@@ -164,7 +164,7 @@ function ButtonNextArrow() {
   );
 }
 
-function ButtonToggleSetting() {
+function ButtonMore() {
   const { more, setMore, setPage } = useContext(ConfigContext);
 
   function handleClick() {
@@ -175,16 +175,16 @@ function ButtonToggleSetting() {
   }
 
   return (
-    <Toggle onClick={handleClick}>
+    <Button onClick={handleClick} class="toggle">
       <Show when={!more()} fallback={<Undo2 />}>
         <Ellipsis />
       </Show>
-    </Toggle>
+    </Button>
   );
 }
 
 function ButtonSetting() {
-  const { setPage } = useContext(ConfigContext);
+  const { page, setPage } = useContext(ConfigContext);
 
   function handleClick() {
     setPage("setting");
@@ -192,27 +192,32 @@ function ButtonSetting() {
 
   return (
     <Button onClick={handleClick}>
-      <Settings />
+      <Show when={page() === "setting"} fallback={<Settings />}>
+        <Settings color="oklch(0.57 0.17 252.81)" />
+      </Show>
     </Button>
   );
 }
 
 function ButtonSearch() {
-  const { setPage } = useContext(ConfigContext);
+  const { page, setPage } = useContext(ConfigContext);
 
   function handleClick() {
+    console.log(page());
     setPage("search");
   }
 
   return (
     <Button onClick={handleClick}>
-      <SearchIcon />
+      <Show when={page() === "search"} fallback={<SearchIcon />}>
+        <SearchIcon color="oklch(0.63 0.17 293.52)" />
+      </Show>
     </Button>
   );
 }
 
 function ButtonFavorites() {
-  const { setPage } = useContext(ConfigContext);
+  const { page, setPage } = useContext(ConfigContext);
 
   function handleClick() {
     setPage("favorites");
@@ -220,7 +225,9 @@ function ButtonFavorites() {
 
   return (
     <Button onClick={handleClick}>
-      <Star />
+      <Show when={page() === "favorites"} fallback={<Star />}>
+        <Star color="oklch(0.84 0.2 97.48)" />
+      </Show>
     </Button>
   );
 }
@@ -333,7 +340,7 @@ export {
   SelectChapter,
   ButtonPrevArrow,
   ButtonNextArrow,
-  ButtonToggleSetting,
+  ButtonMore,
   ButtonSetting,
   ButtonSearch,
   ButtonFavorites,

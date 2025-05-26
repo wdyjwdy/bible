@@ -7,15 +7,7 @@ import "./components.css";
 
 function Button(props) {
   return (
-    <button type="button" class="button" {...props}>
-      {props.children}
-    </button>
-  );
-}
-
-function Toggle(props) {
-  return (
-    <button type="button" class="toggle" {...props}>
+    <button type="button" {...props}>
       {props.children}
     </button>
   );
@@ -202,4 +194,4 @@ function SettingItem({ label, description, option }) {
   );
 }
 
-export { Button, Toggle, Switch, Select, Search, SettingItem };
+export { Button, Switch, Select, Search, SettingItem };

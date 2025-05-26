@@ -109,39 +109,9 @@ mark {
     }
 }
 
-.setting {
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    background-color: var(--body-bg);
-
-    .setting-item {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin-top: 20px;
-        justify-content: space-between;
-
-        .setting-info {
-            display: flex;
-            flex-direction: column;
-
-            .setting-label {
-                font-size: large;
-                color: var(--body-text);
-            }
-
-            .setting-description {
-                font-size: small;
-                color: var(--body-text-desp);
-            }
-        }
-    }
-}
-
 .setting-page {
     padding: 20px;
+    color: var(--body-text);
     display: grid;
     grid-template-columns: auto auto;
     align-items: center;

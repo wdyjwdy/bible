@@ -16,7 +16,7 @@ import {
   SelectChapter,
   ButtonPrevArrow,
   ButtonNextArrow,
-  ButtonToggleSetting,
+  ButtonMore,
   ButtonSetting,
   ButtonSearch,
   ButtonFavorites,
@@ -51,7 +51,7 @@ function Toolbar() {
       <Show when={!more()} fallback={<Settings />}>
         <Actions />
       </Show>
-      <ButtonToggleSetting />
+      <ButtonMore />
     </div>
   );
 }

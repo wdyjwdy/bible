@@ -10,6 +10,7 @@ button {
     background-color: var(--button-bg);
     touch-action: none;
     cursor: pointer;
+    flex: 1;
 
     @media (any-hover: hover) {
         &:hover {
@@ -20,6 +21,10 @@ button {
             color: #636363;
         }
     }
+}
+
+.select {
+    flex: unset;
 }
 
 button[popovertarget="select-version"] {
@@ -53,8 +58,8 @@ button[popovertarget="select-dark-theme"] {
     width: 140px;
 }
 
-.button {
-    flex: 1;
+button.toggle {
+    flex: unset;
 }
 
 .switch {
