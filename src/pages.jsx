@@ -3,6 +3,7 @@ import { getVerses } from "./api";
 import { SettingItem } from "./components";
 import { ControlContext } from "./context";
 import { getBookById } from "./data";
+import { setOptionsConfig } from "./api";
 import {
   SelectVersion,
   SelectBook,
@@ -32,7 +33,7 @@ function Toolbar() {
 }
 
 function Content() {
-  const { chapter, config } = useContext(ControlContext);
+  const { config, setConfig } = useContext(ControlContext);
   const [verses, setVerses] = createSignal([]);
 
   createEffect(async () => {
@@ -47,6 +48,17 @@ function Content() {
     </Show>
   );
 
+  function handleClick({ b, c, v }) {
+    const isFavorite = config.favorites.some(
+      (f) => f.b === b && f.c === c && f.v === v,
+    );
+    const favorites = isFavorite
+      ? config.favorites.filter((f) => f.b !== b || f.c !== c || f.v !== v)
+      : [...config.favorites, { b, c, v }];
+    setConfig("favorites", favorites);
+    setOptionsConfig("favorites", favorites);
+  }
+
   const View = ({ view }) => (
     <div
       classList={{
@@ -56,12 +68,21 @@ function Content() {
     >
       <ChapterTitle />
       <For each={verses()}>
-        {({ v, t, h }) => {
+        {({ b, c, v, t, h }) => {
           if (h) {
             return config.heading ? <h2>{h}</h2> : null;
           }
           return (
-            <p id={v}>
+            <p
+              id={v}
+              classList={{
+                favorite: config.favorites.some(
+                  (f) => f.b === b && f.c === c && f.v === v,
+                ),
+              }}
+              onClick={[handleClick, { b, c, v }]}
+              onKeyDown={null}
+            >
               <Show when={config.number}>
                 <span class="verse-number">{v}</span>
               </Show>

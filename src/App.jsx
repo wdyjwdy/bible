@@ -17,6 +17,7 @@ const App = () => {
     heading: true,
     light: 1,
     dark: 1,
+    favorites: [],
   });
 
   onMount(async () => {

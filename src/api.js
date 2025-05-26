@@ -82,6 +82,7 @@ async function getOptionsConfig() {
       heading: true,
       light: 1,
       dark: 1,
+      favorites: [],
     };
     saveToCache("config", defaultConfig);
     return defaultConfig;
