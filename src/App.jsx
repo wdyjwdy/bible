@@ -1,14 +1,16 @@
-import { createSignal, onMount } from "solid-js";
+import { onMount } from "solid-js";
 import { Dynamic } from "solid-js/web";
 import { createStore } from "solid-js/store";
-import { ConfigContext } from "./context";
+import { Context } from "./context";
 import { pages } from "./pages";
 import { getCacheConfig } from "./api";
 import "./App.css";
 
 const App = () => {
-  const [more, setMore] = createSignal(false);
-  const [page, setPage] = createSignal("verses");
+  const [action, setAction] = createStore({
+    more: false,
+    page: "verses",
+  });
   const [config, setConfig] = createStore({
     version: 4,
     book: 1,
@@ -21,27 +23,19 @@ const App = () => {
     dark: 1,
     favorites: [],
   });
-  const providerValues = {
-    more,
-    setMore,
-    page,
-    setPage,
-    config,
-    setConfig,
-  };
 
   onMount(async () => {
-    const config = await getCacheConfig();
-    setConfig(config);
-    document.documentElement.dataset.light = config.light;
-    document.documentElement.dataset.dark = config.dark;
+    const cacheConfig = await getCacheConfig();
+    setConfig(cacheConfig);
+    document.documentElement.dataset.light = cacheConfig.light;
+    document.documentElement.dataset.dark = cacheConfig.dark;
   });
 
   return (
-    <ConfigContext.Provider value={providerValues}>
+    <Context.Provider value={{ action, setAction, config, setConfig }}>
       {pages.toolbar()}
-      <Dynamic component={pages[page()]} />
-    </ConfigContext.Provider>
+      <Dynamic component={pages[action.page]} />
+    </Context.Provider>
   );
 };
 

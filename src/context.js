@@ -1,3 +1,3 @@
 import { createContext } from "solid-js";
 
-export const ConfigContext = createContext();
+export const Context = createContext();

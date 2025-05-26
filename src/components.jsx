@@ -1,6 +1,6 @@
 import { createSignal, For, onMount, Show, useContext } from "solid-js";
 import { Search as SearchIcon, LoaderCircle } from "lucide-solid";
-import { ConfigContext } from "./context";
+import { Context } from "./context";
 import { searchVerses, getBookById } from "./api";
 import "./components.css";
 
@@ -76,7 +76,7 @@ function Select(props) {
 
 function Search() {
   let ref;
-  const { setPage, setMore, config, setConfig } = useContext(ConfigContext);
+  const { action, setAction, config, setConfig } = useContext(Context);
   const [query, setQuery] = createSignal("");
   const [verses, setVerses] = createSignal([]);
   const [loading, setLoading] = createSignal(false);
@@ -128,8 +128,10 @@ function Search() {
     const bookName = getBookById(config.version, b).label;
 
     function handleClick() {
-      setMore(false);
-      setPage("verses");
+      setAction({
+        more: false,
+        page: "verses",
+      });
       setConfig({
         book: b,
         chapter: c,

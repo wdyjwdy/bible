@@ -6,29 +6,29 @@ import {
   onMount,
 } from "solid-js";
 import { getVerses, getFavorites } from "./api";
-import { ConfigContext } from "./context";
+import { Context } from "./context";
 import { setCacheConfig, getBookById } from "./api";
 import {
   SelectVersion,
   SelectBook,
   SelectChapter,
-  ButtonPrevArrow,
-  ButtonNextArrow,
+  ButtonPrev,
+  ButtonNext,
   ButtonMore,
   ButtonSetting,
   ButtonSearch,
   ButtonFavorites,
-  SwitchVerseNumber,
-  SwitchChapterTitle,
-  SwitchChapterHeading,
-  SwitchChapterView,
-  ToggleGroupThemeLight,
-  ToggleGroupThemeDark,
+  SwitchNumber,
+  SwitchTitle,
+  SwitchHeading,
+  SwitchNewline,
+  SelectLight,
+  SelectDark,
   SearchBox,
-} from "./options";
+} from "./actions";
 
 function Toolbar() {
-  const { more } = useContext(ConfigContext);
+  const { action } = useContext(Context);
   const Settings = () => (
     <>
       <ButtonSetting />
@@ -40,13 +40,13 @@ function Toolbar() {
     <>
       <SelectBook />
       <SelectChapter />
-      <ButtonPrevArrow />
-      <ButtonNextArrow />
+      <ButtonPrev />
+      <ButtonNext />
     </>
   );
   return (
     <div class="toolbar">
-      <Show when={!more()} fallback={<Settings />}>
+      <Show when={!action.more} fallback={<Settings />}>
         <Actions />
       </Show>
       <ButtonMore />
@@ -55,7 +55,7 @@ function Toolbar() {
 }
 
 function Content() {
-  const { config, setConfig } = useContext(ConfigContext);
+  const { config, setConfig } = useContext(Context);
   const [verses, setVerses] = createSignal([]);
 
   createEffect(async () => {
@@ -129,17 +129,17 @@ function Setting() {
       <span>Version</span>
       <SelectVersion />
       <span>Newline</span>
-      <SwitchChapterView />
+      <SwitchNewline />
       <span>Verse Number</span>
-      <SwitchVerseNumber />
+      <SwitchNumber />
       <span>Title</span>
-      <SwitchChapterTitle />
+      <SwitchTitle />
       <span>Heading</span>
-      <SwitchChapterHeading />
+      <SwitchHeading />
       <span>Light Theme</span>
-      <ToggleGroupThemeLight />
+      <SelectLight />
       <span>Dark Theme</span>
-      <ToggleGroupThemeDark />
+      <SelectDark />
     </div>
   );
 }
@@ -153,7 +153,7 @@ function SearchPage() {
 }
 
 function FavoritesPage() {
-  const { config, setConfig, setPage, setMore } = useContext(ConfigContext);
+  const { config, setConfig, setAction } = useContext(Context);
   const [verses, setVerses] = createSignal([]);
 
   onMount(async () => {
@@ -166,8 +166,10 @@ function FavoritesPage() {
   }
 
   function handleClick({ b, c, v }) {
-    setMore(false);
-    setPage("verses");
+    setAction({
+      more: false,
+      page: "verses",
+    });
     setConfig({
       book: b,
       chapter: c,

@@ -5,7 +5,7 @@ import {
   onCleanup,
   onMount,
 } from "solid-js";
-import { ConfigContext } from "./context";
+import { Context } from "./context";
 import { Button, Switch, Select, Search } from "./components";
 import {
   ArrowLeft,
@@ -26,7 +26,7 @@ import {
 } from "./api";
 
 function SelectVersion() {
-  const { config, setConfig } = useContext(ConfigContext);
+  const { config, setConfig } = useContext(Context);
 
   function handleChange({ id }) {
     setConfig("version", id);
@@ -48,7 +48,7 @@ function SelectVersion() {
 }
 
 function SelectBook() {
-  const { config, setConfig } = useContext(ConfigContext);
+  const { config, setConfig } = useContext(Context);
   const [options, setOptions] = createSignal(getBookList(1));
 
   function handleChange({ id }) {
@@ -80,7 +80,7 @@ function SelectBook() {
 }
 
 function SelectChapter() {
-  const { config, setConfig } = useContext(ConfigContext);
+  const { config, setConfig } = useContext(Context);
   const [options, setOptions] = createSignal(getChapterList(1));
 
   function handleChange({ id }) {
@@ -107,8 +107,8 @@ function SelectChapter() {
   );
 }
 
-function ButtonPrevArrow() {
-  const { config, setConfig } = useContext(ConfigContext);
+function ButtonPrev() {
+  const { config, setConfig } = useContext(Context);
 
   function handleClick() {
     if (config.chapter > 1) {
@@ -135,8 +135,8 @@ function ButtonPrevArrow() {
   );
 }
 
-function ButtonNextArrow() {
-  const { config, setConfig } = useContext(ConfigContext);
+function ButtonNext() {
+  const { config, setConfig } = useContext(Context);
 
   function handleClick() {
     const { length } = getChapterList(config.book);
@@ -165,18 +165,18 @@ function ButtonNextArrow() {
 }
 
 function ButtonMore() {
-  const { more, setMore, setPage } = useContext(ConfigContext);
+  const { action, setAction } = useContext(Context);
 
   function handleClick() {
-    if (more()) {
-      setPage("verses");
+    if (action.more) {
+      setAction("page", "verses");
     }
-    setMore((s) => !s);
+    setAction("more", !action.more);
   }
 
   return (
     <Button onClick={handleClick} class="toggle">
-      <Show when={!more()} fallback={<Undo2 />}>
+      <Show when={!action.more} fallback={<Undo2 />}>
         <Ellipsis />
       </Show>
     </Button>
@@ -184,15 +184,15 @@ function ButtonMore() {
 }
 
 function ButtonSetting() {
-  const { page, setPage } = useContext(ConfigContext);
+  const { action, setAction } = useContext(Context);
 
   function handleClick() {
-    setPage("setting");
+    setAction("page", "setting");
   }
 
   return (
     <Button onClick={handleClick}>
-      <Show when={page() === "setting"} fallback={<Settings />}>
+      <Show when={action.page === "setting"} fallback={<Settings />}>
         <Settings color="oklch(0.57 0.17 252.81)" />
       </Show>
     </Button>
@@ -200,16 +200,15 @@ function ButtonSetting() {
 }
 
 function ButtonSearch() {
-  const { page, setPage } = useContext(ConfigContext);
+  const { action, setAction } = useContext(Context);
 
   function handleClick() {
-    console.log(page());
-    setPage("search");
+    setAction("page", "search");
   }
 
   return (
     <Button onClick={handleClick}>
-      <Show when={page() === "search"} fallback={<SearchIcon />}>
+      <Show when={action.page === "search"} fallback={<SearchIcon />}>
         <SearchIcon color="oklch(0.63 0.17 293.52)" />
       </Show>
     </Button>
@@ -217,23 +216,23 @@ function ButtonSearch() {
 }
 
 function ButtonFavorites() {
-  const { page, setPage } = useContext(ConfigContext);
+  const { action, setAction } = useContext(Context);
 
   function handleClick() {
-    setPage("favorites");
+    setAction("page", "favorites");
   }
 
   return (
     <Button onClick={handleClick}>
-      <Show when={page() === "favorites"} fallback={<Star />}>
+      <Show when={action.page === "favorites"} fallback={<Star />}>
         <Star color="oklch(0.84 0.2 97.48)" />
       </Show>
     </Button>
   );
 }
 
-function SwitchChapterView() {
-  const { config, setConfig } = useContext(ConfigContext);
+function SwitchNewline() {
+  const { config, setConfig } = useContext(Context);
 
   function handleChange(value) {
     setConfig("newline", value);
@@ -243,8 +242,8 @@ function SwitchChapterView() {
   return <Switch checked={config.newline} onChange={handleChange} />;
 }
 
-function SwitchVerseNumber() {
-  const { config, setConfig } = useContext(ConfigContext);
+function SwitchNumber() {
+  const { config, setConfig } = useContext(Context);
 
   function handleChange(value) {
     setConfig("number", value);
@@ -254,8 +253,8 @@ function SwitchVerseNumber() {
   return <Switch checked={config.number} onChange={handleChange} />;
 }
 
-function SwitchChapterTitle() {
-  const { config, setConfig } = useContext(ConfigContext);
+function SwitchTitle() {
+  const { config, setConfig } = useContext(Context);
 
   function handleChange(value) {
     setConfig("title", value);
@@ -265,8 +264,8 @@ function SwitchChapterTitle() {
   return <Switch checked={config.title} onChange={handleChange} />;
 }
 
-function SwitchChapterHeading() {
-  const { config, setConfig } = useContext(ConfigContext);
+function SwitchHeading() {
+  const { config, setConfig } = useContext(Context);
 
   function handleChange(value) {
     setConfig("heading", value);
@@ -276,8 +275,8 @@ function SwitchChapterHeading() {
   return <Switch checked={config.heading} onChange={handleChange} />;
 }
 
-function ToggleGroupThemeLight() {
-  const { config, setConfig } = useContext(ConfigContext);
+function SelectLight() {
+  const { config, setConfig } = useContext(Context);
   const options = [
     { id: 1, label: "light" },
     { id: 2, label: "soft" },
@@ -303,8 +302,8 @@ function ToggleGroupThemeLight() {
   );
 }
 
-function ToggleGroupThemeDark() {
-  const { config, setConfig } = useContext(ConfigContext);
+function SelectDark() {
+  const { config, setConfig } = useContext(Context);
   const options = [
     { id: 1, label: "dark" },
     { id: 2, label: "night" },
@@ -316,7 +315,7 @@ function ToggleGroupThemeDark() {
 
   function handleChange(value) {
     setConfig("dark", value.id);
-    document.documentElement.dataset.light = value.id;
+    document.documentElement.dataset.dark = value.id;
     setCacheConfig("dark", value.id);
   }
 
@@ -338,17 +337,17 @@ export {
   SelectVersion,
   SelectBook,
   SelectChapter,
-  ButtonPrevArrow,
-  ButtonNextArrow,
+  ButtonPrev,
+  ButtonNext,
   ButtonMore,
   ButtonSetting,
   ButtonSearch,
   ButtonFavorites,
-  SwitchVerseNumber,
-  SwitchChapterTitle,
-  SwitchChapterHeading,
-  SwitchChapterView,
-  ToggleGroupThemeLight,
-  ToggleGroupThemeDark,
+  SwitchNumber,
+  SwitchTitle,
+  SwitchHeading,
+  SwitchNewline,
+  SelectLight,
+  SelectDark,
   SearchBox,
 };
