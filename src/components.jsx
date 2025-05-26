@@ -1,4 +1,4 @@
-import { createSignal, For, onMount, Show, useContext } from "solid-js";
+import { createSignal, For, Show, useContext } from "solid-js";
 import { Search as SearchIcon, LoaderCircle, Check, X } from "lucide-solid";
 import { Portal } from "solid-js/web";
 import { Context } from "./context";

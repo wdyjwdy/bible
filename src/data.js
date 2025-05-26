@@ -80,6 +80,5 @@ export const bookList = [
   { id: 65, cn: "犹大书", en: "Jude", count: 1 },
   { id: 66, cn: "启示录", en: "Revelation", count: 22 },
 ];
-
 export const lightThemeList = ["light", "soft"];
 export const darkThemeList = ["dark", "night"];

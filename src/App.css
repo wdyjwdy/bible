@@ -68,6 +68,7 @@ body {
 
 p {
     margin: 0px;
+    touch-action: manipulation;
 }
 
 mark {
