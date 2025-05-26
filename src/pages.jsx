@@ -14,14 +14,14 @@ import {
   SelectChapter,
   ButtonPrev,
   ButtonNext,
-  ButtonMore,
+  ToggleMore,
   ButtonSetting,
   ButtonSearch,
   ButtonFavorites,
-  SwitchNumber,
-  SwitchTitle,
-  SwitchHeading,
-  SwitchNewline,
+  ToggleNumber,
+  ToggleTitle,
+  ToggleHeading,
+  ToggleNewline,
   SelectLight,
   SelectDark,
   SearchBox,
@@ -49,7 +49,7 @@ function Toolbar() {
       <Show when={!action.more} fallback={<Settings />}>
         <Actions />
       </Show>
-      <ButtonMore />
+      <ToggleMore />
     </div>
   );
 }
@@ -129,13 +129,13 @@ function Setting() {
       <span>Version</span>
       <SelectVersion />
       <span>Newline</span>
-      <SwitchNewline />
+      <ToggleNewline />
       <span>Verse Number</span>
-      <SwitchNumber />
+      <ToggleNumber />
       <span>Title</span>
-      <SwitchTitle />
+      <ToggleTitle />
       <span>Heading</span>
-      <SwitchHeading />
+      <ToggleHeading />
       <span>Light Theme</span>
       <SelectLight />
       <span>Dark Theme</span>

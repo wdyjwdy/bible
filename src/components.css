@@ -62,33 +62,6 @@ button.toggle {
     flex: unset;
 }
 
-.switch {
-    display: flex;
-    align-items: center;
-    width: 42px;
-    height: 24px;
-    padding: 0 2px;
-    border: 1px solid var(--button-border);
-    background-color: var(--button-bg);
-    border-radius: 12px;
-    cursor: pointer;
-
-    span {
-        width: 20px;
-        height: 20px;
-        background-color: var(--button-selected);
-        border-radius: 50%;
-        transition: transform 0.3s ease;
-    }
-
-    &[data-checked] {
-        span {
-            transform: translateX(22px);
-            background-color: var(--green);
-        }
-    }
-}
-
 [popover] {
     background-color: var(--body-bg);
     color: var(--body-text);

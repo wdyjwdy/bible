@@ -140,6 +140,10 @@ function getChapterList(book) {
   return options;
 }
 
+function getChapterCount(book) {
+  return bookList[book - 1].count;
+}
+
 export {
   getFavorites,
   getVerses,
@@ -150,5 +154,6 @@ export {
   getVersionById,
   getBookList,
   getBookById,
+  getChapterCount,
   getChapterList,
 };

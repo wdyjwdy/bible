@@ -6,7 +6,7 @@ import {
   onMount,
 } from "solid-js";
 import { Context } from "./context";
-import { Button, Switch, Select, Search } from "./components";
+import { Button, Toggle, Select, Search } from "./components";
 import {
   ArrowLeft,
   ArrowRight,
@@ -23,6 +23,7 @@ import {
   getBookList,
   getBookById,
   getChapterList,
+  getChapterCount,
 } from "./api";
 
 function SelectVersion() {
@@ -107,18 +108,20 @@ function SelectChapter() {
   );
 }
 
-function ButtonPrev() {
+function ButtonMoveAction({ name, icon, step }) {
   const { config, setConfig } = useContext(Context);
 
   function handleClick() {
-    if (config.chapter > 1) {
-      setConfig("chapter", config.chapter - 1);
+    const newChapter = config.chapter + step;
+    const count = getChapterCount(config.book);
+    if (1 <= newChapter && newChapter <= count) {
+      setConfig("chapter", newChapter);
     }
   }
 
   onMount(() => {
     const handler = ({ code }) => {
-      if (code === "ArrowLeft") {
+      if (code === name) {
         handleClick();
       }
     };
@@ -128,43 +131,18 @@ function ButtonPrev() {
     });
   });
 
-  return (
-    <Button onClick={handleClick}>
-      <ArrowLeft />
-    </Button>
-  );
+  return <Button onClick={handleClick}>{icon}</Button>;
+}
+
+function ButtonPrev() {
+  return <ButtonMoveAction name="ArrowLeft" icon={<ArrowLeft />} step={-1} />;
 }
 
 function ButtonNext() {
-  const { config, setConfig } = useContext(Context);
-
-  function handleClick() {
-    const { length } = getChapterList(config.book);
-    if (config.chapter < length) {
-      setConfig("chapter", config.chapter + 1);
-    }
-  }
-
-  onMount(() => {
-    const handler = ({ code }) => {
-      if (code === "ArrowRight") {
-        handleClick();
-      }
-    };
-    document.addEventListener("keydown", handler);
-    onCleanup(() => {
-      document.removeEventListener("keydown", handler);
-    });
-  });
-
-  return (
-    <Button onClick={handleClick}>
-      <ArrowRight />
-    </Button>
-  );
+  return <ButtonMoveAction name="ArrowRight" icon={<ArrowRight />} step={1} />;
 }
 
-function ButtonMore() {
+function ToggleMore() {
   const { action, setAction } = useContext(Context);
 
   function handleClick() {
@@ -183,96 +161,77 @@ function ButtonMore() {
   );
 }
 
-function ButtonSetting() {
+function ButtonAction({ name, icon, iconActive }) {
   const { action, setAction } = useContext(Context);
 
   function handleClick() {
-    setAction("page", "setting");
+    setAction("page", name);
   }
 
   return (
     <Button onClick={handleClick}>
-      <Show when={action.page === "setting"} fallback={<Settings />}>
-        <Settings color="oklch(0.57 0.17 252.81)" />
+      <Show when={action.page === name} fallback={icon}>
+        {iconActive}
       </Show>
     </Button>
+  );
+}
+
+function ButtonSetting() {
+  return (
+    <ButtonAction
+      name="setting"
+      icon={<Settings />}
+      iconActive={<Settings color="oklch(0.57 0.17 252.81)" />}
+    />
   );
 }
 
 function ButtonSearch() {
-  const { action, setAction } = useContext(Context);
-
-  function handleClick() {
-    setAction("page", "search");
-  }
-
   return (
-    <Button onClick={handleClick}>
-      <Show when={action.page === "search"} fallback={<SearchIcon />}>
-        <SearchIcon color="oklch(0.63 0.17 293.52)" />
-      </Show>
-    </Button>
+    <ButtonAction
+      name="search"
+      icon={<SearchIcon />}
+      iconActive={<SearchIcon color="oklch(0.63 0.17 293.52)" />}
+    />
   );
 }
 
 function ButtonFavorites() {
-  const { action, setAction } = useContext(Context);
-
-  function handleClick() {
-    setAction("page", "favorites");
-  }
-
   return (
-    <Button onClick={handleClick}>
-      <Show when={action.page === "favorites"} fallback={<Star />}>
-        <Star color="oklch(0.84 0.2 97.48)" />
-      </Show>
-    </Button>
+    <ButtonAction
+      name="favorites"
+      icon={<Star />}
+      iconActive={<Star color="oklch(0.84 0.2 97.48)" />}
+    />
   );
 }
 
-function SwitchNewline() {
+function ToggleAction({ name }) {
   const { config, setConfig } = useContext(Context);
 
-  function handleChange(value) {
-    setConfig("newline", value);
-    setCacheConfig("newline", value);
+  function handleClick() {
+    setCacheConfig(name, !config[name]);
+    setConfig(name, !config[name]);
   }
 
-  return <Switch checked={config.newline} onChange={handleChange} />;
+  return <Toggle checked={config[name]} onClick={handleClick} />;
 }
 
-function SwitchNumber() {
-  const { config, setConfig } = useContext(Context);
-
-  function handleChange(value) {
-    setConfig("number", value);
-    setCacheConfig("number", value);
-  }
-
-  return <Switch checked={config.number} onChange={handleChange} />;
+function ToggleNewline() {
+  return <ToggleAction name="newline" />;
 }
 
-function SwitchTitle() {
-  const { config, setConfig } = useContext(Context);
-
-  function handleChange(value) {
-    setConfig("title", value);
-    setCacheConfig("title", value);
-  }
-
-  return <Switch checked={config.title} onChange={handleChange} />;
+function ToggleNumber() {
+  return <ToggleAction name="number" />;
 }
 
-function SwitchHeading() {
-  const { config, setConfig } = useContext(Context);
+function ToggleTitle() {
+  return <ToggleAction name="title" />;
+}
 
-  function handleChange(value) {
-    setConfig("heading", value);
-    setCacheConfig("heading", value);
-  }
-
-  return <Switch checked={config.heading} onChange={handleChange} />;
+function ToggleHeading() {
+  return <ToggleAction name="heading" />;
 }
 
 function SelectLight() {
@@ -339,14 +298,14 @@ export {
   SelectChapter,
   ButtonPrev,
   ButtonNext,
-  ButtonMore,
+  ToggleMore,
   ButtonSetting,
   ButtonSearch,
   ButtonFavorites,
-  SwitchNumber,
-  SwitchTitle,
-  SwitchHeading,
-  SwitchNewline,
+  ToggleNumber,
+  ToggleTitle,
+  ToggleHeading,
+  ToggleNewline,
   SelectLight,
   SelectDark,
   SearchBox,

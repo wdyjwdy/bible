@@ -1,5 +1,5 @@
 import { createSignal, For, onMount, Show, useContext } from "solid-js";
-import { Search as SearchIcon, LoaderCircle } from "lucide-solid";
+import { Search as SearchIcon, LoaderCircle, Check, X } from "lucide-solid";
 import { Portal } from "solid-js/web";
 import { Context } from "./context";
 import { searchVerses, getBookById } from "./api";
@@ -13,28 +13,13 @@ function Button(props) {
   );
 }
 
-function Switch(props) {
-  let ref;
-
-  function handleClick() {
-    props.onChange(!props.checked);
-    if (props.checked) {
-      ref.dataset.checked = "";
-    } else {
-      delete ref.dataset.checked;
-    }
-  }
-
-  onMount(() => {
-    if (props.checked) {
-      ref.dataset.checked = "";
-    }
-  });
-
+function Toggle(props) {
   return (
-    <div class="switch" ref={ref} onClick={handleClick} {...props}>
-      <span />
-    </div>
+    <Button {...props}>
+      <Show when={props.checked} fallback={<X />}>
+        <Check />
+      </Show>
+    </Button>
   );
 }
 
@@ -186,4 +171,4 @@ function Search() {
   );
 }
 
-export { Button, Switch, Select, Search };
+export { Button, Toggle, Select, Search };
