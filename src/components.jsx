@@ -24,39 +24,45 @@ function Toggle(props) {
 }
 
 function Select(props) {
-  const { id, options, value, onChange } = props;
   let ref;
 
-  function handleClick(value) {
-    onChange(value);
+  function getOptions() {
+    const options = [];
+    for (let i = 1; i <= props.count; i++) {
+      options.push(i);
+    }
+    return options;
+  }
+
+  function handleClick(id) {
+    props.onChange(id);
     ref.hidePopover();
+  }
+
+  function Popover() {
+    return (
+      <div ref={ref} class="select-popover" id={props.id} popover>
+        <ul>
+          {getOptions().map((id) => (
+            <li
+              onClick={[handleClick, id]}
+              classList={{ selected: props.value === id }}
+            >
+              {props.getLabel(id)}
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
   }
 
   return (
     <>
-      <button type="button" class="select" popovertarget={id}>
-        {value().label}
+      <button type="button" class="select" popovertarget={props.id}>
+        {props.getLabel(props.value)}
       </button>
       <Portal>
-        <div ref={ref} class="select-popover" id={id} popover>
-          <ul>
-            <For each={options()}>
-              {(option) => (
-                <Show when={!option.separator} fallback={<hr />}>
-                  <li
-                    onClick={() => {
-                      handleClick(option);
-                    }}
-                    onKeyDown={null}
-                    classList={{ selected: value().id === option.id }}
-                  >
-                    {option.label}
-                  </li>
-                </Show>
-              )}
-            </For>
-          </ul>
-        </div>
+        <Popover />
       </Portal>
     </>
   );
@@ -171,4 +177,4 @@ function Search() {
   );
 }
 
-export { Button, Toggle, Select, Search };
+export { Button, Toggle, Search, Select };

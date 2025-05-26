@@ -1,12 +1,6 @@
-import {
-  createSignal,
-  createEffect,
-  useContext,
-  onCleanup,
-  onMount,
-} from "solid-js";
+import { useContext, onCleanup, onMount } from "solid-js";
 import { Context } from "./context";
-import { Button, Toggle, Select, Search } from "./components";
+import { Button, Toggle, Search, Select } from "./components";
 import {
   ArrowLeft,
   ArrowRight,
@@ -18,31 +12,32 @@ import {
 } from "lucide-solid";
 import {
   setCacheConfig,
-  getVersionList,
-  getVersionById,
-  getBookList,
-  getBookById,
-  getChapterList,
+  getVersionCount,
+  getVersionLabel,
+  getBookCount,
+  getBookLabel,
   getChapterCount,
+  getChapterLabel,
+  getLightThemeCount,
+  getLightThemeLabel,
+  getDarkThemeCount,
+  getDarkThemeLabel,
 } from "./api";
 
 function SelectVersion() {
   const { config, setConfig } = useContext(Context);
 
-  function handleChange({ id }) {
-    setConfig("version", id);
+  function handleChange(id) {
     setCacheConfig("version", id);
-  }
-
-  function getSelection() {
-    return getVersionById(config.version);
+    setConfig("version", id);
   }
 
   return (
     <Select
       id="select-version"
-      options={getVersionList}
-      value={getSelection}
+      count={getVersionCount()}
+      value={config.version}
+      getLabel={getVersionLabel}
       onChange={handleChange}
     />
   );
@@ -50,31 +45,22 @@ function SelectVersion() {
 
 function SelectBook() {
   const { config, setConfig } = useContext(Context);
-  const [options, setOptions] = createSignal(getBookList(1));
 
-  function handleChange({ id }) {
-    setConfig("book", id);
+  async function handleChange(id) {
+    await setCacheConfig("book", id);
+    setCacheConfig("chapter", 1);
+    setConfig({
+      book: id,
+      chapter: 1,
+    });
   }
-
-  function getOptions() {
-    const sectionOptions = options();
-    sectionOptions.splice(39, 0, { separator: true });
-    return sectionOptions;
-  }
-
-  function getSelection() {
-    return getBookById(config.version, config.book);
-  }
-
-  createEffect(() => {
-    setOptions(getBookList(config.version));
-  });
 
   return (
     <Select
       id="select-book"
-      options={getOptions}
-      value={getSelection}
+      count={getBookCount()}
+      value={config.book}
+      getLabel={(id) => getBookLabel(id, config.version)}
       onChange={handleChange}
     />
   );
@@ -82,27 +68,58 @@ function SelectBook() {
 
 function SelectChapter() {
   const { config, setConfig } = useContext(Context);
-  const [options, setOptions] = createSignal(getChapterList(1));
 
-  function handleChange({ id }) {
+  function handleChange(id) {
+    setCacheConfig("chapter", id);
     setConfig("chapter", id);
   }
-
-  function getSelection() {
-    return { id: config.chapter, label: config.chapter };
-  }
-
-  createEffect(() => {
-    const options = getChapterList(config.book);
-    setOptions(options);
-    setConfig("chapter", 1);
-  });
 
   return (
     <Select
       id="select-chapter"
-      options={options}
-      value={getSelection}
+      count={getChapterCount(config.book)}
+      value={config.chapter}
+      getLabel={getChapterLabel}
+      onChange={handleChange}
+    />
+  );
+}
+
+function SelectLight() {
+  const { config, setConfig } = useContext(Context);
+
+  function handleChange(id) {
+    document.documentElement.dataset.light = id;
+    setConfig("light", id);
+    setCacheConfig("light", id);
+  }
+
+  return (
+    <Select
+      id="select-light"
+      count={getLightThemeCount()}
+      value={config.light}
+      getLabel={getLightThemeLabel}
+      onChange={handleChange}
+    />
+  );
+}
+
+function SelectDark() {
+  const { config, setConfig } = useContext(Context);
+
+  function handleChange(id) {
+    document.documentElement.dataset.dark = id;
+    setConfig("dark", id);
+    setCacheConfig("dark", id);
+  }
+
+  return (
+    <Select
+      id="select-dark"
+      count={getDarkThemeCount()}
+      value={config.dark}
+      getLabel={getDarkThemeLabel}
       onChange={handleChange}
     />
   );
@@ -115,6 +132,7 @@ function ButtonMoveAction({ name, icon, step }) {
     const newChapter = config.chapter + step;
     const count = getChapterCount(config.book);
     if (1 <= newChapter && newChapter <= count) {
+      setCacheConfig("chapter", newChapter);
       setConfig("chapter", newChapter);
     }
   }
@@ -232,60 +250,6 @@ function ToggleTitle() {
 
 function ToggleHeading() {
   return <ToggleAction name="heading" />;
-}
-
-function SelectLight() {
-  const { config, setConfig } = useContext(Context);
-  const options = [
-    { id: 1, label: "light" },
-    { id: 2, label: "soft" },
-  ];
-
-  function getSelection() {
-    return options[config.light - 1];
-  }
-
-  function handleChange(value) {
-    setConfig("light", value.id);
-    document.documentElement.dataset.light = value.id;
-    setCacheConfig("light", value.id);
-  }
-
-  return (
-    <Select
-      id="select-light-theme"
-      options={() => options}
-      value={getSelection}
-      onChange={handleChange}
-    />
-  );
-}
-
-function SelectDark() {
-  const { config, setConfig } = useContext(Context);
-  const options = [
-    { id: 1, label: "dark" },
-    { id: 2, label: "night" },
-  ];
-
-  function getSelection() {
-    return options[config.dark - 1];
-  }
-
-  function handleChange(value) {
-    setConfig("dark", value.id);
-    document.documentElement.dataset.dark = value.id;
-    setCacheConfig("dark", value.id);
-  }
-
-  return (
-    <Select
-      id="select-dark-theme"
-      options={() => options}
-      value={getSelection}
-      onChange={handleChange}
-    />
-  );
 }
 
 function SearchBox() {

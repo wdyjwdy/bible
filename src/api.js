@@ -1,4 +1,4 @@
-import { versionList, bookList } from "./data";
+import { versionList, bookList, lightThemeList, darkThemeList } from "./data";
 
 async function openDB() {
   return new Promise((resolve, reject) => {
@@ -109,20 +109,8 @@ async function setCacheConfig(key, value) {
   }
 }
 
-function getVersionList() {
-  return versionList;
-}
-
 function getVersionById(id) {
   return versionList.find((v) => v.id === id);
-}
-
-function getBookList(version) {
-  const { lang } = getVersionById(version);
-  return bookList.map((book) => ({
-    id: book.id,
-    label: book[lang],
-  }));
 }
 
 function getBookById(version, book) {
@@ -131,17 +119,45 @@ function getBookById(version, book) {
   return { id: bookItem.id, label: bookItem[lang] };
 }
 
-function getChapterList(book) {
-  const { count } = bookList[book - 1];
-  const options = [];
-  for (let i = 1; i <= count; i++) {
-    options.push({ id: i, label: i });
-  }
-  return options;
+function getVersionCount() {
+  return versionList.length;
+}
+
+function getVersionLabel(id) {
+  return versionList[id - 1].label;
+}
+
+function getBookCount() {
+  return bookList.length;
+}
+
+function getBookLabel(id, version) {
+  const { lang } = versionList[version - 1];
+  return bookList[id - 1][lang];
 }
 
 function getChapterCount(book) {
   return bookList[book - 1].count;
+}
+
+function getChapterLabel(id) {
+  return id;
+}
+
+function getLightThemeCount() {
+  return lightThemeList.length;
+}
+
+function getLightThemeLabel(id) {
+  return lightThemeList[id - 1];
+}
+
+function getDarkThemeCount() {
+  return darkThemeList.length;
+}
+
+function getDarkThemeLabel(id) {
+  return darkThemeList[id - 1];
 }
 
 export {
@@ -150,10 +166,15 @@ export {
   getCacheConfig,
   setCacheConfig,
   searchVerses,
-  getVersionList,
-  getVersionById,
-  getBookList,
   getBookById,
+  getVersionCount,
+  getVersionLabel,
+  getBookCount,
+  getBookLabel,
   getChapterCount,
-  getChapterList,
+  getChapterLabel,
+  getLightThemeCount,
+  getLightThemeLabel,
+  getDarkThemeCount,
+  getDarkThemeLabel,
 };

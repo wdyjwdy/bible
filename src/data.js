@@ -12,7 +12,6 @@ export const versionList = [
   { id: 11, code: "nasb", lang: "en", label: "New American Standard Bible" },
   { id: 12, code: "csb", lang: "en", label: "Christian Standard Bible" },
 ];
-
 export const bookList = [
   { id: 1, cn: "创世纪", en: "Genesis", count: 50 },
   { id: 2, cn: "出埃及记", en: "Exodus", count: 40 },
@@ -81,3 +80,6 @@ export const bookList = [
   { id: 65, cn: "犹大书", en: "Jude", count: 1 },
   { id: 66, cn: "启示录", en: "Revelation", count: 22 },
 ];
+
+export const lightThemeList = ["light", "soft"];
+export const darkThemeList = ["dark", "night"];
