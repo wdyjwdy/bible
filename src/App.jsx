@@ -1,4 +1,4 @@
-import { createSignal, onMount, Show } from "solid-js";
+import { createSignal, onMount } from "solid-js";
 import { Dynamic } from "solid-js/web";
 import { createStore } from "solid-js/store";
 import { ConfigContext } from "./context";

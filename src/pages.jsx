@@ -6,10 +6,8 @@ import {
   onMount,
 } from "solid-js";
 import { getVerses, getFavorites } from "./api";
-import { SettingItem } from "./components";
 import { ConfigContext } from "./context";
-import { getBookById } from "./data";
-import { setCacheConfig } from "./api";
+import { setCacheConfig, getBookById } from "./api";
 import {
   SelectVersion,
   SelectBook,

@@ -1,8 +1,7 @@
 import { createSignal, For, onMount, Show, useContext } from "solid-js";
 import { Search as SearchIcon, LoaderCircle } from "lucide-solid";
 import { ConfigContext } from "./context";
-import { searchVerses } from "./api";
-import { getBookById } from "./data";
+import { searchVerses, getBookById } from "./api";
 import "./components.css";
 
 function Button(props) {
@@ -180,18 +179,4 @@ function Search() {
   );
 }
 
-function SettingItem({ label, description, option }) {
-  return (
-    <div class="setting-item">
-      <div class="setting-info">
-        <span class="setting-label">{label}</span>
-        <Show when={description}>
-          <span class="setting-description">{description}</span>
-        </Show>
-      </div>
-      {option}
-    </div>
-  );
-}
-
-export { Button, Switch, Select, Search, SettingItem };
+export { Button, Switch, Select, Search };

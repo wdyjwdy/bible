@@ -5,7 +5,6 @@ import {
   onCleanup,
   onMount,
 } from "solid-js";
-import { setCacheConfig } from "./api";
 import { ConfigContext } from "./context";
 import { Button, Switch, Select, Search } from "./components";
 import {
@@ -18,12 +17,13 @@ import {
   Star,
 } from "lucide-solid";
 import {
+  setCacheConfig,
   getVersionList,
   getVersionById,
   getBookList,
   getBookById,
   getChapterList,
-} from "./data";
+} from "./api";
 
 function SelectVersion() {
   const { config, setConfig } = useContext(ConfigContext);

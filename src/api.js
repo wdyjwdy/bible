@@ -1,4 +1,4 @@
-import { getVersionById } from "./data";
+import { versionList, bookList } from "./data";
 
 async function openDB() {
   return new Promise((resolve, reject) => {
@@ -109,10 +109,46 @@ async function setCacheConfig(key, value) {
   }
 }
 
+function getVersionList() {
+  return versionList;
+}
+
+function getVersionById(id) {
+  return versionList.find((v) => v.id === id);
+}
+
+function getBookList(version) {
+  const { lang } = getVersionById(version);
+  return bookList.map((book) => ({
+    id: book.id,
+    label: book[lang],
+  }));
+}
+
+function getBookById(version, book) {
+  const { lang } = getVersionById(version);
+  const bookItem = bookList[book - 1];
+  return { id: bookItem.id, label: bookItem[lang] };
+}
+
+function getChapterList(book) {
+  const { count } = bookList[book - 1];
+  const options = [];
+  for (let i = 1; i <= count; i++) {
+    options.push({ id: i, label: i });
+  }
+  return options;
+}
+
 export {
   getFavorites,
   getVerses,
   getCacheConfig,
   setCacheConfig,
   searchVerses,
+  getVersionList,
+  getVersionById,
+  getBookList,
+  getBookById,
+  getChapterList,
 };
