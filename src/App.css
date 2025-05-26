@@ -181,6 +181,7 @@ mark {
 
         p {
             display: inline;
+            border-radius: 4px;
         }
 
         .verse-number {
@@ -197,6 +198,7 @@ mark {
             display: flex;
             align-items: baseline;
             gap: 10px;
+            border-radius: 4px;
         }
 
         .verse-number {
@@ -226,5 +228,4 @@ mark {
 .favorite {
     background-color: var(--favorite-bg);
     color: var(--favorite-text);
-    border-radius: 4px;
 }
