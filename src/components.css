@@ -126,6 +126,9 @@ button.toggle {
     @media screen and (max-width: 768px) {
         grid-template-columns: repeat(2, minmax(10px, 1fr));
     }
+    li:nth-child(40) {
+        color: var(--red);
+    }
 }
 
 #select-chapter ul {
