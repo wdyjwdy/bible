@@ -1,9 +1,9 @@
 import { createSignal, createEffect, Show, useContext } from "solid-js";
 import { getVerses } from "./api";
 import { SettingItem } from "./components";
-import { ControlContext } from "./context";
+import { ConfigContext } from "./context";
 import { getBookById } from "./data";
-import { setOptionsConfig } from "./api";
+import { setCacheConfig } from "./api";
 import {
   SelectVersion,
   SelectBook,
@@ -33,7 +33,7 @@ function Toolbar() {
 }
 
 function Content() {
-  const { config, setConfig } = useContext(ControlContext);
+  const { config, setConfig } = useContext(ConfigContext);
   const [verses, setVerses] = createSignal([]);
 
   createEffect(async () => {
@@ -56,7 +56,7 @@ function Content() {
       ? config.favorites.filter((f) => f.b !== b || f.c !== c || f.v !== v)
       : [...config.favorites, { b, c, v }];
     setConfig("favorites", favorites);
-    setOptionsConfig("favorites", favorites);
+    setCacheConfig("favorites", favorites);
   }
 
   const View = ({ view }) => (

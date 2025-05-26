@@ -5,8 +5,8 @@ import {
   onCleanup,
   onMount,
 } from "solid-js";
-import { setOptionsConfig, getOptionsConfig } from "./api";
-import { ControlContext } from "./context";
+import { setCacheConfig, getCacheConfig } from "./api";
+import { ConfigContext } from "./context";
 import { Button, Toggle, Switch, Select, Search } from "./components";
 import { ArrowLeft, ArrowRight, Ellipsis, Undo2 } from "lucide-solid";
 import {
@@ -18,11 +18,11 @@ import {
 } from "./data";
 
 function SelectVersion() {
-  const { config, setConfig } = useContext(ControlContext);
+  const { config, setConfig } = useContext(ConfigContext);
 
   function handleChange({ id }) {
     setConfig("version", id);
-    setOptionsConfig("version", id);
+    setCacheConfig("version", id);
   }
 
   function getSelection() {
@@ -40,7 +40,7 @@ function SelectVersion() {
 }
 
 function SelectBook() {
-  const { config, setConfig } = useContext(ControlContext);
+  const { config, setConfig } = useContext(ConfigContext);
   const [options, setOptions] = createSignal(getBookList(1));
 
   function handleChange({ id }) {
@@ -72,7 +72,7 @@ function SelectBook() {
 }
 
 function SelectChapter() {
-  const { config, setConfig } = useContext(ControlContext);
+  const { config, setConfig } = useContext(ConfigContext);
   const [options, setOptions] = createSignal(getChapterList(1));
 
   function handleChange({ id }) {
@@ -100,7 +100,7 @@ function SelectChapter() {
 }
 
 function ButtonPrevArrow() {
-  const { config, setConfig } = useContext(ControlContext);
+  const { config, setConfig } = useContext(ConfigContext);
 
   function handleClick() {
     if (config.chapter > 1) {
@@ -128,7 +128,7 @@ function ButtonPrevArrow() {
 }
 
 function ButtonNextArrow() {
-  const { config, setConfig } = useContext(ControlContext);
+  const { config, setConfig } = useContext(ConfigContext);
 
   function handleClick() {
     const { length } = getChapterList(config.book);
@@ -157,7 +157,7 @@ function ButtonNextArrow() {
 }
 
 function ButtonToggleSetting() {
-  const { setting, setSetting } = useContext(ControlContext);
+  const { setting, setSetting } = useContext(ConfigContext);
 
   function handleClick() {
     setSetting((s) => !s);
@@ -173,51 +173,51 @@ function ButtonToggleSetting() {
 }
 
 function SwitchChapterView() {
-  const { config, setConfig } = useContext(ControlContext);
+  const { config, setConfig } = useContext(ConfigContext);
 
   function handleChange(value) {
     setConfig("newline", value);
-    setOptionsConfig("newline", value);
+    setCacheConfig("newline", value);
   }
 
   return <Switch checked={config.newline} onChange={handleChange} />;
 }
 
 function SwitchVerseNumber() {
-  const { config, setConfig } = useContext(ControlContext);
+  const { config, setConfig } = useContext(ConfigContext);
 
   function handleChange(value) {
     setConfig("number", value);
-    setOptionsConfig("number", value);
+    setCacheConfig("number", value);
   }
 
   return <Switch checked={config.number} onChange={handleChange} />;
 }
 
 function SwitchChapterTitle() {
-  const { config, setConfig } = useContext(ControlContext);
+  const { config, setConfig } = useContext(ConfigContext);
 
   function handleChange(value) {
     setConfig("title", value);
-    setOptionsConfig("title", value);
+    setCacheConfig("title", value);
   }
 
   return <Switch checked={config.title} onChange={handleChange} />;
 }
 
 function SwitchChapterHeading() {
-  const { config, setConfig } = useContext(ControlContext);
+  const { config, setConfig } = useContext(ConfigContext);
 
   function handleChange(value) {
     setConfig("heading", value);
-    setOptionsConfig("heading", value);
+    setCacheConfig("heading", value);
   }
 
   return <Switch checked={config.heading} onChange={handleChange} />;
 }
 
 function ToggleGroupThemeLight() {
-  const { config, setConfig } = useContext(ControlContext);
+  const { config, setConfig } = useContext(ConfigContext);
   const options = [
     { id: 1, label: "light" },
     { id: 2, label: "soft" },
@@ -230,7 +230,7 @@ function ToggleGroupThemeLight() {
   function handleChange(value) {
     setConfig("light", value.id);
     document.documentElement.dataset.light = value.id;
-    setOptionsConfig("light", value.id);
+    setCacheConfig("light", value.id);
   }
 
   return (
@@ -244,7 +244,7 @@ function ToggleGroupThemeLight() {
 }
 
 function ToggleGroupThemeDark() {
-  const { config, setConfig } = useContext(ControlContext);
+  const { config, setConfig } = useContext(ConfigContext);
   const options = [
     { id: 1, label: "dark" },
     { id: 2, label: "night" },
@@ -257,7 +257,7 @@ function ToggleGroupThemeDark() {
   function handleChange(value) {
     setConfig("dark", value.id);
     document.documentElement.dataset.light = value.id;
-    setOptionsConfig("dark", value.id);
+    setCacheConfig("dark", value.id);
   }
 
   return (

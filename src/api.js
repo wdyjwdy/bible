@@ -66,7 +66,7 @@ async function searchVerses(version, query) {
   });
 }
 
-async function getOptionsConfig() {
+async function getCacheConfig() {
   try {
     const cache = await readFromCache("config");
     if (cache) {
@@ -87,18 +87,18 @@ async function getOptionsConfig() {
     saveToCache("config", defaultConfig);
     return defaultConfig;
   } catch (error) {
-    console.error("getOptionsConfig", error);
+    console.error("getCacheConfig", error);
   }
 }
 
-async function setOptionsConfig(key, value) {
+async function setCacheConfig(key, value) {
   try {
-    const config = await getOptionsConfig();
+    const config = await getCacheConfig();
     config[key] = value;
     saveToCache("config", config);
   } catch (error) {
-    console.error("setOptionsConfig", error);
+    console.error("setCacheConfig", error);
   }
 }
 
-export { getVerses, getOptionsConfig, setOptionsConfig, searchVerses };
+export { getVerses, getCacheConfig, setCacheConfig, searchVerses };
