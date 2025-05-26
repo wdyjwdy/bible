@@ -185,7 +185,6 @@ mark {
         p {
             display: inline;
             border-radius: 4px;
-            touch-action: manipulation;
         }
 
         .verse-number {
@@ -203,11 +202,6 @@ mark {
             align-items: baseline;
             gap: 10px;
             border-radius: 4px;
-            touch-action: manipulation;
-
-            span {
-                touch-action: manipulation;
-            }
         }
 
         .verse-number {
