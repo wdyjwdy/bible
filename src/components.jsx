@@ -1,5 +1,6 @@
 import { createSignal, For, onMount, Show, useContext } from "solid-js";
 import { Search as SearchIcon, LoaderCircle } from "lucide-solid";
+import { Portal } from "solid-js/web";
 import { Context } from "./context";
 import { searchVerses, getBookById } from "./api";
 import "./components.css";
@@ -51,32 +52,34 @@ function Select(props) {
       <button type="button" class="select" popovertarget={id}>
         {value().label}
       </button>
-      <div ref={ref} class="select-popover" id={id} popover>
-        <ul>
-          <For each={options()}>
-            {(option) => (
-              <Show when={!option.separator} fallback={<hr />}>
-                <li
-                  onClick={() => {
-                    handleClick(option);
-                  }}
-                  onKeyDown={null}
-                  classList={{ selected: value().id === option.id }}
-                >
-                  {option.label}
-                </li>
-              </Show>
-            )}
-          </For>
-        </ul>
-      </div>
+      <Portal>
+        <div ref={ref} class="select-popover" id={id} popover>
+          <ul>
+            <For each={options()}>
+              {(option) => (
+                <Show when={!option.separator} fallback={<hr />}>
+                  <li
+                    onClick={() => {
+                      handleClick(option);
+                    }}
+                    onKeyDown={null}
+                    classList={{ selected: value().id === option.id }}
+                  >
+                    {option.label}
+                  </li>
+                </Show>
+              )}
+            </For>
+          </ul>
+        </div>
+      </Portal>
     </>
   );
 }
 
 function Search() {
   let ref;
-  const { action, setAction, config, setConfig } = useContext(Context);
+  const { setAction, config, setConfig } = useContext(Context);
   const [query, setQuery] = createSignal("");
   const [verses, setVerses] = createSignal([]);
   const [loading, setLoading] = createSignal(false);
@@ -172,11 +175,13 @@ function Search() {
           onInput={handleInput}
         />
       </div>
-      <div ref={ref} id="search-result" popover>
-        <Show when={verses().length} fallback={<p class="nothing">🛀</p>}>
-          <For each={verses()}>{(verse) => <Item verse={verse} />}</For>
-        </Show>
-      </div>
+      <Portal>
+        <div ref={ref} id="search-result" popover>
+          <Show when={verses().length} fallback={<p class="nothing">🛀</p>}>
+            <For each={verses()}>{(verse) => <Item verse={verse} />}</For>
+          </Show>
+        </div>
+      </Portal>
     </>
   );
 }
