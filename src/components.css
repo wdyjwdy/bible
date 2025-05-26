@@ -85,6 +85,7 @@ button.toggle {
         grid-template-columns: repeat(1, minmax(10px, 1fr));
         padding: 10px;
         gap: 2px;
+        cursor: pointer;
 
         li {
             all: unset;
