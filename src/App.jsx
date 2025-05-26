@@ -10,7 +10,7 @@ const App = () => {
   const [more, setMore] = createSignal(false);
   const [page, setPage] = createSignal("verses");
   const [config, setConfig] = createStore({
-    version: 10,
+    version: 4,
     book: 1,
     chapter: 1,
     newline: true,
@@ -21,6 +21,14 @@ const App = () => {
     dark: 1,
     favorites: [],
   });
+  const providerValues = {
+    more,
+    setMore,
+    page,
+    setPage,
+    config,
+    setConfig,
+  };
 
   onMount(async () => {
     const config = await getCacheConfig();
@@ -30,14 +38,10 @@ const App = () => {
   });
 
   return (
-    <div class="app">
-      <ConfigContext.Provider
-        value={{ more, setMore, page, setPage, config, setConfig }}
-      >
-        {pages.toolbar()}
-        <Dynamic component={pages[page()]} />
-      </ConfigContext.Provider>
-    </div>
+    <ConfigContext.Provider value={providerValues}>
+      {pages.toolbar()}
+      <Dynamic component={pages[page()]} />
+    </ConfigContext.Provider>
   );
 };
 
