@@ -36,20 +36,16 @@ async function readFromCache(key) {
 }
 
 async function getBibleData(version) {
-  try {
-    const { code } = getVersionById(version);
-    const cache = await readFromCache(code);
-    if (cache) {
-      return cache;
-    }
-    const url = `https://raw.githubusercontent.com/wdyjwdy/bible/main/data/${code}.json`;
-    const res = await fetch(url);
-    const json = await res.json();
-    saveToCache(code, json);
-    return json;
-  } catch (error) {
-    console.error("getBibleData", error);
+  const code = getVersionCode(version);
+  const cache = await readFromCache(code);
+  if (cache) {
+    return cache;
   }
+  const url = `https://raw.githubusercontent.com/wdyjwdy/bible/main/data/${code}.json`;
+  const res = await fetch(url);
+  const json = await res.json();
+  saveToCache(code, json);
+  return json;
 }
 
 async function getVerses(version, book, chapter) {
@@ -75,73 +71,59 @@ async function searchVerses(version, query) {
 }
 
 async function getCacheConfig() {
-  try {
-    const cache = await readFromCache("config");
-    if (cache) {
-      return cache;
-    }
-    const defaultConfig = {
-      version: 1,
-      book: 1,
-      chapter: 1,
-      newline: true,
-      number: true,
-      title: false,
-      heading: true,
-      light: 1,
-      dark: 1,
-      favorites: [],
-    };
-    saveToCache("config", defaultConfig);
-    return defaultConfig;
-  } catch (error) {
-    console.error("getCacheConfig", error);
+  const cache = await readFromCache("config");
+  if (cache) {
+    return cache;
   }
+  const defaultConfig = {
+    version: 1,
+    book: 1,
+    chapter: 1,
+    newline: true,
+    number: true,
+    title: false,
+    heading: true,
+    light: 1,
+    dark: 1,
+    favorites: [],
+  };
+  saveToCache("config", defaultConfig);
+  return defaultConfig;
 }
 
 async function setCacheConfig(key, value) {
-  try {
-    const config = await getCacheConfig();
-    config[key] = value;
-    saveToCache("config", config);
-  } catch (error) {
-    console.error("setCacheConfig", error);
-  }
+  const config = await getCacheConfig();
+  config[key] = value;
+  saveToCache("config", config);
 }
 
-function getVersionById(id) {
-  return versionList.find((v) => v.id === id);
-}
-
-function getBookById(version, book) {
-  const { lang } = getVersionById(version);
-  const bookItem = bookList[book - 1];
-  return { id: bookItem.id, label: bookItem[lang] };
+function getVersionCode(version) {
+  return versionList[version - 1].code;
 }
 
 function getVersionCount() {
   return versionList.length;
 }
 
-function getVersionLabel(id) {
-  return versionList[id - 1].label;
+function getVersionLabel(version) {
+  return versionList[version - 1].label;
 }
 
 function getBookCount() {
   return bookList.length;
 }
 
-function getBookLabel(id, version) {
+function getBookLabel(book, version) {
   const { lang } = versionList[version - 1];
-  return bookList[id - 1][lang];
+  return bookList[book - 1][lang];
 }
 
 function getChapterCount(book) {
   return bookList[book - 1].count;
 }
 
-function getChapterLabel(id) {
-  return id;
+function getChapterLabel(chapter) {
+  return chapter;
 }
 
 function getLightThemeCount() {
@@ -161,12 +143,11 @@ function getDarkThemeLabel(id) {
 }
 
 export {
-  getFavorites,
-  getVerses,
   getCacheConfig,
   setCacheConfig,
+  getFavorites,
+  getVerses,
   searchVerses,
-  getBookById,
   getVersionCount,
   getVersionLabel,
   getBookCount,

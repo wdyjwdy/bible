@@ -5,9 +5,14 @@ import {
   useContext,
   onMount,
 } from "solid-js";
-import { getVerses, getFavorites } from "./api";
+import {
+  setCacheConfig,
+  getVerses,
+  getFavorites,
+  searchVerses,
+  getBookLabel,
+} from "./api";
 import { Context } from "./context";
-import { setCacheConfig, getBookById } from "./api";
 import {
   SelectVersion,
   SelectBook,
@@ -54,7 +59,7 @@ function Toolbar() {
   );
 }
 
-function Content() {
+function VersesPage() {
   const { config, setConfig } = useContext(Context);
   const [verses, setVerses] = createSignal([]);
 
@@ -64,66 +69,55 @@ function Content() {
     document.documentElement.scrollTop = 0;
   });
 
-  const ChapterTitle = () => (
-    <Show when={config.title}>
-      <h1 class="chapter-title">{`${getBookById(config.version, config.book).label} ${config.chapter}`}</h1>
-    </Show>
-  );
-
   function handleClick({ b, c, v }) {
-    const isFavorite = config.favorites.some(
-      (f) => f.b === b && f.c === c && f.v === v,
-    );
-    const favorites = isFavorite
+    const favorites = isFavorite({ b, c, v })
       ? config.favorites.filter((f) => f.b !== b || f.c !== c || f.v !== v)
       : [...config.favorites, { b, c, v }];
     setConfig("favorites", favorites);
     setCacheConfig("favorites", favorites);
   }
 
-  const View = ({ view }) => (
-    <div
-      classList={{
-        chapter: true,
-        [view]: true,
-      }}
-    >
-      <ChapterTitle />
-      <For each={verses()}>
-        {({ b, c, v, t, h }) => {
-          if (h) {
-            return config.heading ? <h2>{h}</h2> : null;
-          }
-          return (
-            <p
-              id={v}
-              classList={{
-                favorite: config.favorites.some(
-                  (f) => f.b === b && f.c === c && f.v === v,
-                ),
-              }}
-              onClick={[handleClick, { b, c, v }]}
-              onKeyDown={null}
-            >
-              <Show when={config.number}>
-                <span class="verse-number">{v}</span>
-              </Show>
-              <span class="verse-text">{t}</span>
-            </p>
-          );
-        }}
-      </For>
-    </div>
-  );
+  function isFavorite({ b, c, v }) {
+    return config.favorites.some((f) => {
+      return f.b === b && f.c === c && f.v == v;
+    });
+  }
+
+  const classes = {
+    "verses-page": true,
+    list: config.newline,
+    text: !config.newline,
+  };
 
   return (
-    <Show when={config.newline} fallback={<View view="text-view" />}>
-      <View view="list-view" />
-    </Show>
+    <div classList={classes}>
+      <Show when={config.title}>
+        <h1>
+          {`${getBookLabel(config.book, config.version)} ${config.chapter}`}
+        </h1>
+      </Show>
+      {verses().map(({ b, c, v, t, h }) => {
+        if (h) {
+          return config.heading ? <h2>{h}</h2> : null;
+        }
+        return (
+          <p
+            id={v}
+            classList={{ favorite: isFavorite({ b, c, v }) }}
+            onClick={[handleClick, { b, c, v }]}
+          >
+            <Show when={config.number}>
+              <span class="number">{v}</span>
+            </Show>
+            <span class="verse">{t}</span>
+          </p>
+        );
+      })}
+    </div>
   );
 }
 
-function Setting() {
+function SettingPage() {
   return (
     <div class="setting-page">
       <span>Version</span>
@@ -145,9 +139,59 @@ function Setting() {
 }
 
 function SearchPage() {
+  const { config, setConfig, setAction } = useContext(Context);
+  const [verses, setVerses] = createSignal([]);
+  const [query, setQuery] = createSignal();
+
+  async function handleEnter({ code, target }) {
+    if (code === "Enter") {
+      const query = target.value;
+      setQuery(query);
+      const result = await searchVerses(config.version, query);
+      setVerses(result);
+    }
+  }
+
+  function handleClick({ b, c, v }) {
+    setAction({
+      more: false,
+      page: "verses",
+    });
+    setConfig({
+      book: b,
+      chapter: c,
+    });
+    setTimeout(() => {
+      const el = document.getElementById(v);
+      el.scrollIntoView({ behavior: "smooth" });
+      el.classList.add("highlight");
+    }, 500);
+  }
+
+  function Item({ verse }) {
+    const { b, c, v, t } = verse;
+    const parts = t.split(new RegExp(`(${query()})`, "gi"));
+
+    return (
+      <p onClick={[handleClick, verse]}>
+        <span class="number">
+          {getBookLabel(b, config.version)} {c}:{v}
+        </span>
+        <span>{parts.map((p) => (p === query() ? <mark>{p}</mark> : p))}</span>
+      </p>
+    );
+  }
+
   return (
     <div class="search-page">
-      <SearchBox />
+      <SearchBox onKeyDown={handleEnter} />
+      <div class="search-result">
+        {verses().length === 0 ? (
+          <p class="nothing">🛀</p>
+        ) : (
+          verses().map((v) => <Item verse={v} />)
+        )}
+      </div>
     </div>
   );
 }
@@ -160,10 +204,6 @@ function FavoritesPage() {
     const result = await getFavorites();
     setVerses(result);
   });
-
-  function getBookLabel(book) {
-    return getBookById(config.version, book).label;
-  }
 
   function handleClick({ b, c, v }) {
     setAction({
@@ -185,7 +225,7 @@ function FavoritesPage() {
       {verses().map(({ b, c, v, t }) => (
         <p onClick={[handleClick, { b, c, v }]}>
           <span class="number">
-            {getBookLabel(b)} {c}:{v}
+            {getBookLabel(b, config.version)} {c}:{v}
           </span>
           <span>{t}</span>
         </p>
@@ -196,8 +236,8 @@ function FavoritesPage() {
 
 const pages = {
   toolbar: () => <Toolbar />,
-  verses: () => <Content />,
-  setting: () => <Setting />,
+  verses: () => <VersesPage />,
+  setting: () => <SettingPage />,
   search: () => <SearchPage />,
   favorites: () => <FavoritesPage />,
 };

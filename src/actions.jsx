@@ -1,13 +1,13 @@
 import { useContext, onCleanup, onMount } from "solid-js";
 import { Context } from "./context";
-import { Button, Toggle, Search, Select } from "./components";
+import { Button, Toggle, Select, SearchBox } from "./components";
 import {
   ArrowLeft,
   ArrowRight,
   Ellipsis,
   Undo2,
   Settings,
-  Search as SearchIcon,
+  Search,
   Star,
 } from "lucide-solid";
 import {
@@ -209,8 +209,8 @@ function ButtonSearch() {
   return (
     <ButtonAction
       name="search"
-      icon={<SearchIcon />}
-      iconActive={<SearchIcon color="oklch(0.63 0.17 293.52)" />}
+      icon={<Search />}
+      iconActive={<Search color="oklch(0.63 0.17 293.52)" />}
     />
   );
 }
@@ -250,10 +250,6 @@ function ToggleTitle() {
 
 function ToggleHeading() {
   return <ToggleAction name="heading" />;
-}
-
-function SearchBox() {
-  return <Search />;
 }
 
 export {
