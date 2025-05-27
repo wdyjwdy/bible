@@ -143,13 +143,11 @@ function SearchPage() {
   const [verses, setVerses] = createSignal([]);
   const [query, setQuery] = createSignal();
 
-  async function handleEnter({ code, target }) {
-    if (code === "Enter") {
-      const query = target.value;
-      setQuery(query);
-      const result = await searchVerses(config.version, query);
-      setVerses(result);
-    }
+  async function handleEnter(e) {
+    const query = e.target.value;
+    setQuery(query);
+    const result = await searchVerses(config.version, query);
+    setVerses(result);
   }
 
   function handleClick({ b, c, v }) {
@@ -184,7 +182,7 @@ function SearchPage() {
 
   return (
     <div class="search-page">
-      <SearchBox onKeyDown={handleEnter} />
+      <SearchBox onEnter={handleEnter} />
       <div class="search-result">
         {verses().length === 0 ? (
           <p class="nothing">🛀</p>

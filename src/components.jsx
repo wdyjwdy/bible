@@ -67,12 +67,28 @@ function Select(props) {
 }
 
 function SearchBox(props) {
+  let ref;
+
+  function handleKeyDown(e) {
+    if (e.code === "Enter") {
+      props.onEnter(e);
+      ref.blur();
+    }
+  }
+
   return (
     <div class="search">
       <div>
         <Search />
       </div>
-      <input type="search" placeholder="Search" {...props} />
+      <input
+        ref={ref}
+        type="text"
+        enterkeyhint="search"
+        placeholder="Search"
+        onKeyDown={handleKeyDown}
+        {...props}
+      />
     </div>
   );
 }
