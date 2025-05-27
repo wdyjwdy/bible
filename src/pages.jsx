@@ -124,11 +124,11 @@ function SettingPage() {
       <SelectVersion />
       <span>Newline</span>
       <ToggleNewline />
-      <span>Verse Number</span>
+      <span>Verse Numbers</span>
       <ToggleNumber />
       <span>Title</span>
       <ToggleTitle />
-      <span>Heading</span>
+      <span>Headings</span>
       <ToggleHeading />
       <span>Light Theme</span>
       <SelectLight />
@@ -184,11 +184,12 @@ function SearchPage() {
     <div class="search-page">
       <SearchBox onEnter={handleEnter} />
       <div class="search-result">
-        {verses().length === 0 ? (
+        <Show when={!verses().length}>
           <p class="nothing">🛀</p>
-        ) : (
-          verses().map((v) => <Item verse={v} />)
-        )}
+        </Show>
+        {verses().map((v) => (
+          <Item verse={v} />
+        ))}
       </div>
     </div>
   );
@@ -220,6 +221,9 @@ function FavoritesPage() {
 
   return (
     <div class="favorites-page">
+      <Show when={!verses().length}>
+        <p class="nothing">🛀</p>
+      </Show>
       {verses().map(({ b, c, v, t }) => (
         <p onClick={[handleClick, { b, c, v }]}>
           <span class="number">

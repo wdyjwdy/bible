@@ -220,7 +220,7 @@ function ButtonFavorites() {
     <ButtonAction
       name="favorites"
       icon={<Star />}
-      iconActive={<Star color="oklch(0.84 0.2 97.48)" />}
+      iconActive={<Star color="oklch(0.81 0.18 86.47)" />}
     />
   );
 }

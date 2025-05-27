@@ -120,12 +120,13 @@ h2 {
     gap: 10px;
 }
 
-.search-page {
+.search-page,
+.favorites-page {
     padding: 20px;
 }
 
+.search-result,
 .favorites-page {
-    padding: 20px;
     margin-bottom: 80px;
 
     p {
@@ -203,40 +204,6 @@ h2 {
     }
 }
 
-.search-result {
-    margin-top: 20px;
-    margin-bottom: 80px;
-
-    p {
-        font-size: 16px;
-        color: var(--body-text);
-        border-radius: 10px;
-        padding: 8px;
-        user-select: none;
-        display: flex;
-        margin: 0px;
-        flex-direction: column;
-
-        &:hover {
-            background-color: var(--button-selected);
-        }
-
-        @media screen and (min-width: 768px) {
-            font-size: 24px;
-        }
-
-        .number {
-            color: var(--body-text-desp);
-            font-size: 14px;
-        }
-    }
-
-    .nothing {
-        font-size: 50px;
-        text-align: center;
-    }
-}
-
 @keyframes flash {
     from {
         background-color: var(--button-selected);
@@ -244,15 +211,6 @@ h2 {
     to {
         background-color: transparent;
     }
-}
-
-.highlight {
-    animation: flash 3s cubic-bezier(0.8, 0, 0.2, 1);
-}
-
-.favorite {
-    background-color: var(--favorite-bg);
-    color: var(--favorite-text);
 }
 
 #select-book ul {
@@ -290,4 +248,18 @@ button[popovertarget="select-chapter"] {
 
 .toggle-more {
     flex: unset;
+}
+
+.nothing {
+    font-size: 50px !important;
+    text-align: center;
+}
+
+.highlight {
+    animation: flash 3s cubic-bezier(0.8, 0, 0.2, 1);
+}
+
+.favorite {
+    background-color: var(--favorite-bg);
+    color: var(--favorite-text);
 }
