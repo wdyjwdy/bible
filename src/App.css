@@ -62,15 +62,11 @@
 
 * {
     touch-action: manipulation;
+    margin: 0;
 }
 
 body {
-    margin: 0;
     background-color: var(--body-bg);
-}
-
-p {
-    margin: 0;
 }
 
 mark {
@@ -79,6 +75,7 @@ mark {
 }
 
 h1 {
+    margin: 20px 0;
     text-align: center;
     font-size: xx-large;
     font-weight: normal;
@@ -86,6 +83,7 @@ h1 {
 }
 
 h2 {
+    margin: 20px 0;
     text-align: center;
     font-size: x-large;
     font-weight: normal;
@@ -255,4 +253,41 @@ h2 {
 .favorite {
     background-color: var(--favorite-bg);
     color: var(--favorite-text);
+}
+
+#select-book ul {
+    grid-template-columns: repeat(5, 1fr);
+
+    @media screen and (max-width: 768px) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    li:nth-child(40) {
+        color: var(--red);
+    }
+}
+
+#select-chapter ul {
+    font-size: x-large;
+    grid-template-columns: repeat(7, minmax(50px, 1fr));
+
+    @media screen and (max-width: 768px) {
+        grid-template-columns: repeat(5, minmax(50px, 1fr));
+    }
+}
+
+button[popovertarget="select-version"] {
+    width: 140px;
+}
+
+button[popovertarget="select-book"] {
+    width: 80px;
+}
+
+button[popovertarget="select-chapter"] {
+    width: 20px;
+}
+
+.toggle-more {
+    flex: unset;
 }

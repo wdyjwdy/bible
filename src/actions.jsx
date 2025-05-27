@@ -171,7 +171,7 @@ function ToggleMore() {
   }
 
   return (
-    <Button onClick={handleClick} class="toggle">
+    <Button onClick={handleClick} class="toggle-more">
       <Show when={!action.more} fallback={<Undo2 />}>
         <Ellipsis />
       </Show>

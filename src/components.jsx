@@ -39,7 +39,7 @@ function Select(props) {
 
   function Popover() {
     return (
-      <div ref={ref} class="select-popover" id={props.id} popover>
+      <div ref={ref} id={props.id} popover>
         <ul>
           {getOptions().map((id) => (
             <li
@@ -56,7 +56,7 @@ function Select(props) {
 
   return (
     <>
-      <button type="button" class="select" popovertarget={props.id}>
+      <button type="button" popovertarget={props.id}>
         {props.getLabel(props.value)}
       </button>
       <Portal>
@@ -72,7 +72,7 @@ function SearchBox(props) {
       <div>
         <Search />
       </div>
-      <input type="text" placeholder="Search" {...props} />
+      <input type="search" placeholder="Search" {...props} />
     </div>
   );
 }
