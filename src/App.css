@@ -162,6 +162,7 @@ h2 {
 
     p {
         border-radius: 4px;
+        cursor: default;
     }
 
     .number {
