@@ -72,12 +72,8 @@ async function searchVerses(version, query) {
   });
 }
 
-async function getCacheConfig() {
-  const cache = await readFromCache("config");
-  if (cache) {
-    return cache;
-  }
-  const defaultConfig = {
+function getDefaultConfig() {
+  return {
     version: 1,
     book: 1,
     chapter: 1,
@@ -88,7 +84,15 @@ async function getCacheConfig() {
     light: 1,
     dark: 1,
     favorites: [],
+    comapre: false,
+    compareVersion: 8,
   };
+}
+
+async function getCacheConfig() {
+  const cache = await readFromCache("config");
+  if (cache) return cache;
+  const defaultConfig = getDefaultConfig();
   saveToCache("config", defaultConfig);
   return defaultConfig;
 }
@@ -147,6 +151,7 @@ function getDarkThemeLabel(id) {
 export {
   getCacheConfig,
   setCacheConfig,
+  getDefaultConfig,
   getFavorites,
   getVerses,
   searchVerses,

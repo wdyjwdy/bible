@@ -43,6 +43,25 @@ function SelectVersion() {
   );
 }
 
+function SelectCompareVersion() {
+  const { config, setConfig } = useContext(Context);
+
+  function handleChange(id) {
+    setCacheConfig("compareVersion", id);
+    setConfig("compareVersion", id);
+  }
+
+  return (
+    <Select
+      id="select-compare-version"
+      count={getVersionCount()}
+      value={config.compareVersion}
+      getLabel={getVersionLabel}
+      onChange={handleChange}
+    />
+  );
+}
+
 function SelectBook() {
   const { config, setConfig } = useContext(Context);
 
@@ -267,8 +286,13 @@ function ToggleHeading() {
   return <ToggleAction name="heading" />;
 }
 
+function ToggleCompare() {
+  return <ToggleAction name="compare" />;
+}
+
 export {
   SelectVersion,
+  SelectCompareVersion,
   SelectBook,
   SelectChapter,
   ButtonPrev,
@@ -281,6 +305,7 @@ export {
   ToggleTitle,
   ToggleHeading,
   ToggleNewline,
+  ToggleCompare,
   SelectLight,
   SelectDark,
   SearchBox,

@@ -3,7 +3,7 @@ import { Dynamic } from "solid-js/web";
 import { createStore } from "solid-js/store";
 import { Context } from "./context";
 import { pages } from "./pages";
-import { getCacheConfig } from "./api";
+import { getCacheConfig, getDefaultConfig } from "./api";
 import "./App.css";
 
 const App = () => {
@@ -11,18 +11,7 @@ const App = () => {
     more: false,
     page: "verses",
   });
-  const [config, setConfig] = createStore({
-    version: 4,
-    book: 1,
-    chapter: 1,
-    newline: true,
-    number: true,
-    title: false,
-    heading: true,
-    light: 1,
-    dark: 1,
-    favorites: [],
-  });
+  const [config, setConfig] = createStore(getDefaultConfig());
 
   onMount(async () => {
     const cacheConfig = await getCacheConfig();

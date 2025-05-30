@@ -228,8 +228,9 @@ h2 {
     }
 }
 
-button[popovertarget="select-version"] {
-    width: 140px;
+button[popovertarget="select-version"],
+button[popovertarget="select-compare-version"] {
+    width: 160px;
 }
 
 button[popovertarget="select-book"] {

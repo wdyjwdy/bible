@@ -15,6 +15,7 @@ import {
 import { Context } from "./context";
 import {
   SelectVersion,
+  SelectCompareVersion,
   SelectBook,
   SelectChapter,
   ButtonPrev,
@@ -27,6 +28,7 @@ import {
   ToggleTitle,
   ToggleHeading,
   ToggleNewline,
+  ToggleCompare,
   SelectLight,
   SelectDark,
   SearchBox,
@@ -61,10 +63,19 @@ function Toolbar() {
 function VersesPage() {
   const { config, setConfig } = useContext(Context);
   const [verses, setVerses] = createSignal([]);
+  const [compareVerses, setCompareVerses] = createSignal([]);
 
   createEffect(async () => {
     const verses = await getVerses(config);
     setVerses(verses);
+    if (config.compare) {
+      const compareVerses = await getVerses({
+        ...config,
+        version: config.compareVersion,
+      });
+      const filteredVerses = compareVerses.filter((v) => !v.h);
+      setCompareVerses(filteredVerses);
+    }
     document.documentElement.scrollTop = 0;
   });
 
@@ -105,16 +116,26 @@ function VersesPage() {
         }
         const favorite = isFavorite(verse);
         return (
-          <p
-            id={verse.v}
-            classList={{ favorite }}
-            onClick={[handleClick, verse]}
-          >
-            <Show when={config.number}>
-              <span class="number">{favorite ? "✦" : verse.v}</span>
+          <>
+            <p
+              id={verse.v}
+              classList={{ favorite }}
+              onClick={[handleClick, verse]}
+            >
+              <Show when={config.number}>
+                <span class="number">{favorite ? "✦" : verse.v}</span>
+              </Show>
+              <span class="verse">{verse.t}</span>
+            </p>
+            <Show when={config.compare}>
+              <p classList={{ favorite }} onClick={[handleClick, verse]}>
+                <Show when={config.number}>
+                  <span class="number" />
+                </Show>
+                <span class="verse">{compareVerses()[verse.v - 1]?.t}</span>
+              </p>
             </Show>
-            <span class="verse">{verse.t}</span>
-          </p>
+          </>
         );
       })}
     </div>
@@ -124,7 +145,7 @@ function VersesPage() {
 function SettingPage() {
   return (
     <div class="setting-page">
-      <span>Versions</span>
+      <span>Version</span>
       <SelectVersion />
       <span>Newline</span>
       <ToggleNewline />
@@ -138,6 +159,10 @@ function SettingPage() {
       <SelectLight />
       <span>Dark Theme</span>
       <SelectDark />
+      <span>Compare</span>
+      <ToggleCompare />
+      <span>Compare Version</span>
+      <SelectCompareVersion />
     </div>
   );
 }
