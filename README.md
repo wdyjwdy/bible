@@ -10,7 +10,7 @@ A simple Bible web app. [Visit the website](https://wdyjwdy.github.io/bible/).
 - [x] Add to favorites
 - [x] Search function
 - [ ] Highlight names of people and places
-- [ ] Compare translations layout
+- [x] Compare translations layout
 - [x] Adjustable font size
 - [ ] Red letter
 
