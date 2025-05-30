@@ -34,25 +34,24 @@ import {
 
 function Toolbar() {
   const { action } = useContext(Context);
-  const Settings = () => (
-    <>
-      <ButtonSetting />
-      <ButtonSearch />
-      <ButtonFavorites />
-    </>
-  );
-  const Actions = () => (
-    <>
-      <SelectBook />
-      <SelectChapter />
-      <ButtonPrev />
-      <ButtonNext />
-    </>
-  );
+
+  function Fallback() {
+    return (
+      <>
+        <ButtonSetting />
+        <ButtonSearch />
+        <ButtonFavorites />
+      </>
+    );
+  }
+
   return (
     <div class="toolbar">
-      <Show when={!action.more} fallback={<Settings />}>
-        <Actions />
+      <Show when={!action.more} fallback={<Fallback />}>
+        <SelectBook />
+        <SelectChapter />
+        <ButtonPrev />
+        <ButtonNext />
       </Show>
       <ToggleMore />
     </div>
@@ -64,7 +63,7 @@ function VersesPage() {
   const [verses, setVerses] = createSignal([]);
 
   createEffect(async () => {
-    const verses = await getVerses(config.version, config.book, config.chapter);
+    const verses = await getVerses(config);
     setVerses(verses);
     document.documentElement.scrollTop = 0;
   });
@@ -96,20 +95,25 @@ function VersesPage() {
           {`${getBookLabel(config.book, config.version)} ${config.chapter}`}
         </h1>
       </Show>
-      {verses().map(({ b, c, v, t, h }) => {
-        if (h) {
-          return config.heading ? <h2>{h}</h2> : null;
+      {verses().map((verse) => {
+        if (verse.h) {
+          return (
+            <Show when={config.heading}>
+              <h2>{verse.h}</h2>
+            </Show>
+          );
         }
+        const favorite = isFavorite(verse);
         return (
           <p
-            id={v}
-            classList={{ favorite: isFavorite({ b, c, v }) }}
-            onClick={[handleClick, { b, c, v }]}
+            id={verse.v}
+            classList={{ favorite }}
+            onClick={[handleClick, verse]}
           >
             <Show when={config.number}>
-              <span class="number">{v}</span>
+              <span class="number">{favorite ? "✦" : verse.v}</span>
             </Show>
-            <span class="verse">{t}</span>
+            <span class="verse">{verse.t}</span>
           </p>
         );
       })}
@@ -120,7 +124,7 @@ function VersesPage() {
 function SettingPage() {
   return (
     <div class="setting-page">
-      <span>Version</span>
+      <span>Versions</span>
       <SelectVersion />
       <span>Newline</span>
       <ToggleNewline />
@@ -173,7 +177,7 @@ function SearchPage() {
     return (
       <p onClick={[handleClick, verse]}>
         <span class="number">
-          {getBookLabel(b, config.version)} {c}:{v}
+          {`${getBookLabel(b, config.version)} ${c}:${v}`}
         </span>
         <span>{parts.map((p) => (p === query() ? <mark>{p}</mark> : p))}</span>
       </p>
@@ -227,7 +231,7 @@ function FavoritesPage() {
       {verses().map(({ b, c, v, t }) => (
         <p onClick={[handleClick, { b, c, v }]}>
           <span class="number">
-            {getBookLabel(b, config.version)} {c}:{v}
+            {`${getBookLabel(b, config.version)} ${c}:${v}`}
           </span>
           <span>{t}</span>
         </p>

@@ -200,7 +200,12 @@ function ButtonSetting() {
     <ButtonAction
       name="setting"
       icon={<Settings />}
-      iconActive={<Settings color="oklch(0.57 0.17 252.81)" />}
+      iconActive={
+        <Settings
+          color="oklch(0.64 0.21 251.36)"
+          fill="oklch(0.59 0.23 251.77 / 0.1)"
+        />
+      }
     />
   );
 }
@@ -210,7 +215,12 @@ function ButtonSearch() {
     <ButtonAction
       name="search"
       icon={<Search />}
-      iconActive={<Search color="oklch(0.63 0.17 293.52)" />}
+      iconActive={
+        <Search
+          color="oklch(0.63 0.17 293.52)"
+          fill="oklch(0.42 0.19 328.37 / 0.1)"
+        />
+      }
     />
   );
 }
@@ -220,7 +230,12 @@ function ButtonFavorites() {
     <ButtonAction
       name="favorites"
       icon={<Star />}
-      iconActive={<Star color="oklch(0.81 0.18 86.47)" />}
+      iconActive={
+        <Star
+          color="oklch(0.81 0.18 86.47)"
+          fill="oklch(0.91 0.18 95.77 / 0.2)"
+        />
+      }
     />
   );
 }

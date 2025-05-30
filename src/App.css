@@ -256,6 +256,10 @@ button[popovertarget="select-chapter"] {
 .favorite {
     background-color: var(--favorite-bg);
     color: var(--favorite-text);
+
+    .number {
+        color: var(--favorite-text);
+    }
 }
 
 @keyframes flash {
