@@ -48,7 +48,7 @@ async function getBibleData(version) {
   return json;
 }
 
-async function getVerses(version, book, chapter) {
+async function getVerses({ version, book, chapter }) {
   const data = await getBibleData(version);
   return data.filter(({ b, c }) => b === book && c === chapter);
 }
