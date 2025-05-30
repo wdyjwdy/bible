@@ -205,6 +205,10 @@ h2 {
             margin: 0px 4px;
         }
     }
+
+    &.no-coping {
+        user-select: none;
+    }
 }
 
 #select-book ul {
