@@ -200,7 +200,10 @@ h2 {
         }
 
         .number {
-            margin: 0px 4px;
+            display: inline-block;
+            width: 1em;
+            text-align: end;
+            padding: 0 4px;
         }
     }
 

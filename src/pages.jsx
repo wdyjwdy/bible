@@ -136,7 +136,7 @@ function VersesPage() {
               <Show when={config.compare}>
                 <p classList={{ favorite }} onClick={[handleClick, verse]}>
                   <Show when={config.number}>
-                    <span class="number" />
+                    {config.newline && <span class="number" />}
                   </Show>
                   <span class="verse">{compareVerses()[verse.v - 1]?.t}</span>
                 </p>
