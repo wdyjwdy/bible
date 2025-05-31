@@ -1,5 +1,5 @@
 import { Show } from "solid-js";
-import { Search, Check, X } from "lucide-solid";
+import { Search, Check, X, LoaderCircle, Inbox } from "lucide-solid";
 import { Portal } from "solid-js/web";
 import "./components.css";
 
@@ -93,4 +93,20 @@ function SearchBox(props) {
   );
 }
 
-export { Button, Toggle, Select, SearchBox };
+function Loading() {
+  return (
+    <div class="loading">
+      <LoaderCircle size={48} strokeWidth={1} />
+    </div>
+  );
+}
+
+function Empty() {
+  return (
+    <div class="empty">
+      <Inbox size={48} strokeWidth={1} />
+    </div>
+  );
+}
+
+export { Button, Toggle, Select, SearchBox, Loading, Empty };

@@ -13,6 +13,7 @@ import {
   getBookLabel,
 } from "./api";
 import { Context } from "./context";
+import { Loading, Empty } from "./components";
 import {
   SelectVersion,
   SelectCompareVersion,
@@ -65,6 +66,7 @@ function VersesPage() {
   const { config, setConfig } = useContext(Context);
   const [verses, setVerses] = createSignal([]);
   const [compareVerses, setCompareVerses] = createSignal([]);
+  const [loaded, setLoaded] = createSignal(false);
 
   createEffect(async () => {
     const verses = await getVerses(config);
@@ -77,6 +79,7 @@ function VersesPage() {
       const filteredVerses = compareVerses.filter((v) => !v.h);
       setCompareVerses(filteredVerses);
     }
+    setLoaded(true);
     document.documentElement.scrollTop = 0;
   });
 
@@ -103,43 +106,45 @@ function VersesPage() {
 
   return (
     <div classList={classes}>
-      <Show when={config.title}>
-        <h1>
-          {`${getBookLabel(config.book, config.version)} ${config.chapter}`}
-        </h1>
-      </Show>
-      {verses().map((verse) => {
-        if (verse.h) {
-          return (
-            <Show when={config.heading}>
-              <h2>{verse.h}</h2>
-            </Show>
-          );
-        }
-        const favorite = isFavorite(verse);
-        return (
-          <>
-            <p
-              id={verse.v}
-              classList={{ favorite }}
-              onClick={[handleClick, verse]}
-            >
-              <Show when={config.number}>
-                <span class="number">{favorite ? "✦" : verse.v}</span>
+      <Show when={loaded()} fallback={<Loading />}>
+        <Show when={config.title}>
+          <h1>
+            {`${getBookLabel(config.book, config.version)} ${config.chapter}`}
+          </h1>
+        </Show>
+        {verses().map((verse) => {
+          if (verse.h) {
+            return (
+              <Show when={config.heading}>
+                <h2>{verse.h}</h2>
               </Show>
-              <span class="verse">{verse.t}</span>
-            </p>
-            <Show when={config.compare}>
-              <p classList={{ favorite }} onClick={[handleClick, verse]}>
+            );
+          }
+          const favorite = isFavorite(verse);
+          return (
+            <>
+              <p
+                id={verse.v}
+                classList={{ favorite }}
+                onClick={[handleClick, verse]}
+              >
                 <Show when={config.number}>
-                  <span class="number" />
+                  <span class="number">{favorite ? "✦" : verse.v}</span>
                 </Show>
-                <span class="verse">{compareVerses()[verse.v - 1]?.t}</span>
+                <span class="verse">{verse.t}</span>
               </p>
-            </Show>
-          </>
-        );
-      })}
+              <Show when={config.compare}>
+                <p classList={{ favorite }} onClick={[handleClick, verse]}>
+                  <Show when={config.number}>
+                    <span class="number" />
+                  </Show>
+                  <span class="verse">{compareVerses()[verse.v - 1]?.t}</span>
+                </p>
+              </Show>
+            </>
+          );
+        })}
+      </Show>
     </div>
   );
 }
@@ -175,12 +180,14 @@ function SearchPage() {
   const { config, setConfig, setAction } = useContext(Context);
   const [verses, setVerses] = createSignal([]);
   const [query, setQuery] = createSignal();
+  const [loaded, setLoaded] = createSignal(false);
 
   async function handleEnter(e) {
     const query = e.target.value;
     setQuery(query);
     const result = await searchVerses(config.version, query);
     setVerses(result);
+    setLoaded(true);
   }
 
   function handleClick({ b, c, v }) {
@@ -217,12 +224,13 @@ function SearchPage() {
     <div class="search-page">
       <SearchBox onEnter={handleEnter} />
       <div class="search-result">
-        <Show when={!verses().length}>
-          <p class="nothing">🛀</p>
+        <Show when={loaded() && query()}>
+          <Show when={verses().length} fallback={<Empty />}>
+            {verses().map((v) => (
+              <Item verse={v} />
+            ))}
+          </Show>
         </Show>
-        {verses().map((v) => (
-          <Item verse={v} />
-        ))}
       </div>
     </div>
   );
@@ -231,10 +239,12 @@ function SearchPage() {
 function FavoritesPage() {
   const { config, setConfig, setAction } = useContext(Context);
   const [verses, setVerses] = createSignal([]);
+  const [loaded, setLoaded] = createSignal(false);
 
   onMount(async () => {
     const result = await getFavorites();
     setVerses(result);
+    setLoaded(true);
   });
 
   function handleClick({ b, c, v }) {
@@ -254,17 +264,18 @@ function FavoritesPage() {
 
   return (
     <div class="favorites-page">
-      <Show when={!verses().length}>
-        <p class="nothing">🛀</p>
+      <Show when={loaded()}>
+        <Show when={verses().length} fallback={<Empty />}>
+          {verses().map(({ b, c, v, t }) => (
+            <p onClick={[handleClick, { b, c, v }]}>
+              <span class="number">
+                {`${getBookLabel(b, config.version)} ${c}:${v}`}
+              </span>
+              <span>{t}</span>
+            </p>
+          ))}
+        </Show>
       </Show>
-      {verses().map(({ b, c, v, t }) => (
-        <p onClick={[handleClick, { b, c, v }]}>
-          <span class="number">
-            {`${getBookLabel(b, config.version)} ${c}:${v}`}
-          </span>
-          <span>{t}</span>
-        </p>
-      ))}
     </div>
   );
 }
