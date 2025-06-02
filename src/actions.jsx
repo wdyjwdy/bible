@@ -22,7 +22,28 @@ import {
   getLightThemeLabel,
   getDarkThemeCount,
   getDarkThemeLabel,
+  getLanguageCount,
+  getLanguageLabel,
 } from "./api";
+
+function SelectLanguage() {
+  const { config, setConfig } = useContext(Context);
+
+  function handleChange(id) {
+    setCacheConfig("language", id);
+    setConfig("language", id);
+  }
+
+  return (
+    <Select
+      id="select-language"
+      count={getLanguageCount()}
+      value={config.language}
+      getLabel={getLanguageLabel}
+      onChange={handleChange}
+    />
+  );
+}
 
 function SelectVersion() {
   const { config, setConfig } = useContext(Context);
@@ -295,6 +316,7 @@ function ToggleCopy() {
 }
 
 export {
+  SelectLanguage,
   SelectVersion,
   SelectCompareVersion,
   SelectBook,

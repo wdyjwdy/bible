@@ -11,10 +11,12 @@ import {
   getFavorites,
   searchVerses,
   getBookLabel,
+  translate,
 } from "./api";
 import { Context } from "./context";
 import { Loading, Empty } from "./components";
 import {
+  SelectLanguage,
   SelectVersion,
   SelectCompareVersion,
   SelectBook,
@@ -150,27 +152,35 @@ function VersesPage() {
 }
 
 function SettingPage() {
+  const { config } = useContext(Context);
+
+  function t(key) {
+    return translate(key, config.language);
+  }
+
   return (
     <div class="setting-page">
-      <span>Version</span>
+      <span>{t("language")}</span>
+      <SelectLanguage />
+      <span>{t("version")}</span>
       <SelectVersion />
-      <span>Newline</span>
+      <span>{t("newline")}</span>
       <ToggleNewline />
-      <span>Verse Numbers</span>
+      <span>{t("verse_numbers")}</span>
       <ToggleNumber />
-      <span>Title</span>
+      <span>{t("title")}</span>
       <ToggleTitle />
-      <span>Headings</span>
+      <span>{t("headings")}</span>
       <ToggleHeading />
-      <span>Light Theme</span>
+      <span>{t("light_theme")}</span>
       <SelectLight />
-      <span>Dark Theme</span>
+      <span>{t("dark_theme")}</span>
       <SelectDark />
-      <span>Compare</span>
+      <span>{t("compare_mode")}</span>
       <ToggleCompare />
-      <span>Compare Version</span>
+      <span>{t("compare_version")}</span>
       <SelectCompareVersion />
-      <span>Copy Verses</span>
+      <span>{t("copy_verses")}</span>
       <ToggleCopy />
     </div>
   );

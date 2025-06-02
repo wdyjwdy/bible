@@ -1,4 +1,11 @@
-import { versionList, bookList, lightThemeList, darkThemeList } from "./data";
+import {
+  versionList,
+  bookList,
+  lightThemeList,
+  darkThemeList,
+  languageList,
+  i18n,
+} from "./data";
 
 async function openDB() {
   return new Promise((resolve, reject) => {
@@ -87,6 +94,7 @@ function getDefaultConfig() {
     comapre: false,
     compareVersion: 8,
     copy: false,
+    language: 1,
   };
 }
 
@@ -149,6 +157,18 @@ function getDarkThemeLabel(id) {
   return darkThemeList[id - 1];
 }
 
+function getLanguageCount() {
+  return languageList.length;
+}
+
+function getLanguageLabel(id) {
+  return languageList[id - 1];
+}
+
+function translate(key, lang) {
+  return i18n[key][lang - 1];
+}
+
 export {
   getCacheConfig,
   setCacheConfig,
@@ -166,4 +186,7 @@ export {
   getLightThemeLabel,
   getDarkThemeCount,
   getDarkThemeLabel,
+  getLanguageCount,
+  getLanguageLabel,
+  translate,
 };

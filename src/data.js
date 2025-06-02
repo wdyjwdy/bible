@@ -82,3 +82,17 @@ export const bookList = [
 ];
 export const lightThemeList = ["light", "soft"];
 export const darkThemeList = ["dark", "night"];
+export const languageList = ["English", "简体中文"];
+export const i18n = {
+  language: ["Language", "语言"],
+  version: ["Version", "版本"],
+  newline: ["Newline", "换行"],
+  verse_numbers: ["Verse Numbers", "行号"],
+  title: ["Title", "大标题"],
+  headings: ["Headings", "小标题"],
+  light_theme: ["Light Theme", "日间主题"],
+  dark_theme: ["Dark Theme", "夜间主题"],
+  compare_mode: ["Compare Mode", "对比模式"],
+  compare_version: ["Compare Version", "对比版本"],
+  copy_verses: ["Long press to copy", "长按复制"],
+};
