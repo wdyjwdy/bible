@@ -27,6 +27,7 @@ import {
   ButtonSetting,
   ButtonSearch,
   ButtonFavorites,
+  ButtonExport,
   ToggleNumber,
   ToggleTitle,
   ToggleHeading,
@@ -182,6 +183,8 @@ function SettingPage() {
       <SelectCompareVersion />
       <span>{t("copy_verses")}</span>
       <ToggleCopy />
+      <span>{t("export")}</span>
+      <ButtonExport />
     </div>
   );
 }
