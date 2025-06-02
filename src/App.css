@@ -116,6 +116,7 @@ h2 {
     justify-content: space-between;
     gap: 10px;
     user-select: none;
+    margin-bottom: 80px;
 }
 
 .search-page,
@@ -153,7 +154,7 @@ h2 {
     background-color: var(--body-bg);
     padding: 20px 10px;
     margin-bottom: 80px;
-    font-size: x-large;
+    font-size: 22px;
 
     h2 {
         color: var(--green);
