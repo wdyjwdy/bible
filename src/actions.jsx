@@ -224,6 +224,7 @@ function ButtonAction({ name, icon, iconActive }) {
 
   function handleClick() {
     setAction("page", name);
+    document.documentElement.scrollTop = 0;
   }
 
   return (
