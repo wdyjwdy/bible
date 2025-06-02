@@ -13,6 +13,7 @@ A simple Bible web app. [Visit the website](https://wdyjwdy.github.io/bible/).
 - [x] Compare translations layout
 - [x] Adjustable font size
 - [ ] Red letter
+- [x] Multilingual Support
 
 ## Translations
 
