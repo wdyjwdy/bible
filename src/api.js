@@ -99,11 +99,11 @@ function getDefaultConfig() {
 }
 
 async function getCacheConfig() {
-  const cache = await readFromCache("config");
-  if (cache) return cache;
+  const cacheConfig = await readFromCache("config");
   const defaultConfig = getDefaultConfig();
-  saveToCache("config", defaultConfig);
-  return defaultConfig;
+  const config = { ...defaultConfig, ...cacheConfig };
+  saveToCache("config", config);
+  return config;
 }
 
 async function setCacheConfig(key, value) {

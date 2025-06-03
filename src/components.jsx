@@ -85,7 +85,6 @@ function SearchBox(props) {
         ref={ref}
         type="text"
         enterkeyhint="search"
-        placeholder="Search"
         onKeyDown={handleKeyDown}
         {...props}
       />
