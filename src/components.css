@@ -39,7 +39,7 @@ button[popovertarget] {
     border: 1px solid var(--button-border);
     border-radius: 12px;
     max-width: 96%;
-    max-height: 60%;
+    max-height: 67%;
     box-shadow: 0 0 10px 1px #00000021;
     margin: auto auto 90px;
     scrollbar-width: none;
