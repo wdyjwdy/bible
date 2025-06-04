@@ -183,7 +183,7 @@ function SettingPage() {
       <SelectCompareVersion />
       <span>{t("copy_verses")}</span>
       <ToggleCopy />
-      <span>{t("export")}</span>
+      <span>{t("export_favorites")}</span>
       <ButtonExport />
     </div>
   );

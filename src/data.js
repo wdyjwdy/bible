@@ -95,5 +95,5 @@ export const i18n = {
   compare_mode: ["Compare Mode", "对比模式"],
   compare_version: ["Compare Version", "对比版本"],
   copy_verses: ["Long press to copy", "长按复制"],
-  export: ["Export", "导出"],
+  export_favorites: ["Export Favorites", "导出收藏"],
 };
