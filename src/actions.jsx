@@ -377,10 +377,6 @@ function ToggleCompare() {
   return <ToggleAction name="compare" />;
 }
 
-function ToggleCopy() {
-  return <ToggleAction name="copy" />;
-}
-
 export {
   SelectLanguage,
   SelectVersion,
@@ -402,7 +398,6 @@ export {
   ToggleHeading,
   ToggleNewline,
   ToggleCompare,
-  ToggleCopy,
   SelectLight,
   SelectDark,
   SearchBox,

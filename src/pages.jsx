@@ -35,7 +35,6 @@ import {
   ToggleHeading,
   ToggleNewline,
   ToggleCompare,
-  ToggleCopy,
   SelectLight,
   SelectDark,
   SearchBox,
@@ -115,7 +114,6 @@ function VersesPage() {
     "verses-page": true,
     list: config.newline,
     text: !config.newline,
-    "no-coping": !config.copy,
   };
 
   return (
@@ -205,8 +203,6 @@ function SettingPage() {
       <ToggleCompare />
       <span>{t("compare_version")}</span>
       <SelectCompareVersion />
-      <span>{t("copy_verses")}</span>
-      <ToggleCopy />
       <span>{t("export_favorites")}</span>
       <ButtonExport />
     </div>
