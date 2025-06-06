@@ -2,6 +2,7 @@ import {
   createSignal,
   createEffect,
   Show,
+  For,
   useContext,
   onMount,
 } from "solid-js";
@@ -124,42 +125,50 @@ function VersesPage() {
             {`${getBookLabel(config.book, config.version)} ${config.chapter}`}
           </h1>
         </Show>
-        {verses().map((verse) => {
-          if (verse.h) {
-            return (
-              <Show when={config.heading}>
-                <h2>{verse.h}</h2>
-              </Show>
-            );
-          }
-          const favorite = isFavorite(verse);
-          const selected = isSelected(verse);
-          return (
-            <>
-              <p
-                id={verse.v}
-                classList={{ favorite, selected }}
-                onClick={[handleClick, verse]}
-              >
-                <Show when={config.number}>
-                  <span class="number">{favorite ? "✦" : verse.v}</span>
+        <For each={verses()}>
+          {(verse) => {
+            if (verse.h) {
+              return (
+                <Show when={config.heading}>
+                  <h2>{verse.h}</h2>
                 </Show>
-                <span class="verse">{verse.t}</span>
-              </p>
-              <Show when={config.compare}>
+              );
+            }
+            return (
+              <>
                 <p
-                  classList={{ favorite, selected }}
+                  id={verse.v}
+                  classList={{
+                    favorite: isFavorite(verse),
+                    selected: isSelected(verse),
+                  }}
                   onClick={[handleClick, verse]}
                 >
                   <Show when={config.number}>
-                    {config.newline && <span class="number" />}
+                    <span class="number">
+                      {isFavorite(verse) ? "✦" : verse.v}
+                    </span>
                   </Show>
-                  <span class="verse">{compareVerses()[verse.v - 1]?.t}</span>
+                  <span class="verse">{verse.t}</span>
                 </p>
-              </Show>
-            </>
-          );
-        })}
+                <Show when={config.compare}>
+                  <p
+                    classList={{
+                      favorite: isFavorite(verse),
+                      selected: isSelected(verse),
+                    }}
+                    onClick={[handleClick, verse]}
+                  >
+                    <Show when={config.number}>
+                      {config.newline && <span class="number" />}
+                    </Show>
+                    <span class="verse">{compareVerses()[verse.v - 1]?.t}</span>
+                  </p>
+                </Show>
+              </>
+            );
+          }}
+        </For>
       </Show>
       <Popover ref={ref} id="verse-options">
         <ButtonCopy verse={selectedVerse} />
