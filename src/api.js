@@ -1,4 +1,11 @@
-import { versionList, bookList, lightThemeList, darkThemeList } from "./data";
+import {
+  versionList,
+  lightThemeList,
+  darkThemeList,
+  chineseBookNames,
+  englishBookNames,
+  chapterCounts,
+} from "./data";
 
 async function openDB() {
   return new Promise((resolve, reject) => {
@@ -117,16 +124,17 @@ function getVersionLabel(version) {
 }
 
 function getBookCount() {
-  return bookList.length;
+  return chineseBookNames.length;
 }
 
 function getBookLabel(book, version) {
   const { lang } = versionList[version - 1];
-  return bookList[book - 1][lang];
+  const names = lang === "cn" ? chineseBookNames : englishBookNames;
+  return names[book - 1];
 }
 
 function getChapterCount(book) {
-  return bookList[book - 1].count;
+  return chapterCounts[book - 1];
 }
 
 function getChapterLabel(chapter) {
