@@ -93,7 +93,6 @@ function getDefaultConfig() {
     favorites: [],
     comapre: false,
     compareVersion: 8,
-    copy: false,
     language: 1,
   };
 }
