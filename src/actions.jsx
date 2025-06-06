@@ -9,6 +9,7 @@ import {
   Settings,
   Search,
   Star,
+  Copy,
 } from "lucide-solid";
 import {
   setCacheConfig,
@@ -281,6 +282,53 @@ function ButtonFavorites() {
   );
 }
 
+function ButtonCopy(props) {
+  function handleClick() {
+    navigator.clipboard.writeText(props.verse().t);
+  }
+
+  return (
+    <Button onClick={handleClick}>
+      <Copy />
+    </Button>
+  );
+}
+
+function ButtonStar(props) {
+  const { config, setConfig } = useContext(Context);
+
+  function handleClick() {
+    const favorites = [...config.favorites, props.verse()];
+    setConfig("favorites", favorites);
+    setCacheConfig("favorites", favorites);
+  }
+
+  return (
+    <Button onClick={handleClick}>
+      <Star />
+    </Button>
+  );
+}
+
+function ButtonUnstar(props) {
+  const { config, setConfig } = useContext(Context);
+
+  function handleClick() {
+    const { b, c, v } = props.verse();
+    const favorites = config.favorites.filter((f) => {
+      return f.b !== b || f.c !== c || f.v !== v;
+    });
+    setConfig("favorites", favorites);
+    setCacheConfig("favorites", favorites);
+  }
+
+  return (
+    <Button onClick={handleClick}>
+      <Star color="oklch(0.81 0.18 86.47)" fill="oklch(0.81 0.18 86.47)" />
+    </Button>
+  );
+}
+
 function ButtonExport() {
   const { config } = useContext(Context);
 
@@ -345,6 +393,9 @@ export {
   ButtonSetting,
   ButtonSearch,
   ButtonFavorites,
+  ButtonCopy,
+  ButtonStar,
+  ButtonUnstar,
   ButtonExport,
   ToggleNumber,
   ToggleTitle,

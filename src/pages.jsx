@@ -6,7 +6,6 @@ import {
   onMount,
 } from "solid-js";
 import {
-  setCacheConfig,
   getVerses,
   getFavorites,
   searchVerses,
@@ -14,7 +13,7 @@ import {
   translate,
 } from "./api";
 import { Context } from "./context";
-import { Loading, Empty } from "./components";
+import { Loading, Empty, Popover } from "./components";
 import {
   SelectLanguage,
   SelectVersion,
@@ -27,6 +26,9 @@ import {
   ButtonSetting,
   ButtonSearch,
   ButtonFavorites,
+  ButtonCopy,
+  ButtonStar,
+  ButtonUnstar,
   ButtonExport,
   ToggleNumber,
   ToggleTitle,
@@ -66,10 +68,12 @@ function Toolbar() {
 }
 
 function VersesPage() {
-  const { config, setConfig } = useContext(Context);
+  const { config } = useContext(Context);
   const [verses, setVerses] = createSignal([]);
   const [compareVerses, setCompareVerses] = createSignal([]);
+  const [selectedVerse, setSelectedVerse] = createSignal();
   const [loaded, setLoaded] = createSignal(false);
+  let ref;
 
   createEffect(async () => {
     const verses = await getVerses(config);
@@ -86,18 +90,25 @@ function VersesPage() {
     document.documentElement.scrollTop = 0;
   });
 
-  function handleClick({ b, c, v }) {
-    const favorites = isFavorite({ b, c, v })
-      ? config.favorites.filter((f) => f.b !== b || f.c !== c || f.v !== v)
-      : [...config.favorites, { b, c, v }];
-    setConfig("favorites", favorites);
-    setCacheConfig("favorites", favorites);
+  function handleClick(verse) {
+    if (selectedVerse()?.v === verse.v) {
+      setSelectedVerse(null);
+      ref.hidePopover();
+    } else {
+      setSelectedVerse(verse);
+      ref.showPopover();
+    }
   }
 
-  function isFavorite({ b, c, v }) {
+  function isFavorite(verse) {
+    if (!verse) return false;
     return config.favorites.some((f) => {
-      return f.b === b && f.c === c && f.v == v;
+      return f.b === verse.b && f.c === verse.c && f.v === verse.v;
     });
+  }
+
+  function isSelected({ v }) {
+    return selectedVerse()?.v === v;
   }
 
   const classes = {
@@ -124,11 +135,12 @@ function VersesPage() {
             );
           }
           const favorite = isFavorite(verse);
+          const selected = isSelected(verse);
           return (
             <>
               <p
                 id={verse.v}
-                classList={{ favorite }}
+                classList={{ favorite, selected }}
                 onClick={[handleClick, verse]}
               >
                 <Show when={config.number}>
@@ -137,7 +149,10 @@ function VersesPage() {
                 <span class="verse">{verse.t}</span>
               </p>
               <Show when={config.compare}>
-                <p classList={{ favorite }} onClick={[handleClick, verse]}>
+                <p
+                  classList={{ favorite, selected }}
+                  onClick={[handleClick, verse]}
+                >
                   <Show when={config.number}>
                     {config.newline && <span class="number" />}
                   </Show>
@@ -148,6 +163,15 @@ function VersesPage() {
           );
         })}
       </Show>
+      <Popover ref={ref} id="verse-options">
+        <ButtonCopy verse={selectedVerse} />
+        <Show
+          when={isFavorite(selectedVerse())}
+          fallback={<ButtonStar verse={selectedVerse} />}
+        >
+          <ButtonUnstar verse={selectedVerse} />
+        </Show>
+      </Popover>
     </div>
   );
 }

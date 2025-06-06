@@ -108,4 +108,12 @@ function Empty() {
   );
 }
 
-export { Button, Toggle, Select, SearchBox, Loading, Empty };
+function Popover(props) {
+  return (
+    <div ref={props.ref} id={props.id} popover>
+      <div class={props.id}>{props.children}</div>
+    </div>
+  );
+}
+
+export { Button, Toggle, Select, SearchBox, Loading, Empty, Popover };

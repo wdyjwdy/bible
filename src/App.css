@@ -246,6 +246,11 @@ button[popovertarget="select-chapter"] {
     width: 20px;
 }
 
+.verse-options {
+    display: flex;
+    gap: 5px;
+}
+
 .toggle-more {
     flex: unset;
 }
@@ -270,4 +275,8 @@ button[popovertarget="select-chapter"] {
     .number {
         color: var(--favorite-text);
     }
+}
+
+.selected {
+    background-color: var(--button-selected);
 }
