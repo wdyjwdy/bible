@@ -12,6 +12,7 @@ import {
   Copy,
   Download,
   Squircle,
+  Share2,
 } from "lucide-solid";
 import {
   setCacheConfig,
@@ -285,6 +286,28 @@ function ButtonCopy(props) {
   );
 }
 
+function ButtonShare(props) {
+  const { config } = useContext(Context);
+
+  function handleClick() {
+    const { b, c, v, t } = props.verse();
+    navigator
+      .share({
+        title: `${getBookLabel(b, config.language)} ${c}:${v}`,
+        text: t,
+      })
+      .catch(() => {
+        console.info("Share canceled");
+      });
+  }
+
+  return (
+    <Button onClick={handleClick}>
+      <Share2 />
+    </Button>
+  );
+}
+
 function ButtonStar(props) {
   const { config, setConfig } = useContext(Context);
 
@@ -386,6 +409,7 @@ export {
   ButtonCopy,
   ButtonStar,
   ButtonUnstar,
+  ButtonShare,
   ButtonExport,
   ToggleNumber,
   ToggleTitle,

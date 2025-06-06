@@ -23,6 +23,7 @@ import {
   ButtonCopy,
   ButtonStar,
   ButtonUnstar,
+  ButtonShare,
   ButtonExport,
   ToggleNumber,
   ToggleTitle,
@@ -182,6 +183,7 @@ function VersesPage() {
         >
           <ButtonUnstar verse={selectedVerse} />
         </Show>
+        <ButtonShare verse={selectedVerse} />
       </Popover>
     </div>
   );
