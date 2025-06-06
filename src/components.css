@@ -12,6 +12,7 @@ button {
     user-select: none;
     cursor: pointer;
     flex: 1;
+    min-height: 24px;
 
     @media (any-hover: hover) {
         &:hover {
