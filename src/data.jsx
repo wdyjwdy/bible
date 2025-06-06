@@ -80,20 +80,5 @@ export const bookList = [
   { id: 65, cn: "犹大书", en: "Jude", count: 1 },
   { id: 66, cn: "启示录", en: "Revelation", count: 22 },
 ];
-export const lightThemeList = ["light", "soft"];
-export const darkThemeList = ["dark", "night"];
-export const languageList = ["English", "简体中文"];
-export const i18n = {
-  language: ["Language", "语言"],
-  version: ["Version", "版本"],
-  newline: ["Newline", "换行"],
-  verse_numbers: ["Verse Numbers", "行号"],
-  title: ["Title", "大标题"],
-  headings: ["Headings", "小标题"],
-  light_theme: ["Light Theme", "日间主题"],
-  dark_theme: ["Dark Theme", "夜间主题"],
-  compare_mode: ["Compare Mode", "对比模式"],
-  compare_version: ["Compare Version", "对比版本"],
-  copy_verses: ["Long press to copy", "长按复制"],
-  export_favorites: ["Export Favorites", "导出收藏"],
-};
+export const lightThemeList = ["#cccccc", "#c2a17a"];
+export const darkThemeList = ["#8b8b8b", "#494949"];

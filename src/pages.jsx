@@ -6,17 +6,10 @@ import {
   useContext,
   onMount,
 } from "solid-js";
-import {
-  getVerses,
-  getFavorites,
-  searchVerses,
-  getBookLabel,
-  translate,
-} from "./api";
+import { getVerses, getFavorites, searchVerses, getBookLabel } from "./api";
 import { Context } from "./context";
 import { Loading, Empty, Popover } from "./components";
 import {
-  SelectLanguage,
   SelectVersion,
   SelectCompareVersion,
   SelectBook,
@@ -40,6 +33,17 @@ import {
   SelectDark,
   SearchBox,
 } from "./actions";
+import {
+  Sun,
+  Moon,
+  BookOpen,
+  ListOrdered,
+  Rows2,
+  Star,
+  WrapText,
+  Heading1,
+  Heading2,
+} from "lucide-solid";
 
 function Toolbar() {
   const { action } = useContext(Context);
@@ -184,35 +188,27 @@ function VersesPage() {
 }
 
 function SettingPage() {
-  const { config } = useContext(Context);
-
-  function t(key) {
-    return translate(key, config.language);
-  }
-
   return (
     <div class="setting-page">
-      <span>{t("language")}</span>
-      <SelectLanguage />
-      <span>{t("version")}</span>
+      <BookOpen />
       <SelectVersion />
-      <span>{t("newline")}</span>
+      <WrapText />
       <ToggleNewline />
-      <span>{t("verse_numbers")}</span>
+      <ListOrdered />
       <ToggleNumber />
-      <span>{t("title")}</span>
+      <Heading1 />
       <ToggleTitle />
-      <span>{t("headings")}</span>
+      <Heading2 />
       <ToggleHeading />
-      <span>{t("light_theme")}</span>
+      <Sun />
       <SelectLight />
-      <span>{t("dark_theme")}</span>
+      <Moon />
       <SelectDark />
-      <span>{t("compare_mode")}</span>
+      <Rows2 />
       <ToggleCompare />
-      <span>{t("compare_version")}</span>
+      <BookOpen />
       <SelectCompareVersion />
-      <span>{t("export_favorites")}</span>
+      <Star />
       <ButtonExport />
     </div>
   );

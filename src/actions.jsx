@@ -10,6 +10,8 @@ import {
   Search,
   Star,
   Copy,
+  Download,
+  Squircle,
 } from "lucide-solid";
 import {
   setCacheConfig,
@@ -23,28 +25,7 @@ import {
   getLightThemeLabel,
   getDarkThemeCount,
   getDarkThemeLabel,
-  getLanguageCount,
-  getLanguageLabel,
 } from "./api";
-
-function SelectLanguage() {
-  const { config, setConfig } = useContext(Context);
-
-  function handleChange(id) {
-    setCacheConfig("language", id);
-    setConfig("language", id);
-  }
-
-  return (
-    <Select
-      id="select-language"
-      count={getLanguageCount()}
-      value={config.language}
-      getLabel={getLanguageLabel}
-      onChange={handleChange}
-    />
-  );
-}
 
 function SelectVersion() {
   const { config, setConfig } = useContext(Context);
@@ -135,12 +116,17 @@ function SelectLight() {
     setCacheConfig("light", id);
   }
 
+  function getLabel(id) {
+    const color = getLightThemeLabel(id);
+    return <Squircle fill={color} color={color} />;
+  }
+
   return (
     <Select
       id="select-light"
       count={getLightThemeCount()}
       value={config.light}
-      getLabel={getLightThemeLabel}
+      getLabel={getLabel}
       onChange={handleChange}
     />
   );
@@ -155,12 +141,17 @@ function SelectDark() {
     setCacheConfig("dark", id);
   }
 
+  function getLabel(id) {
+    const color = getDarkThemeLabel(id);
+    return <Squircle fill={color} color={color} />;
+  }
+
   return (
     <Select
       id="select-dark"
       count={getDarkThemeCount()}
       value={config.dark}
-      getLabel={getDarkThemeLabel}
+      getLabel={getLabel}
       onChange={handleChange}
     />
   );
@@ -343,7 +334,11 @@ function ButtonExport() {
     URL.revokeObjectURL(url);
   }
 
-  return <Button onClick={handleClick}>Export</Button>;
+  return (
+    <Button onClick={handleClick}>
+      <Download />
+    </Button>
+  );
 }
 
 function ToggleAction({ name }) {
@@ -378,7 +373,6 @@ function ToggleCompare() {
 }
 
 export {
-  SelectLanguage,
   SelectVersion,
   SelectCompareVersion,
   SelectBook,
