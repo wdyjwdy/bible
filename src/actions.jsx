@@ -292,13 +292,8 @@ function ButtonShare(props) {
   function handleClick() {
     const { b, c, v, t } = props.verse();
     navigator
-      .share({
-        title: `${getBookLabel(b, config.language)} ${c}:${v}`,
-        text: t,
-      })
-      .catch(() => {
-        console.info("Share canceled");
-      });
+      .share({ text: `${t} (${getBookLabel(b, config.language)} ${c}:${v})` })
+      .catch(() => console.info("Share canceled"));
   }
 
   return (
