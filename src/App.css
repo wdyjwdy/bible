@@ -237,7 +237,7 @@ h1 {
 }
 
 button[popovertarget="select-version"],
-button[popovertarget="select-compare-version"] {
+button[popovertarget="select-compareVersion"] {
     width: 160px;
 }
 

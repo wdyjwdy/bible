@@ -28,40 +28,41 @@ import {
   getDarkThemeLabel,
 } from "./api";
 
-function SelectVersion() {
+function SelectBase(props) {
   const { config, setConfig } = useContext(Context);
 
   function handleChange(id) {
-    setCacheConfig("version", id);
-    setConfig("version", id);
+    setCacheConfig(props.key, id);
+    setConfig(props.key, id);
   }
 
   return (
     <Select
-      id="select-version"
+      id={`select-${props.key}`}
+      count={props.count}
+      value={config[props.key]}
+      getLabel={props.getLabel}
+      onChange={props.handleChange ?? handleChange}
+    />
+  );
+}
+
+function SelectVersion() {
+  return (
+    <SelectBase
+      key="version"
       count={getVersionCount()}
-      value={config.version}
       getLabel={getVersionLabel}
-      onChange={handleChange}
     />
   );
 }
 
 function SelectCompareVersion() {
-  const { config, setConfig } = useContext(Context);
-
-  function handleChange(id) {
-    setCacheConfig("compareVersion", id);
-    setConfig("compareVersion", id);
-  }
-
   return (
-    <Select
-      id="select-compare-version"
+    <SelectBase
+      key="compareVersion"
       count={getVersionCount()}
-      value={config.compareVersion}
       getLabel={getVersionLabel}
-      onChange={handleChange}
     />
   );
 }
@@ -90,79 +91,67 @@ function SelectBook() {
 }
 
 function SelectChapter() {
+  const { config } = useContext(Context);
+
+  return (
+    <SelectBase
+      key="chapter"
+      count={getChapterCount(config.book)}
+      getLabel={getChapterLabel}
+    />
+  );
+}
+
+function SelectThemeBase(props) {
   const { config, setConfig } = useContext(Context);
 
   function handleChange(id) {
-    setCacheConfig("chapter", id);
-    setConfig("chapter", id);
+    document.documentElement.dataset[props.key] = id;
+    setConfig(props.key, id);
+    setCacheConfig(props.key, id);
+  }
+
+  function getLabel(id) {
+    const color = props.getLabel(id);
+    return <Squircle fill={color} color={color} />;
   }
 
   return (
     <Select
-      id="select-chapter"
-      count={getChapterCount(config.book)}
-      value={config.chapter}
-      getLabel={getChapterLabel}
+      id={`select-${props.key}`}
+      count={props.count}
+      value={config[props.key]}
+      getLabel={getLabel}
       onChange={handleChange}
     />
   );
 }
 
 function SelectLight() {
-  const { config, setConfig } = useContext(Context);
-
-  function handleChange(id) {
-    document.documentElement.dataset.light = id;
-    setConfig("light", id);
-    setCacheConfig("light", id);
-  }
-
-  function getLabel(id) {
-    const color = getLightThemeLabel(id);
-    return <Squircle fill={color} color={color} />;
-  }
-
   return (
-    <Select
-      id="select-light"
+    <SelectThemeBase
+      key="light"
       count={getLightThemeCount()}
-      value={config.light}
-      getLabel={getLabel}
-      onChange={handleChange}
+      getLabel={getLightThemeLabel}
     />
   );
 }
 
 function SelectDark() {
-  const { config, setConfig } = useContext(Context);
-
-  function handleChange(id) {
-    document.documentElement.dataset.dark = id;
-    setConfig("dark", id);
-    setCacheConfig("dark", id);
-  }
-
-  function getLabel(id) {
-    const color = getDarkThemeLabel(id);
-    return <Squircle fill={color} color={color} />;
-  }
-
   return (
-    <Select
-      id="select-dark"
+    <SelectThemeBase
+      key="dark"
       count={getDarkThemeCount()}
-      value={config.dark}
-      getLabel={getLabel}
-      onChange={handleChange}
+      getLabel={getDarkThemeLabel}
     />
   );
 }
 
-function ButtonMoveAction({ name, icon, step }) {
+function ButtonMoveBase(props) {
   const { config, setConfig } = useContext(Context);
 
   function handleClick() {
-    const newChapter = config.chapter + step;
+    const newChapter = config.chapter + props.step;
     const count = getChapterCount(config.book);
     if (1 <= newChapter && newChapter <= count) {
       setCacheConfig("chapter", newChapter);
@@ -172,7 +161,7 @@ function ButtonMoveAction({ name, icon, step }) {
 
   onMount(() => {
     const handler = ({ code }) => {
-      if (code === name) {
+      if (code === props.name) {
         handleClick();
       }
     };
@@ -182,15 +171,15 @@ function ButtonMoveAction({ name, icon, step }) {
     });
   });
 
-  return <Button onClick={handleClick}>{icon}</Button>;
+  return <Button onClick={handleClick}>{props.icon}</Button>;
 }
 
 function ButtonPrev() {
-  return <ButtonMoveAction name="ArrowLeft" icon={<ArrowLeft />} step={-1} />;
+  return <ButtonMoveBase name="ArrowLeft" icon={<ArrowLeft />} step={-1} />;
 }
 
 function ButtonNext() {
-  return <ButtonMoveAction name="ArrowRight" icon={<ArrowRight />} step={1} />;
+  return <ButtonMoveBase name="ArrowRight" icon={<ArrowRight />} step={1} />;
 }
 
 function ToggleMore() {
@@ -212,18 +201,18 @@ function ToggleMore() {
   );
 }
 
-function ButtonAction({ name, icon, iconActive }) {
+function ButtonPageBase(props) {
   const { action, setAction } = useContext(Context);
 
   function handleClick() {
-    setAction("page", name);
+    setAction("page", props.name);
     document.documentElement.scrollTop = 0;
   }
 
   return (
     <Button onClick={handleClick}>
-      <Show when={action.page === name} fallback={icon}>
-        {iconActive}
+      <Show when={action.page === props.name} fallback={props.icon}>
+        {props.iconActive}
       </Show>
     </Button>
   );
@@ -231,7 +220,7 @@ function ButtonAction({ name, icon, iconActive }) {
 
 function ButtonSetting() {
   return (
-    <ButtonAction
+    <ButtonPageBase
       name="setting"
       icon={<Settings />}
       iconActive={
@@ -246,7 +235,7 @@ function ButtonSetting() {
 
 function ButtonSearch() {
   return (
-    <ButtonAction
+    <ButtonPageBase
       name="search"
       icon={<Search />}
       iconActive={
@@ -261,7 +250,7 @@ function ButtonSearch() {
 
 function ButtonFavorites() {
   return (
-    <ButtonAction
+    <ButtonPageBase
       name="favorites"
       icon={<Star />}
       iconActive={
@@ -359,35 +348,35 @@ function ButtonExport() {
   );
 }
 
-function ToggleAction({ name }) {
+function ToggleBase({ key }) {
   const { config, setConfig } = useContext(Context);
 
   function handleClick() {
-    setCacheConfig(name, !config[name]);
-    setConfig(name, !config[name]);
+    setCacheConfig(key, !config[key]);
+    setConfig(key, !config[key]);
   }
 
-  return <Toggle checked={config[name]} onClick={handleClick} />;
+  return <Toggle checked={config[key]} onClick={handleClick} />;
 }
 
 function ToggleNewline() {
-  return <ToggleAction name="newline" />;
+  return <ToggleBase key="newline" />;
 }
 
 function ToggleNumber() {
-  return <ToggleAction name="number" />;
+  return <ToggleBase key="number" />;
 }
 
 function ToggleTitle() {
-  return <ToggleAction name="title" />;
+  return <ToggleBase key="title" />;
 }
 
 function ToggleHeading() {
-  return <ToggleAction name="heading" />;
+  return <ToggleBase key="heading" />;
 }
 
 function ToggleCompare() {
-  return <ToggleAction name="compare" />;
+  return <ToggleBase key="compare" />;
 }
 
 export {

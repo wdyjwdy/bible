@@ -75,7 +75,7 @@ async function searchVerses(version, query) {
   const verses = await getBibleData(version);
   return verses.filter(({ t, h }) => {
     if (h) return false;
-    return t.includes(query);
+    return RegExp(query, "i").test(t);
   });
 }
 

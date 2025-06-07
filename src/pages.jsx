@@ -49,19 +49,14 @@ import {
 function Toolbar() {
   const { action } = useContext(Context);
 
-  function Fallback() {
-    return (
-      <>
+  return (
+    <div class="toolbar">
+      <Show when={action.more}>
         <ButtonSetting />
         <ButtonSearch />
         <ButtonFavorites />
-      </>
-    );
-  }
-
-  return (
-    <div class="toolbar">
-      <Show when={!action.more} fallback={<Fallback />}>
+      </Show>
+      <Show when={!action.more}>
         <SelectBook />
         <SelectChapter />
         <ButtonPrev />
@@ -246,28 +241,25 @@ function SearchPage() {
     }, 500);
   }
 
-  function Item({ verse }) {
-    const { b, c, v, t } = verse;
-    const parts = t.split(new RegExp(`(${query()})`, "gi"));
-
-    return (
-      <p onClick={[handleClick, verse]}>
-        <span class="number">
-          {`${getBookLabel(b, config.version)} ${c}:${v}`}
-        </span>
-        <span>{parts.map((p) => (p === query() ? <mark>{p}</mark> : p))}</span>
-      </p>
-    );
-  }
-
   return (
     <div class="search-page">
       <SearchBox onEnter={handleEnter} />
       <div class="search-result">
         <Show when={loaded() && query()}>
           <Show when={verses().length} fallback={<Empty />}>
-            {verses().map((v) => (
-              <Item verse={v} />
+            {verses().map(({ b, c, v, t }) => (
+              <p onClick={[handleClick, { b, c, v }]}>
+                <span class="number">
+                  {`${getBookLabel(b, config.version)} ${c}:${v}`}
+                </span>
+                <span>
+                  {t
+                    .split(RegExp(`(${query()})`, "gi"))
+                    .map((p) =>
+                      RegExp(query(), "i").test(p) ? <mark>{p}</mark> : p,
+                    )}
+                </span>
+              </p>
             ))}
           </Show>
         </Show>
