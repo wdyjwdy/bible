@@ -220,7 +220,7 @@ function SearchPage() {
   async function handleEnter(e) {
     const query = e.target.value;
     setQuery(query);
-    const result = await searchVerses(config.version, query);
+    const result = await searchVerses(query);
     setVerses(result);
     setLoaded(true);
   }

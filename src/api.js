@@ -70,8 +70,9 @@ async function getFavorites() {
   });
 }
 
-async function searchVerses(version, query) {
+async function searchVerses(query) {
   if (!query) return [];
+  const { version } = await getCacheConfig();
   const verses = await getBibleData(version);
   return verses.filter(({ t, h }) => {
     if (h) return false;
