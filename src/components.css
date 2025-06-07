@@ -9,7 +9,6 @@ button {
     border-radius: 6px;
     padding: 8px 16px;
     touch-action: none;
-    user-select: none;
     cursor: pointer;
 
     @media (any-hover: hover) {
@@ -60,7 +59,6 @@ button[popovertarget] {
             padding: 4px;
             border-radius: 6px;
             line-height: 1.5;
-            user-select: none;
 
             @media (any-hover: hover) {
                 &:hover {
