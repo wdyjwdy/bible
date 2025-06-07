@@ -105,6 +105,14 @@ h2 {
         width: 440px;
         box-shadow: 0 0 10px 1px #00000021;
     }
+
+    button:not([popovertarget]) {
+        flex: 1;
+    }
+
+    button:last-child {
+        flex: unset;
+    }
 }
 
 .setting-page {
@@ -209,25 +217,31 @@ h2 {
     }
 }
 
-#select-book ul {
-    grid-template-columns: repeat(5, 1fr);
+[popover] .select-book {
+    grid-template-columns: repeat(6, 1fr);
 
     @media screen and (max-width: 768px) {
         grid-template-columns: repeat(2, 1fr);
     }
 
-    li:nth-child(40) {
+    span:nth-child(40) {
         color: var(--red);
     }
 }
 
-#select-chapter ul {
+[popover] .select-chapter {
     font-size: x-large;
     grid-template-columns: repeat(7, minmax(50px, 1fr));
 
     @media screen and (max-width: 768px) {
         grid-template-columns: repeat(5, minmax(50px, 1fr));
     }
+}
+
+[popover] .verse-options {
+    padding: 4px;
+    display: flex;
+    gap: 5px;
 }
 
 button[popovertarget="select-version"],
@@ -246,15 +260,6 @@ button[popovertarget="select-chapter"] {
 button[popovertarget="select-light"],
 button[popovertarget="select-dark"] {
     display: flex;
-}
-
-.verse-options {
-    display: flex;
-    gap: 5px;
-}
-
-.toggle-more {
-    flex: unset;
 }
 
 .highlight {

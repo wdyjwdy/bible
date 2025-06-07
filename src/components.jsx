@@ -21,6 +21,16 @@ function Toggle(props) {
   );
 }
 
+function Popover(props) {
+  return (
+    <Portal>
+      <div ref={props.ref} id={props.id} popover>
+        <div class={props.id}>{props.children}</div>
+      </div>
+    </Portal>
+  );
+}
+
 function Select(props) {
   let ref;
 
@@ -37,31 +47,19 @@ function Select(props) {
     ref.hidePopover();
   }
 
-  function Popover() {
-    return (
-      <div ref={ref} id={props.id} popover>
-        <ul>
-          {getOptions().map((id) => (
-            <li
-              onClick={[handleClick, id]}
-              classList={{ selected: props.value === id }}
-            >
-              {props.getLabel(id)}
-            </li>
-          ))}
-        </ul>
-      </div>
-    );
-  }
-
   return (
     <>
-      <button type="button" popovertarget={props.id}>
-        {props.getLabel(props.value)}
-      </button>
-      <Portal>
-        <Popover />
-      </Portal>
+      <Button popovertarget={props.id}>{props.getLabel(props.value)}</Button>
+      <Popover ref={ref} id={props.id}>
+        {getOptions().map((id) => (
+          <span
+            onClick={[handleClick, id]}
+            classList={{ selected: props.value === id }}
+          >
+            {props.getLabel(id)}
+          </span>
+        ))}
+      </Popover>
     </>
   );
 }
@@ -104,14 +102,6 @@ function Empty() {
   return (
     <div class="empty">
       <Inbox size={48} strokeWidth={1} />
-    </div>
-  );
-}
-
-function Popover(props) {
-  return (
-    <div ref={props.ref} id={props.id} popover>
-      <div class={props.id}>{props.children}</div>
     </div>
   );
 }

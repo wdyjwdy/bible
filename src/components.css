@@ -1,18 +1,16 @@
 button {
     all: unset;
-    display: inline-flex;
+    display: flex;
     justify-content: center;
     align-items: center;
     color: var(--button-text);
-    padding: 8px 16px;
     border: 1px solid var(--button-border);
-    border-radius: 6px;
     background-color: var(--button-bg);
+    border-radius: 6px;
+    padding: 8px 16px;
     touch-action: none;
     user-select: none;
     cursor: pointer;
-    flex: 1;
-    min-height: 24px;
 
     @media (any-hover: hover) {
         &:hover {
@@ -26,12 +24,12 @@ button {
 }
 
 button[popovertarget] {
-    flex: unset;
+    display: inline-block;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     text-align: center;
-    display: inline-block;
+    line-height: 1.5;
 }
 
 [popover] {
@@ -39,8 +37,7 @@ button[popovertarget] {
     color: var(--body-text);
     border: 1px solid var(--button-border);
     border-radius: 12px;
-    max-width: 96%;
-    max-height: 67%;
+    max-height: 65%;
     box-shadow: 0 0 10px 1px #00000021;
     margin: auto auto 90px;
     scrollbar-width: none;
@@ -49,31 +46,26 @@ button[popovertarget] {
         margin: auto auto 60px;
     }
 
-    ul {
-        all: unset;
+    div {
         display: grid;
         grid-template-columns: 1fr;
         padding: 10px;
         gap: 2px;
         cursor: pointer;
 
-        li {
-            all: unset;
-            user-select: none;
+        span {
+            display: flex;
+            justify-content: center;
+            align-items: center;
             padding: 4px;
             border-radius: 6px;
-            width: 100%;
-            box-sizing: border-box;
-            text-align: center;
+            line-height: 1.5;
+            user-select: none;
 
             @media (any-hover: hover) {
                 &:hover {
                     background-color: var(--button-selected);
                 }
-            }
-
-            &.selected {
-                background-color: var(--button-selected);
             }
         }
     }
@@ -89,8 +81,6 @@ button[popovertarget] {
         border-top-left-radius: 6px;
         border-bottom-left-radius: 6px;
         display: flex;
-        justify-content: center;
-        align-items: center;
         padding: 8px;
     }
 
@@ -106,15 +96,6 @@ button[popovertarget] {
 }
 
 .loading {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: oklch(0 0 0 / 0.1);
-
-    @media (prefers-color-scheme: dark) {
-        color: oklch(1 0 0 / 0.1);
-    }
-
     svg {
         animation: spin 1s linear infinite;
     }
@@ -129,6 +110,7 @@ button[popovertarget] {
     }
 }
 
+.loading,
 .empty {
     display: flex;
     align-items: center;
