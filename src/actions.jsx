@@ -264,8 +264,13 @@ function ButtonFavorites() {
 }
 
 function ButtonCopy(props) {
+  const { config } = useContext(Context);
+
   function handleClick() {
-    navigator.clipboard.writeText(props.verse().t);
+    const { b, c, v, t } = props.verse();
+    navigator.clipboard.writeText(
+      `${t} (${getBookLabel(b, config.version)} ${c}:${v})`,
+    );
   }
 
   return (
