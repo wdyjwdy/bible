@@ -6,6 +6,7 @@ import {
   useContext,
   onMount,
 } from "solid-js";
+import { Dynamic } from "solid-js/web";
 import { getVerses, getFavorites, searchVerses, getBookLabel } from "./api";
 import { Context } from "./context";
 import { Loading, Empty, Popover } from "./components";
@@ -16,13 +17,13 @@ import {
   SelectChapter,
   ButtonPrev,
   ButtonNext,
-  ToggleMore,
+  ButtonToolOpen,
+  ButtonToolBack,
   ButtonSetting,
   ButtonSearch,
   ButtonFavorites,
   ButtonCopy,
   ButtonStar,
-  ButtonUnstar,
   ButtonShare,
   ButtonExport,
   ToggleNumber,
@@ -48,32 +49,40 @@ import {
 
 function Toolbar() {
   const { action } = useContext(Context);
+  const toolbars = {
+    navigator: () => [
+      <SelectBook />,
+      <SelectChapter />,
+      <ButtonPrev />,
+      <ButtonNext />,
+      <ButtonToolOpen />,
+    ],
+    tools: () => [
+      <ButtonSetting />,
+      <ButtonSearch />,
+      <ButtonFavorites />,
+      <ButtonToolBack />,
+    ],
+    verseTools: () => [
+      <ButtonCopy />,
+      <ButtonStar />,
+      <ButtonShare />,
+      <ButtonToolBack />,
+    ],
+  };
 
   return (
     <div class="toolbar">
-      <Show when={action.more}>
-        <ButtonSetting />
-        <ButtonSearch />
-        <ButtonFavorites />
-      </Show>
-      <Show when={!action.more}>
-        <SelectBook />
-        <SelectChapter />
-        <ButtonPrev />
-        <ButtonNext />
-      </Show>
-      <ToggleMore />
+      <Dynamic component={toolbars[action.toolbar]} />
     </div>
   );
 }
 
 function VersesPage() {
-  const { config } = useContext(Context);
+  const { config, action, setAction } = useContext(Context);
   const [verses, setVerses] = createSignal([]);
   const [compareVerses, setCompareVerses] = createSignal([]);
-  const [selectedVerse, setSelectedVerse] = createSignal();
   const [loaded, setLoaded] = createSignal(false);
-  let ref;
 
   createEffect(async () => {
     const verses = await getVerses(config);
@@ -91,12 +100,16 @@ function VersesPage() {
   });
 
   function handleClick(verse) {
-    if (selectedVerse()?.v === verse.v) {
-      setSelectedVerse(null);
-      ref.hidePopover();
+    if (verse.v === action.selectedVerse?.v) {
+      setAction({
+        toolbar: "navigator",
+        selectedVerse: null,
+      });
     } else {
-      setSelectedVerse(verse);
-      ref.showPopover();
+      setAction({
+        toolbar: "verseTools",
+        selectedVerse: verse,
+      });
     }
   }
 
@@ -108,7 +121,7 @@ function VersesPage() {
   }
 
   function isSelected({ v }) {
-    return selectedVerse()?.v === v;
+    return action.selectedVerse?.v === v;
   }
 
   const classes = {
@@ -170,16 +183,6 @@ function VersesPage() {
           }}
         </For>
       </Show>
-      <Popover ref={ref} id="verse-options">
-        <ButtonCopy verse={selectedVerse} />
-        <Show
-          when={isFavorite(selectedVerse())}
-          fallback={<ButtonStar verse={selectedVerse} />}
-        >
-          <ButtonUnstar verse={selectedVerse} />
-        </Show>
-        <ButtonShare verse={selectedVerse} />
-      </Popover>
     </div>
   );
 }
@@ -227,7 +230,7 @@ function SearchPage() {
 
   function handleClick({ b, c, v }) {
     setAction({
-      more: false,
+      toolbar: "navigator",
       page: "verses",
     });
     setConfig({
@@ -281,7 +284,7 @@ function FavoritesPage() {
 
   function handleClick({ b, c, v }) {
     setAction({
-      more: false,
+      toolbar: "navigator",
       page: "verses",
     });
     setConfig({

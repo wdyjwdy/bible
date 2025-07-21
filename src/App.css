@@ -86,7 +86,7 @@ h1 {
 
 .toolbar {
     display: flex;
-    gap: 10px;
+    gap: 6px;
     padding: 10px;
     bottom: -1px;
     position: fixed;

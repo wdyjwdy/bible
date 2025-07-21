@@ -10,8 +10,9 @@ const App = () => {
   const [loaded, setLoaded] = createSignal(false);
   const [config, setConfig] = createStore();
   const [action, setAction] = createStore({
-    more: false,
     page: "verses",
+    toolbar: "navigator",
+    selectedVerse: null,
   });
 
   onMount(async () => {

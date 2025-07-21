@@ -182,21 +182,34 @@ function ButtonNext() {
   return <ButtonMoveBase name="ArrowRight" icon={<ArrowRight />} step={1} />;
 }
 
-function ToggleMore() {
-  const { action, setAction } = useContext(Context);
+function ButtonToolOpen() {
+  const { setAction } = useContext(Context);
 
   function handleClick() {
-    if (action.more) {
-      setAction("page", "verses");
-    }
-    setAction("more", !action.more);
+    setAction("toolbar", "tools");
   }
 
   return (
     <Button onClick={handleClick}>
-      <Show when={!action.more} fallback={<Undo2 />}>
-        <Ellipsis />
-      </Show>
+      <Ellipsis />
+    </Button>
+  );
+}
+
+function ButtonToolBack() {
+  const { setAction } = useContext(Context);
+
+  function handleClick() {
+    setAction({
+      toolbar: "navigator",
+      page: "verses",
+      selectedVerse: null,
+    });
+  }
+
+  return (
+    <Button onClick={handleClick}>
+      <Undo2 />
     </Button>
   );
 }
@@ -263,11 +276,11 @@ function ButtonFavorites() {
   );
 }
 
-function ButtonCopy(props) {
-  const { config } = useContext(Context);
+function ButtonCopy() {
+  const { config, action } = useContext(Context);
 
   function handleClick() {
-    const { b, c, v, t } = props.verse();
+    const { b, c, v, t } = action.selectedVerse;
     navigator.clipboard.writeText(
       `${t} (${getBookLabel(b, config.version)} ${c}:${v})`,
     );
@@ -280,11 +293,11 @@ function ButtonCopy(props) {
   );
 }
 
-function ButtonShare(props) {
-  const { config } = useContext(Context);
+function ButtonShare() {
+  const { config, action } = useContext(Context);
 
   function handleClick() {
-    const { b, c, v, t } = props.verse();
+    const { b, c, v, t } = action.selectedVerse;
     navigator
       .share({ text: `${t} (${getBookLabel(b, config.version)} ${c}:${v})` })
       .catch(() => console.info("Share canceled"));
@@ -297,27 +310,25 @@ function ButtonShare(props) {
   );
 }
 
-function ButtonStar(props) {
-  const { config, setConfig } = useContext(Context);
+function ButtonStar() {
+  const { config, setConfig, action } = useContext(Context);
 
   function handleClick() {
-    const favorites = [...config.favorites, props.verse()];
+    if (isFavorite()) {
+      unstar();
+    } else {
+      star();
+    }
+  }
+
+  function star() {
+    const favorites = [...config.favorites, action.selectedVerse];
     setConfig("favorites", favorites);
     setCacheConfig("favorites", favorites);
   }
 
-  return (
-    <Button onClick={handleClick}>
-      <Star />
-    </Button>
-  );
-}
-
-function ButtonUnstar(props) {
-  const { config, setConfig } = useContext(Context);
-
-  function handleClick() {
-    const { b, c, v } = props.verse();
+  function unstar() {
+    const { b, c, v } = action.selectedVerse;
     const favorites = config.favorites.filter((f) => {
       return f.b !== b || f.c !== c || f.v !== v;
     });
@@ -325,9 +336,19 @@ function ButtonUnstar(props) {
     setCacheConfig("favorites", favorites);
   }
 
+  function isFavorite() {
+    const verse = action.selectedVerse;
+    if (!verse) return false;
+    return config.favorites.some((f) => {
+      return f.b === verse.b && f.c === verse.c && f.v === verse.v;
+    });
+  }
+
   return (
     <Button onClick={handleClick}>
-      <Star color="oklch(0.81 0.18 86.47)" fill="oklch(0.81 0.18 86.47)" />
+      <Show when={isFavorite()} fallback={<Star />}>
+        <Star color="oklch(0.81 0.18 86.47)" fill="oklch(0.81 0.18 86.47)" />
+      </Show>
     </Button>
   );
 }
@@ -391,13 +412,13 @@ export {
   SelectChapter,
   ButtonPrev,
   ButtonNext,
-  ToggleMore,
+  ButtonToolOpen,
+  ButtonToolBack,
   ButtonSetting,
   ButtonSearch,
   ButtonFavorites,
   ButtonCopy,
   ButtonStar,
-  ButtonUnstar,
   ButtonShare,
   ButtonExport,
   ToggleNumber,
