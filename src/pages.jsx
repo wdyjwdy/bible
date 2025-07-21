@@ -313,11 +313,11 @@ function FavoritesPage() {
 }
 
 const pages = {
-  toolbar: () => <Toolbar />,
-  verses: () => <VersesPage />,
-  setting: () => <SettingPage />,
-  search: () => <SearchPage />,
-  favorites: () => <FavoritesPage />,
+  toolbar: Toolbar,
+  verses: VersesPage,
+  setting: SettingPage,
+  search: SearchPage,
+  favorites: FavoritesPage,
 };
 
 export { pages };
