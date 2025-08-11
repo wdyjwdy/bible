@@ -201,13 +201,10 @@ h1 {
 
         p {
             display: inline;
-            border-radius: 4px;
+            margin-right: 2px;
         }
 
         .number {
-            display: inline-block;
-            width: 1em;
-            text-align: end;
             padding: 0 4px;
         }
     }
