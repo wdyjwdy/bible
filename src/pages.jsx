@@ -276,9 +276,21 @@ function FavoritesPage() {
 
   onMount(async () => {
     const result = await getFavorites();
-    setVerses(result);
+    const resultWithHeading = addHeading(result);
+    setVerses(resultWithHeading);
     setLoaded(true);
   });
+
+  function addHeading(verses) {
+    let result = [];
+    for (let i = 0; i < verses.length; i++) {
+      if (verses[i].b !== verses[i - 1]?.b) {
+        result.push({ h: verses[i].b });
+      }
+      result.push(verses[i]);
+    }
+    return result;
+  }
 
   function handleClick({ b, c, v }) {
     setAction({
@@ -299,14 +311,18 @@ function FavoritesPage() {
     <div class="favorites-page">
       <Show when={loaded()}>
         <Show when={verses().length} fallback={<Empty />}>
-          {verses().map(({ b, c, v, t }) => (
-            <p onClick={[handleClick, { b, c, v }]}>
-              <span class="number">
-                {`${getBookLabel(b, config.version)} ${c}:${v}`}
-              </span>
-              <span>{t}</span>
-            </p>
-          ))}
+          {verses().map(({ b, c, v, t, h }) =>
+            h ? (
+              <h2>{`${getBookLabel(h, config.version)}`}</h2>
+            ) : (
+              <p onClick={[handleClick, { b, c, v }]}>
+                <span class="number">
+                  {`${getBookLabel(b, config.version)} ${c}:${v}`}
+                </span>
+                <span>{t}</span>
+              </p>
+            ),
+          )}
         </Show>
       </Show>
     </div>

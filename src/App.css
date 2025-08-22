@@ -132,6 +132,11 @@ h1 {
     margin-top: 10px;
     margin-bottom: 80px;
 
+    h2 {
+        color: var(--favorite-text);
+        font-size: large;
+    }
+
     p {
         display: flex;
         flex-direction: column;
