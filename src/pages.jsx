@@ -158,9 +158,7 @@ function VersesPage() {
                   onClick={[handleClick, verse]}
                 >
                   <Show when={config.number}>
-                    <span class="number">
-                      {isFavorite(verse) ? "✦" : verse.v}
-                    </span>
+                    <span class="number">{verse.v}</span>
                   </Show>
                   <span class="verse">{verse.t}</span>
                 </p>

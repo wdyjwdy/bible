@@ -267,10 +267,6 @@ button[popovertarget="select-dark"] {
 .favorite {
     background-color: var(--favorite-bg);
     color: var(--favorite-text);
-
-    .number {
-        color: var(--favorite-text);
-    }
 }
 
 .selected {
