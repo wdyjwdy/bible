@@ -319,6 +319,8 @@ function ButtonStar() {
     } else {
       star();
     }
+    const bg = document.querySelector(".verses-page");
+    bg.click();
   }
 
   function star() {

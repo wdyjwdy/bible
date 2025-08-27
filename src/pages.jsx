@@ -99,7 +99,8 @@ function VersesPage() {
     document.documentElement.scrollTop = 0;
   });
 
-  function handleClick(verse) {
+  function handleClick(verse, e) {
+    e.stopPropagation();
     if (verse.v === action.selectedVerse?.v) {
       setAction({
         toolbar: "navigator",
@@ -111,6 +112,13 @@ function VersesPage() {
         selectedVerse: verse,
       });
     }
+  }
+
+  function handleClickBackground() {
+    setAction({
+      toolbar: "navigator",
+      selectedVerse: null,
+    });
   }
 
   function isFavorite(verse) {
@@ -131,7 +139,7 @@ function VersesPage() {
   };
 
   return (
-    <div classList={classes}>
+    <div classList={classes} onClick={handleClickBackground}>
       <Show when={loaded()} fallback={<Loading />}>
         <Show when={config.title}>
           <h1>
