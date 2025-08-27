@@ -101,7 +101,8 @@ function VersesPage() {
 
   function handleClick(verse, e) {
     e.stopPropagation();
-    if (verse.v === action.selectedVerse?.v) {
+    const { b, c, v } = verse;
+    if (v === action.selectedVerse?.v) {
       setAction({
         toolbar: "navigator",
         selectedVerse: null,
@@ -109,7 +110,7 @@ function VersesPage() {
     } else {
       setAction({
         toolbar: "verseTools",
-        selectedVerse: verse,
+        selectedVerse: { b, c, v },
       });
     }
   }

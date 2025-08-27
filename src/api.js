@@ -60,6 +60,12 @@ async function getVerses({ version, book, chapter }) {
   return data.filter(({ b, c }) => b === book && c === chapter);
 }
 
+async function getVerse({ b: book, c: chapter, v: verse }) {
+  const { version } = await getCacheConfig();
+  const verses = await getBibleData(version);
+  return verses.find((v) => v.b === book && v.c === chapter && v.v === verse);
+}
+
 async function getFavorites() {
   const { version, favorites } = await getCacheConfig();
   const verses = await getBibleData(version);
@@ -134,6 +140,13 @@ function getBookLabel(book, version) {
   return names[book - 1];
 }
 
+async function getBookName(book) {
+  const { version } = await getCacheConfig();
+  const { lang } = versionList[version - 1];
+  const bookNames = lang === "cn" ? chineseBookNames : englishBookNames;
+  return bookNames[book - 1];
+}
+
 function getChapterCount(book) {
   return chapterCounts[book - 1];
 }
@@ -164,11 +177,13 @@ export {
   getDefaultConfig,
   getFavorites,
   getVerses,
+  getVerse,
   searchVerses,
   getVersionCount,
   getVersionLabel,
   getBookCount,
   getBookLabel,
+  getBookName,
   getChapterCount,
   getChapterLabel,
   getLightThemeCount,

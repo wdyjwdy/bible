@@ -18,8 +18,10 @@ import {
   setCacheConfig,
   getVersionCount,
   getVersionLabel,
+  getVerse,
   getBookCount,
   getBookLabel,
+  getBookName,
   getChapterCount,
   getChapterLabel,
   getLightThemeCount,
@@ -277,13 +279,12 @@ function ButtonFavorites() {
 }
 
 function ButtonCopy() {
-  const { config, action } = useContext(Context);
+  const { action } = useContext(Context);
 
-  function handleClick() {
-    const { b, c, v, t } = action.selectedVerse;
-    navigator.clipboard.writeText(
-      `${t} (${getBookLabel(b, config.version)} ${c}:${v})`,
-    );
+  async function handleClick() {
+    const { b, c, v, t } = await getVerse(action.selectedVerse);
+    const bookLabel = await getBookName(b);
+    navigator.clipboard.writeText(`${t} (${bookLabel} ${c}:${v})`);
   }
 
   return (
@@ -294,12 +295,13 @@ function ButtonCopy() {
 }
 
 function ButtonShare() {
-  const { config, action } = useContext(Context);
+  const { action } = useContext(Context);
 
-  function handleClick() {
-    const { b, c, v, t } = action.selectedVerse;
+  async function handleClick() {
+    const { b, c, v, t } = await getVerse(action.selectedVerse);
+    const bookLabel = await getBookName(b);
     navigator
-      .share({ text: `${t} (${getBookLabel(b, config.version)} ${c}:${v})` })
+      .share({ text: `${t} (${bookLabel} ${c}:${v})` })
       .catch(() => console.info("Share canceled"));
   }
 
