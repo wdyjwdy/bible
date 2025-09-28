@@ -284,7 +284,7 @@ function ButtonCopy() {
   async function handleClick() {
     const { b, c, v, t } = await getVerse(action.selectedVerse);
     const bookLabel = await getBookName(b);
-    navigator.clipboard.writeText(`${t} (${bookLabel} ${c}:${v})`);
+    await navigator.clipboard.writeText(`${t} (${bookLabel} ${c}:${v})`);
   }
 
   return (
